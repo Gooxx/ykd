@@ -1042,7 +1042,8 @@ def xrzq2():
     endTime='2020-12-31'
     tableName ='as_test.202004_xc_xr'
 
-    actIds = [233,234]
+    # actIds = [233,234]
+    actIds = [275,276]
     actName = '欣臣4月新人专区'
 
     img = 'http://image.ykd365.cn/act/202004/01.jpg'
@@ -1345,27 +1346,27 @@ def test():
 # 200
 if __name__ == "__main__":
     # updateHuodong()
-    actName = '家庭必备小药箱'
-    start = '2020-05-26' # '2020-05-22'
-    end = '2020-06-15'
-    img = 'http://image.ykd365.cn/act/202005/xyx/02.jpg'
-    color = '#c4cde6'
-    linkimg = 'http://image.ykd365.cn/act/202005/xyx/xyx_lb.jpg'
-    # linkurl = 'http://deve.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId=' 
+    # actName = '家庭必备小药箱'
+    # start = '2020-05-26' # '2020-05-22'
+    # end = '2020-06-15'
+    # img = 'http://image.ykd365.cn/act/202005/xyx/02.jpg'
+    # color = '#c4cde6'
+    # linkimg = 'http://image.ykd365.cn/act/202005/xyx/xyx_lb.jpg'
+    # # linkurl = 'http://deve.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId=' 
 
-    linkurl =  'http://store.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId='
-    windowimg = 'http://image.ykd365.cn/act/202005/xyx/xyx_tc.png'
-    xyx(actId=0,actName = actName,tableName ='as_test.202005_ty_xyx',ydList = [200],startTime=start,endTime=end
-        ,img = img,color = color,linkimg = linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
-    xyx(actId=0,actName = actName,tableName ='as_test.202005_xc_xyx',ydList = [1600,1601],startTime=start,endTime=end
-        ,img = img,color = color,linkimg = linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
-    xyx(actId=0,actName = actName,tableName ='as_test.202005_bj_xyx',ydList = [1620,1621,1622,1627,1629,1631],startTime=start,endTime=end
-        ,img = img,color = color,linkimg = linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
+    # linkurl =  'http://store.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId='
+    # windowimg = 'http://image.ykd365.cn/act/202005/xyx/xyx_tc.png'
+    # xyx(actId=0,actName = actName,tableName ='as_test.202005_ty_xyx',ydList = [200],startTime=start,endTime=end
+    #     ,img = img,color = color,linkimg = linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
+    # xyx(actId=0,actName = actName,tableName ='as_test.202005_xc_xyx',ydList = [1600,1601],startTime=start,endTime=end
+    #     ,img = img,color = color,linkimg = linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
+    # xyx(actId=0,actName = actName,tableName ='as_test.202005_bj_xyx',ydList = [1620,1621,1622,1627,1629,1631],startTime=start,endTime=end
+    #     ,img = img,color = color,linkimg = linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
     
 
 
     # xyx()
-    # xrzq2()
+    xrzq2()
     # drugstoreIds=[1600,1601]
     # index=1
     # img='http://image.ykd365.cn/act/202005/xc/gd_tc.png'

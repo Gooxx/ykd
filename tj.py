@@ -1,6 +1,7 @@
 from db2 import db,cursor,querySQL,updateSQL,insertSQL,selectBy,selectOneBy
 import time
 import datetime
+from dateutil.relativedelta import relativedelta
 # import datetime from dateutil.relativedelta import relativedelta
 import json
 import logging
@@ -213,9 +214,69 @@ def selectTYThisMonthOrderUsers():
             #     worksheet.write(i,0, label = 'this is test')
         # today = time.strftime("%Y%m%d%H%M%S", time.localtime())  # (datetime.datetime.strptime(day,'%Y-%m-%d')+datetime.timedelta(days=i+1)).strftime('%Y-%m-%d')
     # workbook.save(f'{day}.xls')
+
+
+def selectTYUserKeep():
+    """ 月份	"新增
+        用户数"	"1个月后
+        下单
+        用户数"	其中：之前下过1单的用户数	其中：之前下过2单的用户数	其中：之前下过3单的用户数	其中：之前下过4单的用户数	其中：之前下过5单的用户数	其中：之前下过6单的用户数	其中：之前下过7单的用户数	其中：之前下过8单的用户数	其中：之前下过9单的用户数	其中：之前下过10单的用户数	其中：之前下过＞10单的用户数
+"""
+    daystr = '2019-01-01'
+    day = datetime.datetime.strptime(daystr,'%Y-%m-%d')
+    for j in range(15):
+        for i in range(16):
+            thisMonth = day+ relativedelta(months=+i)
+            nextMonth = day+ relativedelta(months=+(i+1))
+
+            afterMonth = day+ relativedelta(months=+(i+j+1))
+            nextAfterMonth = day+ relativedelta(months=+(i+j+2))
+
+            # logging.info(f"{thisMonth} {nextMonth}")
+            # print(datetime.datetime.strptime(day,'%Y-%m-%d') + relativedelta(months=+i))
+            # nextMonth = datetime.datetime.strptime(day,'%Y-%m-%d') + relativedelta(months=+i)
+            # logging.info(f"nextMonth {nextMonth}")
+            # today = (datetime.datetime.strptime(day,'%Y-%m-%d')+datetime.timedelta(month=i+1)).strftime('%Y-%m-%d')
+            sql = f"""  SELECT COUNT(o.dans) yhs,o.dans from (
+                        SELECT COUNT(o2.user_id) dans,o2.user_id from 
+                        (
+                        SELECT DISTINCT o.user_id from (SELECT count(o.user_id) cuser,min(o.order_create_time) mtime,DATE_FORMAT(o.order_create_time,'%Y-%m') ym,o.user_id from v_ty_app_44 o GROUP BY o.user_id 
+                        HAVING mtime BETWEEN '{thisMonth}' and '{nextMonth}' ) o ,v_ty_app_44 o1
+                        WHERE o.user_id = o1.user_id 
+                        and o1.order_create_time BETWEEN '{afterMonth}' and '{nextAfterMonth}'
+                        ) o ,v_ty_app_44 o2 
+                        WHERE o.user_id = o2.user_id 
+                        and o2.order_create_time BETWEEN '{thisMonth}' and '{afterMonth}'
+
+                        GROUP BY o2.user_id
+                    ) o
+                    GROUP BY o.dans; """
+            res = querySQL(sql)
+            # logging.info(f"  {thisMonth} + {i} + {j+1} -- {res['data']} ---")
+            list = res['data']
+            totleUsers = 0 # res['count']
+            totleOrders = 0
+            o2eOrderList=[0]*10
+            for dic in list:
+                mon = thisMonth
+
+                tmcount = dic['yhs']
+                totleOrders=totleOrders+tmcount
+                pastcount = dic['dans']
+                totleUsers= totleUsers+pastcount*tmcount
+                if int(pastcount)>=10:
+                    o2eOrderList[9]=o2eOrderList[9]+tmcount
+                else:
+                    o2eOrderList[pastcount-1]=tmcount
+
+            logging.info(f"{mon},{totleUsers},{totleOrders},{o2eOrderList}")
+    
+
 if __name__ == "__main__":
     # selectTYUserGrow()
-    selectTYThisMonthOrderUsers()
+    # selectTYThisMonthOrderUsers()
+
+    selectTYUserKeep()
     db.commit()
     # ydId = '1600,1601'
     # start = '2020-03-01'
