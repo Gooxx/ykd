@@ -89,6 +89,25 @@ def selectNewOrderUsers(ydId,start,end):
     logging.info(f"本月新增下单用户数：             人数为： {res['count']} --- 从{start} 到 {end} 在{ydId}药店下单")
     return res['count']
 #   console.log("总注册人数 执行的sql：" + sqlzzcrs);
+def selectNewOrderUsersPhoneAndOrder(ydId,start,end):
+    """本月新增下单用户电话号	首次下单订单号 """
+    sql = f"""SELECT u.phone_num 本月新增下单用户电话号,o.order_id 首次下单订单号 
+            FROM `om_order_info` o,`um_user_info` u             
+            WHERE o.user_id = u.user_id             
+            and o.order_status = 44             
+            and o.order_create_time BETWEEN '{start}'             
+            and '{end}'             
+            and o.pharmacy_id in ({ydId})             
+            and o.`order_type` = 'normal'             
+            and o.order_id in (               
+                SELECT  min(oo.`order_id`) from om_order_info oo  
+                WHERE oo.order_status = 44 and oo.pharmacy_id  in ({ydId})  and oo.`order_type` = 'normal' GROUP BY `user_id`
+            )             
+        ORDER BY o.`user_id`;"""
+    res = querySQL(sql)
+    logging.info(f"本月新增下单用户数：             人数为： {res['count']} --- 从{start} 到 {end} 在{ydId}药店下单 =={res}")
+    return res['count']
+#   console.log("总注册人数 执行的sql：" + sqlzzcrs);
 
 def selectTYUserGrow():
     """ -- 1、天一店在20190501-20200430期间，以月为单位，每个月历史累计下过1单（不含首单）、2单（不含首单）、3单（不含首单）、4单（不含首单）、5单（不含首单）、6单（不含首单）、7单及以上（不含首单）的用户明细，以及这些用户历史首次下单的时间（年月日）；
@@ -224,7 +243,7 @@ def selectTYUserKeep():
 """
     daystr = '2019-01-01'
     day = datetime.datetime.strptime(daystr,'%Y-%m-%d')
-    for j in range(15):
+    for j in range(16):
         for i in range(16):
             thisMonth = day+ relativedelta(months=+i)
             nextMonth = day+ relativedelta(months=+(i+1))
@@ -256,34 +275,39 @@ def selectTYUserKeep():
             list = res['data']
             totleUsers = 0 # res['count']
             totleOrders = 0
-            o2eOrderList=[0]*10
+            o2eOrderList=[0]*11
             for dic in list:
-                mon = thisMonth
+                # mon = thisMonth
 
                 tmcount = dic['yhs']
                 totleOrders=totleOrders+tmcount
                 pastcount = dic['dans']
                 totleUsers= totleUsers+pastcount*tmcount
-                if int(pastcount)>=10:
-                    o2eOrderList[9]=o2eOrderList[9]+tmcount
+                if int(pastcount)>10:
+                    o2eOrderList[10]=o2eOrderList[10]+tmcount
                 else:
                     o2eOrderList[pastcount-1]=tmcount
 
-            logging.info(f"{mon},{totleUsers},{totleOrders},{o2eOrderList}")
+            # logging.info(f"{i}-{j}-{thisMonth.__format__('%Y-%m-%d')},{afterMonth.__format__('%Y-%m-%d')},{totleUsers},{totleOrders},{o2eOrderList}")
+            logging.info(f"{i}-{j}-{thisMonth.__format__('%Y-%m-%d')},{afterMonth.__format__('%Y-%m-%d')},{totleUsers},{totleOrders},{','.join(o2eOrderList)}")
     
 
 if __name__ == "__main__":
+
+    a = '92,88'.split(',')
+    logging.info(a)
     # selectTYUserGrow()
     # selectTYThisMonthOrderUsers()
 
-    selectTYUserKeep()
-    db.commit()
-    # ydId = '1600,1601'
-    # start = '2020-03-01'
-    # end = '2020-04-01'
-    # selectNewRegister(ydId,start,end)
-    # selectOrderUsers(ydId,start,end)
-    # selectRepeatOrderUsersMoreThan2(ydId,start,end)
-    # selectRepeatOrderUsersMoreThan3(ydId,start,end)
-    # selectNewOrderUsers(ydId,start,end)
+    # selectTYUserKeep()
     # db.commit()
+
+    ydId = '200'
+    start = '2020-04-01'
+    end = '2020-05-01'
+    selectNewRegister(ydId,start,end)
+    selectOrderUsers(ydId,start,end)
+    selectRepeatOrderUsersMoreThan2(ydId,start,end)
+    selectRepeatOrderUsersMoreThan3(ydId,start,end)
+    selectNewOrderUsers(ydId,start,end)
+    db.commit()
