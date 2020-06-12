@@ -6,7 +6,7 @@ import logging
 
 logger = logging.getLogger()
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
-logging.basicConfig(filename='my-530.log', level=logging.DEBUG, format=LOG_FORMAT)
+logging.basicConfig(filename='my-611.log', level=logging.DEBUG, format=LOG_FORMAT)
 #  创建一个handler，用于将日志输出到控制台
 # log = logging.StreamHandler()
 # log.setLevel(logging.DEBUG)
@@ -15,9 +15,18 @@ ch.setLevel(logging.INFO)
 logger.addHandler(ch)
 # 基于pymysql 
 
+isDeve = True
+if isDeve: # 准生产
+   host = 'rm-2ze7fnv9ydw78u07a7o.mysql.rds.aliyuncs.com'
+   logging.info('deve准生产数据库连接--------'+host)
+else:# 生产
+   host = 'rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com'
+   logging.info('store生产数据库连接--------'+host)
+db = pymysql.connect(host,user = "camore",passwd = "camore",db = "medstore")
+
 # db = pymysql.connect('rm-2zeu8n6l02168zxwe4o.mysql.rds.aliyuncs.com',user = "camore",passwd = "camore",db = "medstore")
 # 准生产
-db = pymysql.connect('rm-2ze7fnv9ydw78u07a7o.mysql.rds.aliyuncs.com',user = "camore",passwd = "camore",db = "medstore")
+# db = pymysql.connect('rm-2ze7fnv9ydw78u07a7o.mysql.rds.aliyuncs.com',user = "camore",passwd = "camore",db = "medstore")
 
 # 生产只读
 # db = pymysql.connect('rr-2zepi5ii881yk8fug5o.mysql.rds.aliyuncs.com',user = "camore",passwd = "camore",db = "medstore")

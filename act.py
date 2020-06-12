@@ -310,16 +310,24 @@ def selectActInfo(itemId):
     list = selectOneBy(sql)
     return list
 
-def addPmDirInfo(sufDirCode,dirName,drugstoreId,img='',color='',num='1',level='1',parentDirId=''):
+def addPmDirInfo(sufDirCode,dirName,drugstoreId,img='',color='',num='1',level='1',parentDirId='',dirId='',):
     logging.debug('根据提供的盘货信息，创建展示目录 dir ')
     genCode = queryBaseDirCode(drugstoreId)
     dirCode = genCode+sufDirCode
-    sql = f'''
-        INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
-        , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
-        , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
-        value ('{dirCode}','{dirName}','dir','1',NULL,100,'{num}',{level},'{img}','{parentDirId}',NOW(),NOW(),'{color}','',NULL,'{drugstoreId}',NULL,NULL) ;
-    '''
+    if dirId=='':
+        sql = f'''
+            INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('{dirCode}','{dirName}','dir','1',NULL,100,'{num}',{level},'{img}','{parentDirId}',NOW(),NOW(),'{color}','',NULL,'{drugstoreId}',NULL,NULL) ;
+        '''
+    else:
+        sql = f'''
+            INSERT INTO `medstore`.`pm_dir_info` ( dir_id, `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('{dirId}','{dirCode}','{dirName}','dir','1',NULL,100,'{num}',{level},'{img}','{parentDirId}',NOW(),NOW(),'{color}','',NULL,'{drugstoreId}',NULL,NULL) ;
+        '''
     res = insertSQL(sql)
     if res["code"]==200:
         return {
@@ -840,17 +848,18 @@ def createDirByTable(actId,drugstoreId,tableName='as_test.ykd_base_dir'):
     idir = queryTableLastOne('pm_dir_info',field='dir_id',where ='',order='dir_id desc')
     idirId = idir['dir_id']
     dirList = queryTable(tableName,where=' act ="202006618" ')
-    logging.info(dirList)
+    # logging.info(dirList)
     for dir in dirList:
         name = dir['name']
         code = dir['code']
         img = dir['img']
         num = dir['num']
+        dirId = idirId+dirList.index(dir)+1
         parentId = '' if dir['parent_id']==None else  dir['parent_id']+idirId
         lvl = dir['lvl']
         toDirId = '' if dir['to_dir_id']== None else dir['to_dir_id']+idirId
 
-        # addPmDirInfo(f'act{actId}{codeMIYA68 Pro}',name,drugstoreId,img=img,color=toDirId,num=num,level=lvl,parentDirId=parentId)
+        addPmDirInfo(f'act{actId}{code}',name,drugstoreId,img=img,color=toDirId,num=num,level=lvl,parentDirId=parentId,dirId=dirId)
 
 
 def buildActInfoByTableWithChild(tableName,actId,actName,drugstoreId,startTime,endTime,img='',color='',linkurl='',linkimg='',linkView = '',windowimg=''):
@@ -871,7 +880,7 @@ def buildActInfoByTableWithChild(tableName,actId,actName,drugstoreId,startTime,e
     addAmActInfo(actId,actName,startTime,endTime,drugstoreId=drugstoreId)
     skuList = querySkuIdByTable(tableName,drugstoreId)
     # dirList = queryTable(tableName,where=' dir_code !="" group by dir_code')
-    dirList = queryTable(tableName,result='*',where =f' dir_code like "%act{actId}%" and drugstore_id = "{drugstoreId}" ',order='')
+    dirList = queryTable('pm_dir_info',result='*',where =f' dir_code like "%act{actId}%" and pharmacy_id = "{drugstoreId}" ',order='')
     itemList = queryTable(tableName,where='  item_code !="" group by item_code')
     if len(dirList)>0 or len(itemList)>0:
         logging.info(f'开始创建活动目录 {drugstoreId}')
@@ -896,6 +905,7 @@ def buildActInfoByTableWithChild(tableName,actId,actName,drugstoreId,startTime,e
         # if sdir!=None:
         #     remark = sdir['dir_id']
         # dic = addPmDirInfo(f'act{actId}{dirInfo.dir_code}',dirInfo.dir_name,drugstoreId,img=dirInfo.dir_img,color=remark,num=dirInfo.dir_num,level='3',parentDirId=parentDirId)
+        genCode = queryBaseDirCode(drugstoreId)
         dic = dir
         dicId = dic['dir_id']
         dicCode = dic['dir_code']
@@ -1006,12 +1016,13 @@ def addSkuDirByItemId(huohao,drugstoreId,itemId,skuTotal=0,maxTotal=0):
     if itemRemark!=None:
         logging.info("itemRemark------------------")
         logging.info(itemRemark)
-        dicRemark = json.loads(itemRemark)
-        logging.info(dicRemark)
-        itemImgR = dicRemark['itemImageR']
-        itemImg = dic.get('item_img') 
-        otherImg = f'{{"itemImageR":"{itemImgR}","itemImage":"{itemImg}"}}' if itemImg!='' and itemImgR!='' else ''
-        logging.info(otherImg)
+        if itemRemark!=None and itemRemark!='':
+            dicRemark = json.loads(itemRemark)
+            logging.info(dicRemark)
+            itemImgR = dicRemark['itemImageR']
+            itemImg = dic.get('item_img') 
+            otherImg = f'{{"itemImageR":"{itemImgR}","itemImage":"{itemImg}"}}' if itemImg!='' and itemImgR!='' else ''
+            logging.info(otherImg)
     res = addAmStatInfo(skuId,actId,itemId,itemName,itemDesc,itemType,startTime,endTime,quotaId =quotaId,otherStr1=otherImg)
     # logging.info('statId %s',res)
     addPmSkuDir(skuId,dirId,dirCode)
@@ -1399,14 +1410,13 @@ def act618(actId=0,actName = '',tableName ='',ydList = [],startTime='',endTime='
         # iActId = iAct['act_id']+1
         logging.info(f'活动id：{actId}')
         # queryTableLastOne(tableName,field='*',where ='',order='')
-        # createDirByTable(actId=iActId,drugstoreId=200,tableName='as_test.ykd_base_dir')
         # buildActInfoByTableWithChild(tableName,actId,actName,drugstoreId,startTime,endTime,img='',color='',linkurl='',linkimg='',linkView = '',windowimg='')
 
     
     for index in range(len(ydList)):
         try:
             drugstoreId = ydList[index]
-            createDirByTable(actId=actId,drugstoreId=drugstoreId,tableName=tableName)
+            createDirByTable(actId=actId,drugstoreId=drugstoreId)
             # 创建特价
             addPmActSale(tableName,drugstoreId,startTime,endTime)
             logging.info('创建价格------------')
@@ -1484,65 +1494,325 @@ def update9GG():
 
 def updateHuodong():
     """更新基础活动表中的数据，填满"""
-    # actName ='夏至·春未央'
-    # start = '2020-05-05'
-    # end = '2020-05-31'
-    # img = 'http://image.ykd365.cn/act/202005/xz/02.jpg'
-    # color = '#e7e7e7'
+    dirkv=[{
+      "id": "1",
+      "act": "202006618",
+      "name": "年中大促 抢618神券",
+      "code": "",
+      "img": "http://image.ykd365.cn/act/202006/618/02.jpg",
+      "num": "2",
+      "drugstore_ids": "1620,1621,1622,1627,1629,1631,1600,1601,200",
+      "parent_id": "",
+      "lvl": "2",
+      "to_dir_id": ""
+    },
+    {
+      "id": "2",
+      "act": "202006618",
+      "name": "应季爆款",
+      "code": "yjbk",
+      "img": "http://image.ykd365.cn/act/202006/618/yjbk.jpg",
+      "num": "2",
+      "drugstore_ids": "1620,1621,1622,1627,1629,1631,1600,1601,200",
+      "parent_id": "1",
+      "lvl": "3",
+      "to_dir_id": ""
+    },
+    {
+      "id": "3",
+      "act": "202006618",
+      "name": "儿童健康专场",
+      "code": "et",
+      "img": "http://image.ykd365.cn/act/202006/618/etjk.jpg",
+      "num": "4",
+      "drugstore_ids": "1620,1621,1622,1627,1629,1631,1600,1601,200",
+      "parent_id": "1",
+      "lvl": "3",
+      "to_dir_id": "7"
+    },
+    {
+      "id": "4",
+      "act": "202006618",
+      "name": "女性健康专场",
+      "code": "nv",
+      "img": "http://image.ykd365.cn/act/202006/618/nvxjk.jpg",
+      "num": "6",
+      "drugstore_ids": "1620,1621,1622,1627,1629,1631,1600,1601,200",
+      "parent_id": "1",
+      "lvl": "3",
+      "to_dir_id": "8"
+    },
+    {
+      "id": "5",
+      "act": "202006618",
+      "name": "男性健康专场",
+      "code": "nan",
+      "img": "http://image.ykd365.cn/act/202006/618/nanxjk.jpg",
+      "num": "8",
+      "drugstore_ids": "1620,1621,1622,1627,1629,1631,1600,1601,200",
+      "parent_id": "1",
+      "lvl": "3",
+      "to_dir_id": "9"
+    },
+    {
+      "id": "6",
+      "act": "202006618",
+      "name": "父母健康专场",
+      "code": "fm",
+      "img": "http://image.ykd365.cn/act/202006/618/fmjk.jpg",
+      "num": "10",
+      "drugstore_ids": "1620,1621,1622,1627,1629,1631,1600,1601,200",
+      "parent_id": "1",
+      "lvl": "3",
+      "to_dir_id": "10"
+    },
+    {
+      "id": "7",
+      "act": "202006618",
+      "name": "儿童健康专场",
+      "code": "cet",
+      "img": "http://image.ykd365.cn/act/202006/618/et_02.jpg",
+      "num": "2",
+      "drugstore_ids": "200",
+      "parent_id": "",
+      "lvl": "4",
+      "to_dir_id": ""
+    },
+    {
+      "id": "8",
+      "act": "202006618",
+      "name": "女性健康专场",
+      "code": "cnv",
+      "img": "http://image.ykd365.cn/act/202006/618/nv_02.jpg",
+      "num": "2",
+      "drugstore_ids": "",
+      "parent_id": "",
+      "lvl": "4",
+      "to_dir_id": ""
+    },
+    {
+      "id": "9",
+      "act": "202006618",
+      "name": "男性健康专场",
+      "code": "cnan",
+      "img": "http://image.ykd365.cn/act/202006/618/nan_02.jpg",
+      "num": "2",
+      "drugstore_ids": "",
+      "parent_id": "",
+      "lvl": "4",
+      "to_dir_id": ""
+    },
+    {
+      "id": "10",
+      "act": "202006618",
+      "name": "父母健康专场",
+      "code": "cfm",
+      "img": "http://image.ykd365.cn/act/202006/618/fm_02.jpg",
+      "num": "2",
+      "drugstore_ids": "",
+      "parent_id": "",
+      "lvl": "4",
+      "to_dir_id": ""
+    },
+    {
+      "id": "11",
+      "act": "202006618",
+      "name": "儿童感冒",
+      "code": "etgm",
+      "img": "http://image.ykd365.cn/act/202006/618/etgm.jpg",
+      "num": "4",
+      "drugstore_ids": "",
+      "parent_id": "7",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "12",
+      "act": "202006618",
+      "name": "止咳化痰",
+      "code": "zkht",
+      "img": "http://image.ykd365.cn/act/202006/618/zkht.jpg",
+      "num": "6",
+      "drugstore_ids": "",
+      "parent_id": "7",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "13",
+      "act": "202006618",
+      "name": "脾胃健康",
+      "code": "pwjk",
+      "img": "http://image.ykd365.cn/act/202006/618/pwjk.jpg",
+      "num": "8",
+      "drugstore_ids": "",
+      "parent_id": "7",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "14",
+      "act": "202006618",
+      "name": "儿童营养",
+      "code": "etyy",
+      "img": "http://image.ykd365.cn/act/202006/618/etyy.jpg",
+      "num": "10",
+      "drugstore_ids": "",
+      "parent_id": "7",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "15",
+      "act": "202006618",
+      "name": "美容减肥",
+      "code": "mrjf",
+      "img": "http://image.ykd365.cn/act/202006/618/mrjf.jpg",
+      "num": "4",
+      "drugstore_ids": "",
+      "parent_id": "8",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "16",
+      "act": "202006618",
+      "name": "营养保健",
+      "code": "yybj",
+      "img": "http://image.ykd365.cn/act/202006/618/yybj.jpg",
+      "num": "6",
+      "drugstore_ids": "",
+      "parent_id": "8",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "17",
+      "act": "202006618",
+      "name": "妇科用药",
+      "code": "fkyy",
+      "img": "http://image.ykd365.cn/act/202006/618/fkyy.jpg",
+      "num": "8",
+      "drugstore_ids": "",
+      "parent_id": "8",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "18",
+      "act": "202006618",
+      "name": "避孕验孕",
+      "code": "byyy",
+      "img": "http://image.ykd365.cn/act/202006/618/byyy.jpg",
+      "num": "10",
+      "drugstore_ids": "",
+      "parent_id": "8",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "19",
+      "act": "202006618",
+      "name": "补肾壮阳",
+      "code": "bszy",
+      "img": "http://image.ykd365.cn/act/202006/618/bszy.jpg",
+      "num": "4",
+      "drugstore_ids": "",
+      "parent_id": "9",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "20",
+      "act": "202006618",
+      "name": "男科用药",
+      "code": "nkyy",
+      "img": "http://image.ykd365.cn/act/202006/618/nkyy.jpg",
+      "num": "6",
+      "drugstore_ids": "",
+      "parent_id": "9",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "21",
+      "act": "202006618",
+      "name": "日常保健",
+      "code": "rcbj",
+      "img": "http://image.ykd365.cn/act/202006/618/rcbj.jpg",
+      "num": "8",
+      "drugstore_ids": "",
+      "parent_id": "9",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "22",
+      "act": "202006618",
+      "name": "心血管",
+      "code": "xxg",
+      "img": "http://image.ykd365.cn/act/202006/618/xxg.jpg",
+      "num": "4",
+      "drugstore_ids": "",
+      "parent_id": "10",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "23",
+      "act": "202006618",
+      "name": "糖尿病",
+      "code": "tnb",
+      "img": "http://image.ykd365.cn/act/202006/618/tnb.jpg",
+      "num": "6",
+      "drugstore_ids": "",
+      "parent_id": "10",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "24",
+      "act": "202006618",
+      "name": "滋补营养",
+      "code": "zbyy",
+      "img": "http://image.ykd365.cn/act/202006/618/zbyy.jpg",
+      "num": "8",
+      "drugstore_ids": "",
+      "parent_id": "10",
+      "lvl": "5",
+      "to_dir_id": ""
+    },
+    {
+      "id": "25",
+      "act": "202006618",
+      "name": "增强免疫",
+      "code": "zqmy",
+      "img": "http://image.ykd365.cn/act/202006/618/zqmy.jpg",
+      "num": "10",
+      "drugstore_ids": "",
+      "parent_id": "10",
+      "lvl": "5",
+      "to_dir_id": ""
+    }]
 
-    # dirkv=[{'dir_name':'防敏防护','dir_code':'fmfh','dir_num':'2','dir_img':'http://image.ykd365.cn/act/202005/xz/fangm.jpg'},
-    #     {'dir_name':'感冒咳嗽','dir_code':'gmks','dir_num':'4','dir_img':'http://image.ykd365.cn/act/202005/xz/ganm.jpg'},
-    #     {'dir_name':'调节免疫','dir_code':'tjmy','dir_num':'6','dir_img':'http://image.ykd365.cn/act/202005/xz/tiaoj.jpg'},
-    #     {'dir_name':'肠胃不适','dir_code':'cwbs','dir_num':'8','dir_img':'http://image.ykd365.cn/act/202005/xz/changw.jpg'},
-    #     {'dir_name':'日常保健','dir_code':'rcbj','dir_num':'10','dir_img':'http://image.ykd365.cn/act/202005/xz/ric.jpg'}]
-
-    # itemkv=[{'item_name':'特价','item_code':'tj','item_desc':'特价','item_type':'discount','item_img':'','item_img_r':'',
-    #             'detail_value':'','rule':'','limit':'','limit_group':'','kc_day':''},
-    #     {'item_name':'2件92折3件88折','item_code':'9285','item_desc':'2件92折3件88折','item_type':'drugtag'
-    #     ,'item_img':'http://image.ykd365.cn/act/202005/xz/xz_detail.png','item_img_r':'646',
-    #             'detail_value':'','rule':'','limit':'','limit_group':'','kc_day':''},]
-# {"itemImageR":"465","itemImage":"http://image.ykd365.cn/act/2002/notouch/detail_88.png"}
-# {"itemImageR":"497","itemImage":"http://image.ykd365.cn/act/202004/xr_detail.png"}
-# {"itemImageR":"642","itemImage":"http://image.ykd365.cn/act/202005/mqj/mqj_detail.png"}
-# {"itemImageR":"646","itemImage":"http://image.ykd365.cn/act/202005/xz/xz_detail.png"}
-# [{'id': 1, 'act': '202005xyx', 'name': '感冒退烧', 'code': 'gmts', 'img': 'http://image.ykd365.cn/act/202005/xyx/gmts.jpg', 'num': 4, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}, {'id': 2, 'act': '202005xyx', 'name': '止咳化痰', 'code': 'zkht', 'img': 'http://image.ykd365.cn/act/202005/xyx/zkht.jpg', 'num': 6, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}, {'id': 3, 'act': '202005xyx', 'name': '消炎止痛', 'code': 'xyzt', 'img': 'http://image.ykd365.cn/act/202005/xyx/xyzt.jpg', 'num': 8, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}, {'id': 4, 'act': '202005xyx', 'name': '消化系统', 'code': 'xhxt', 'img': 'http://image.ykd365.cn/act/202005/xyx/xhxt.jpg', 'num': 10, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}, {'id': 5, 'act': '202005xyx', 'name': '外用药品', 'code': 'wyyp', 'img': 'http://image.ykd365.cn/act/202005/xyx/wyyp.jpg', 'num': 12, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}, {'id': 6, 'act': '202005xyx', 'name': '儿童用药', 'code': 'etyy', 'img': 'http://image.ykd365.cn/act/202005/xyx/etyy.jpg', 'num': 14, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}, {'id': 7, 'act': '202005xyx', 'name': '慢病必备', 'code': 'mbbb', 'img': 'http://image.ykd365.cn/act/202005/xyx/mbbb.jpg', 'num': 16, 'drugstore_ids': '200'}]
-
-    dirkv=[{  'act': '202005xyx', 'dir_name': '感冒退烧', 'dir_code': 'gmts', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/gmts.jpg', 'dir_num': 4, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}
-            , {  'act': '202005xyx', 'dir_name': '止咳化痰', 'dir_code': 'zkht', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/zkht.jpg', 'dir_num': 6, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}
-            , {  'act': '202005xyx', 'dir_name': '消炎止痛', 'dir_code': 'xyzt', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/xyzt.jpg', 'dir_num': 8, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}
-            , {  'act': '202005xyx', 'dir_name': '消化系统', 'dir_code': 'xhxt', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/xhxt.jpg', 'dir_num': 10, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}
-            , {  'act': '202005xyx', 'dir_name': '外用药品', 'dir_code': 'wyyp', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/wyyp.jpg', 'dir_num': 12, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}
-            , {  'act': '202005xyx', 'dir_name': '儿童用药', 'dir_code': 'etyy', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/etyy.jpg', 'dir_num': 14, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}
-            , { 'act': '202005xyx', 'dir_name': '慢病必备', 'dir_code': 'mbbb', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/mbbb.jpg', 'dir_num': 16, 'drugstore_ids': '200'}]
-
-    itemkv=[{'item_name': '第2件5折', 'item_desc': '第二件5折', 'item_code': 'd2j5', 'item_img': 'http://image.ykd365.cn/act/202005/xyx/detail.jpg', 'item_img_r': '600', 'num': 100, 'item_type': 'discount', 'details_value': '75', 'rule': '>=2', 'limit': None, 'limit_group': None, 'kc_day': None, 'act_name': '家庭必备小药箱'}
-            , { 'item_name': '第2件6折', 'item_desc': '第二件6折', 'item_code': 'd2j6', 'item_img': 'http://image.ykd365.cn/act/202005/xyx/detail.jpg', 'item_img_r': '600', 'num': 100, 'item_type': 'discount', 'details_value': '80', 'rule': '>=2', 'limit': None, 'limit_group': None, 'kc_day': None, 'act_name': '家庭必备小药箱'}
-            , { 'item_name': '第2件7折', 'item_desc': '第二件7折', 'item_code': 'd2j7', 'item_img': 'http://image.ykd365.cn/act/202005/xyx/detail.jpg', 'item_img_r': '600', 'num': 100, 'item_type': 'discount', 'details_value': '85', 'rule': '>=2', 'limit': None, 'limit_group': None, 'kc_day': None, 'act_name': '家庭必备小药箱'}
-            , { 'item_name': '第2件8折', 'item_desc': '第二件8折', 'item_code': 'd2j8', 'item_img': 'http://image.ykd365.cn/act/202005/xyx/detail.jpg', 'item_img_r': '600', 'num': 100, 'item_type': 'discount', 'details_value': '90', 'rule': '>=2', 'limit': None, 'limit_group': None, 'kc_day': None, 'act_name': '家庭必备小药箱'}
-            , { 'item_name': '第2件9折', 'item_desc': '第二件9折', 'item_code': 'd2j9', 'item_img': 'http://image.ykd365.cn/act/202005/xyx/detail.jpg', 'item_img_r': '600', 'num': 100, 'item_type': 'discount', 'details_value': '95', 'rule': '>=2', 'limit': None, 'limit_group': None, 'kc_day': None, 'act_name': '家庭必备小药箱'}]
- # dirkv=[{'dir_name':'防敏防护','dir_code':'fmfh','dir_num':'2','dir_img':'http://image.ykd365.cn/act/202005/xz/fangm.jpg'},
-    #         {'dir_name':'感冒咳嗽','dir_code':'gmks','dir_num':'4','dir_img':'http://image.ykd365.cn/act/202005/xz/ganm.jpg'},
-    #         {'dir_name':'调节免疫','dir_code':'tjmy','dir_num':'6','dir_img':'http://image.ykd365.cn/act/202005/xz/tiaoj.jpg'},
-    #         {'dir_name':'肠胃不适','dir_code':'cwbs','dir_num':'8','dir_img':'http://image.ykd365.cn/act/202005/xz/changw.jpg'},
-    #         {'dir_name':'日常保健','dir_code':'rcbj','dir_num':'10','dir_img':'http://image.ykd365.cn/act/202005/xz/ric.jpg'}]
-
-    # itemkv=[{'item_name':'特价','item_code':'tj','item_desc':'特价','item_type':'discount','item_img':'','item_img_r':'',
-    #             'detail_value':'','rule':'','limit':'','limit_group':'','kc_day':''},
-    #     {'item_name':'2件92折3件88折','item_code':'9285','item_desc':'2件92折3件88折','item_type':'drugtag'
-    #     ,'item_img':'http://image.ykd365.cn/act/202005/xz/xz_detail.png','item_img_r':'646',
-    #             'detail_value':'','rule':'','limit':'','limit_group':'','kc_day':''},]
     for dir in dirkv:
-        # updateActTable('as_test.202005_ty_xyx',set=f"""dir_code='{dir['dir_code']}',dir_num='{dir['dir_num']}',dir_img='{dir['dir_img']}'""",where=f"dir_name='{dir['dir_name']}'")
-        # updateActTable('as_test.202005_xc_xyx',set=f"""dir_code='{dir['dir_code']}',dir_num='{dir['dir_num']}',dir_img='{dir['dir_img']}'""",where=f"dir_name='{dir['dir_name']}'")
-        updateActTable('as_test.202005_bj_xyx',set=f"""dir_code='{dir['dir_code']}',dir_num='{dir['dir_num']}',dir_img='{dir['dir_img']}'""",where=f"dir_name='{dir['dir_name']}'")
+        updateActTable('as_test.202006_ty_618',set=f"""dir_code='{dir['code']}',dir_num='{dir['num']}',dir_img='{dir['img']}'""",where=f"dir_name='{dir['name']}'")
+        updateActTable('as_test.202006_xc_618',set=f"""dir_code='{dir['code']}',dir_num='{dir['num']}',dir_img='{dir['img']}'""",where=f"dir_name='{dir['name']}'")
         db.commit()
-        logging.info(f"更新基础表中的目录数据{dir['dir_name']}")
-    # for dir in itemkv:
-    #     updateActTable('as_test.202005_ty_xyx',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',detail_value='{dir['detail_value']}',rule='{dir['rule']}'""",where=f"item_name='{dir['item_name']}'")
-    #     updateActTable('as_test.202005_xc_xyx',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',detail_value='{dir['detail_value']}',rule='{dir['rule']}'""",where=f"item_name='{dir['item_name']}'")
-    #     updateActTable('as_test.202005_bj_xyx',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',detail_value='{dir['detail_value']}',rule='{dir['rule']}'""",where=f"item_name='{dir['item_name']}'")
-    #     db.commit()
-    #     logging.info(f"更新基础表中的活动数据{dir['item_name']}")
+        logging.info(f"更新基础表中的目录数据{dir['name']}")
+
+    itemkv=[{'item_name': '特价', 'item_desc': '特价', 'item_code': 'tj'
+            , 'item_img': 'http://image.ykd365.cn/act/202006/618/detail.png'
+            , 'item_img_r': '420', 'num': 100, 'item_type': 'discount'
+            , 'details_value': '', 'rule_value': '', 'quota_rule': None, 'quota_group': None
+            , 'kc_day': None, 'act_name': '618'}
+       ]
+ 
+    for dir in itemkv:
+        updateActTable('as_test.202006_ty_618',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',details_value='{dir['details_value']}',rule_value='{dir['rule_value']}'""",where=f"item_name='{dir['item_name']}'")
+        updateActTable('as_test.202006_xc_618',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',details_value='{dir['details_value']}',rule_value='{dir['rule_value']}'""",where=f"item_name='{dir['item_name']}'")
+        db.commit()
+        logging.info(f"更新基础表中的活动数据{dir['item_name']}")
 
 def test():
     logging.info('test---------')
@@ -1569,62 +1839,80 @@ def test():
 # 200
 if __name__ == "__main__":
     logging.info(f'开始！~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-    # 查询目前actid 
-    # iAct = queryTableLastOne('am_act_info',field='*',where ='',order='act_id desc')
-    # iActId = iAct['act_id']+1
-    # logging.info(iActId)
-    # # queryTableLastOne(tableName,field='*',where ='',order='')
-    # createDirByTable(actId=iActId,drugstoreId=200,tableName='as_test.ykd_base_dir')
-    # buildActInfoByTableWithChild(tableName,actId,actName,drugstoreId,startTime,endTime,img='',color='',linkurl='',linkimg='',linkView = '',windowimg='')
-    actName = '年中大促 健康狂欢'
-    linkurl = 'http://deve.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId=' 
-    start = '2020-06-10'
-    # linkurl = 'http://store.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId=' 
-    # start = '2020-06-15'
-    end = '2020-06-22'
-    color = ''
-    linkimg = 'http://image.ykd365.cn/act/202006/618/lb.jpg'
-    windowimg = 'http://image.ykd365.cn/act/202006/618/tc.png'
-    act618(actId=0,actName = actName,tableName ='as_test.202006_ty_618',ydList = [200]
-        ,startTime=start,endTime=end,color = color,linkimg =linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
-    # act618(actId=0,actName = actName,tableName ='as_test.202005_xc_292388',ydList = [1600,1601,1602,1603]
-    #     ,startTime=start,endTime=end,img = '',color = '',linkimg = '',linkurl = '',linkView = '',windowimg= '')
-    # act618(actId=0,actName = actName,tableName ='as_test.202005_bj_292388',ydList = [1620,1621,1622,1627,1629,1631]
-    #     ,startTime=start,endTime=end,img = '',color = '',linkimg = '',linkurl = '',linkView = '',windowimg= '')
+   
+    # actName = '年中大促 健康狂欢'
+    # linkurl = 'http://deve.ykd365.com/medstore/actUserpage/xiazhi_2005?dirId=' 
+    # start = '2020-06-10'
+    # # linkurl = 'http://store.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId=' 
+    # # start = '2020-06-15'
+    # end = '2020-06-22'
+    # color = ''
+    # linkimg = 'http://image.ykd365.cn/act/202006/618/lb.jpg'
+    # windowimg = 'http://image.ykd365.cn/act/202006/618/tc.png'
+    # # updateHuodong()
+
+    # act618(actId=0,actName = actName,tableName ='as_test.202006_ty_618',ydList = [200]
+    #     ,startTime=start,endTime=end,color = color,linkimg =linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
+    # act618(actId=0,actName = actName,tableName ='as_test.202006_xc_618',ydList = [1600,1601,1602,1603]
+    #     ,startTime=start,endTime=end,color = color,linkimg =linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
+    # db.commit()
+
+    
+    
+    dirId = 1002764370	
+    dirCode = '618limitcoupon'
+    sql = f"""INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            SELECT '{dirId}',s.sku_id,'{dirCode}','100', now()
+            from as_test.202006_ty_618_limitq a 
+            left join pm_prod_sku s on a.huohao = s.pharmacy_huohao and s.drugstore_id = 200
+            """
+    res = insertSQL(sql)
     db.commit()
 
-    # act618(actId=0,actName = '',tableName ='',ydList = [],startTime='',endTime='',img = '',color = '',linkimg = '',linkurl = '',linkView = '',windowimg= '')
     
-    
+    # try:
+    #     ydIds = [1600,1601,1602,1603]
+    #     huohaos = ['1007312','1007256']
+    #     prodIds = [331726,331727]
+    #     for ydId in ydIds:
+    #         for huohao in huohaos:
+    #             skuId = querySkuId(f"10件装{huohao}",ydId)
+    #             # createCombByHuohao(huohao,ydId,prodIds[huohaos.index(huohao)],2000,2000,count=10)
+    #             # buildSkuBaseByHuohao(f"10件装{huohao}",ydId,itemId=0,quotaId=0,skuImage='30分钟',limitquan=False)
+    #             dir =  queryTableLastOne('pm_dir_info',field='*',where =f'pharmacy_id={ydId} and dir_name like "%戴口罩%"',order='dir_id desc')
+    #             logging.info('查询出的dir信息 %s',dir)
+    #             dirId = dir['dir_id']
+    #             dirCode = dir['dir_code']
+    #             order = 1
+    #             addPmSkuDir(skuId,dirId,dirCode,order=order)
 
+    #             dir =  queryTableLastOne('pm_dir_info',field='*',where =f'pharmacy_id={ydId} and dir_name like "%首单优选推荐%" ',order='dir_id desc')
+    #             logging.info('查询出的dir信息 %s',dir)
+    #             dirId = dir['dir_id']
+    #             dirCode = dir['dir_code']
+    #             order = 1
+    #             addPmSkuDir(skuId,dirId,dirCode,order=order)
+    #     db.commit()
+    # except Exception as err:
+    #         logging.error(err)
+    #         db.rollback()
+    # hh=f"10件装1007312"
+    # addSkuDirByItemId(hh,1600,1633)
+    # addSkuDirByItemId(hh,1601,1634)
+    # addSkuDirByItemId(hh,1602,1739)
+    # addSkuDirByItemId(hh,1603,1756)
 
+    # hh2=f"10件装1007256"
+    # addSkuDirByItemId(hh2,1600,1633)
+    # addSkuDirByItemId(hh2,1601,1634)
+    # addSkuDirByItemId(hh2,1602,1739)
+    # addSkuDirByItemId(hh2,1603,1756)
+    # db.commit()
 
-
-    # ydIds = [1600,1601,1602,1603]
-    # huohaos = ['1007312','1007256']
-    # prodIds = [331726,331727]
-    # for ydId in ydIds:
-    #     for huohao in huohaos:
-    #         skuId = querySkuId(huohao,ydId)
-    #         createCombByHuohao(huohao,ydId,prodIds[huohaos.index(huohao)],2000,2000,count=10)
-    #         buildSkuBaseByHuohao(huohao,ydId,itemId=0,quotaId=0,skuImage='30分钟',limitquan=False)
-    #         dir =  queryTableLastOne('pm_dir_info',field='*',where =f'pharmacy_id={ydId} and dir_name like "%戴口罩%"',order='dir_id desc')
-    #         logging.debug('查询出的dir信息 %s',dir)
-    #         dirId = dir['dir_id']
-    #         dirCode = dir['dir_code']
-    #         order = 1
-    #         addPmSkuDir(skuId,dirId,dirCode,order=order)
-
-    #         dir =  queryTableLastOne('pm_dir_info',field='*',where =f'pharmacy_id={ydId} and dir_name like "%首单优选推荐%" ',order='dir_id desc')
-    #         logging.debug('查询出的dir信息 %s',dir)
-    #         dirId = dir['dir_id']
-    #         dirCode = dir['dir_code']
-    #         order = 1
-    #         addPmSkuDir(skuId,dirId,dirCode,order=order)
-
-
-
-
+#     1756	1603
+# 1739	1602
+# 1634	1601
+# 1633	1600
 
     # actName = '2件92折、3件88折'
     # start = '2020-05-30' # '2020-05-22'
