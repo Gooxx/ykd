@@ -15,7 +15,7 @@ ch.setLevel(logging.INFO)
 logger.addHandler(ch)
 # 基于pymysql 
 
-isDeve = True
+isDeve = False
 if isDeve: # 准生产
    host = 'rm-2ze7fnv9ydw78u07a7o.mysql.rds.aliyuncs.com'
    logging.info('deve准生产数据库连接--------'+host)

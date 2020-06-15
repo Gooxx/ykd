@@ -656,7 +656,7 @@ def copyAmStatInfoByHuohao( itemId,huohao,drugstoreId):
 def addSmImageLink(drugstoreId,index,img,url,name,dirId,start,end,link_view):
     sql = f'''
         INSERT INTO `medstore`.`sm_image_link` (  `drugstore_id`, `seq_num`, `image_url`, `link_url`, `link_type`, `link_name`, `link_param`, `link_status`, `link_update_time`, `link_create_time`, `link_remark`, `link_start_time`, `link_end_time`, `link_view`, `link_version`)
-        VALUES (  '{drugstoreId}', '{index}', '{img}', '{url}{dirId}', 'url', '{name}', '{dirId}', '1', now(), now(), '', '{start} 00:00:00', '{end} 23:59:59', '{link_view}', '1');
+        VALUES (  '{drugstoreId}', '{index}', '{img}', '{url}{dirId}', 'url', '{name}', '{dirId}', '1', now(), now(), '', '{start}', '{end}', '{link_view}', '1');
         '''
     res = insertSQL(sql)
     logging.info(f"创建sm_image_link类型为 {link_view} 的{name} 活动 , dirId= {dirId} ,url={url}{dirId},药店:{drugstoreId} ")
@@ -667,7 +667,7 @@ def addSmImageLinkWindow(drugstoreId,index,img,url,name,dirId,start,end,type='ev
     INSERT INTO `medstore`.`sm_image_link_window` (  `drugstore_id`, `seq_num`, `image_url`, `window_url`, `window_type`
     , `window_name`, `window_param`, `window_status`, `window_update_time`, `window_create_time`
     , `window_remark`, `window_start_time`, `window_end_time`, `window_view`, `window_go_type`) 
-    VALUES (  '{drugstoreId}', '{index}', '{img}', '{url}{dirId}', '{type}', '{name}', '{dirId}', '1', now(), now(), '', '{start} 00:00:00', '{end} 23:59:59', '', '0');
+    VALUES (  '{drugstoreId}', '{index}', '{img}', '{url}{dirId}', '{type}', '{name}', '{dirId}', '1', now(), now(), '', '{start}', '{end}', '', '0');
         '''
     res = insertSQL(sql)
     logging.info(f"创建sm_image_link_window  的{name} 活动 , dirId= {dirId} ,url={url}{dirId},药店:{drugstoreId} ")
@@ -809,7 +809,7 @@ def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,im
                 details_value_list = details_values.split(',')
                 for details_value in details_value_list:
                 # logging.info(f'detailsId------------------------{itemId,details_value,details_remark,details_content}')
-                    details_level = details_value_list.index(details_value)
+                    details_level = details_value_list.index(details_value)+1
                     detailsId = addAmItemDetails( itemId,details_value,details_remark,details_content,details_type='discount',details_level=details_level)
                     
                     # logging.info(f'detailsId------------------------{detailsId}')
@@ -1805,6 +1805,11 @@ def updateHuodong():
             , 'item_img': 'http://image.ykd365.cn/act/202006/618/detail.png'
             , 'item_img_r': '420', 'num': 100, 'item_type': 'discount'
             , 'details_value': '', 'rule_value': '', 'quota_rule': None, 'quota_group': None
+            , 'kc_day': None, 'act_name': '618'},
+            {'item_name': '横图', 'item_desc': '横图', 'item_code': 'detail'
+            , 'item_img': 'http://image.ykd365.cn/act/202006/618/detail.png'
+            , 'item_img_r': '420', 'num': 100, 'item_type': 'drugtag'
+            , 'details_value': '', 'rule_value': '', 'quota_rule': None, 'quota_group': None
             , 'kc_day': None, 'act_name': '618'}
        ]
  
@@ -1839,22 +1844,27 @@ def test():
 # 200
 if __name__ == "__main__":
     logging.info(f'开始！~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-   
-    # actName = '年中大促 健康狂欢'
+    # updateHuodong()
+    actName = '年中大促 健康狂欢'
     # linkurl = 'http://deve.ykd365.com/medstore/actUserpage/xiazhi_2005?dirId=' 
-    # start = '2020-06-10'
-    # # linkurl = 'http://store.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId=' 
-    # # start = '2020-06-15'
-    # end = '2020-06-22'
-    # color = ''
-    # linkimg = 'http://image.ykd365.cn/act/202006/618/lb.jpg'
-    # windowimg = 'http://image.ykd365.cn/act/202006/618/tc.png'
+    # start = '2020-06-15 21:00:00'
+
+    # linkurl = 'http://store.ykd365.com/medstore/actUserpage/promot618_2006?actId=858&dirId=' 
+    start = '2020-06-15 21:00:00'
+    end = '2020-06-21 23:59:59'
+    color = ''
+    linkimg = 'http://image.ykd365.cn/act/202006/618/lb.jpg'
+    windowimg = 'http://image.ykd365.cn/act/202006/618/tc.png'
     # # updateHuodong()
 
-    # act618(actId=0,actName = actName,tableName ='as_test.202006_ty_618',ydList = [200]
-    #     ,startTime=start,endTime=end,color = color,linkimg =linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
-    # act618(actId=0,actName = actName,tableName ='as_test.202006_xc_618',ydList = [1600,1601,1602,1603]
-    #     ,startTime=start,endTime=end,color = color,linkimg =linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
+    act618(actId=0,actName = actName,tableName ='as_test.202006_ty_618',ydList = [200]
+        ,startTime=start,endTime=end,color = color,linkimg =linkimg
+        ,linkurl = 'http://store.ykd365.com/medstore/actUserpage/promot618_2006?actId=859&dirId='
+        ,linkView = '',windowimg= windowimg)
+    act618(actId=0,actName = actName,tableName ='as_test.202006_xc_618',ydList = [1600,1601,1602,1603]
+        ,startTime=start,endTime=end,color = color,linkimg =linkimg
+        ,linkurl = 'http://store.ykd365.com/medstore/actUserpage/promot618_2006?actId=858&dirId='
+        ,linkView = '',windowimg= windowimg)
     # db.commit()
 
     
