@@ -297,10 +297,56 @@ def selectTYUserKeep():
             # logging.info(f"{i}-{j}-{thisMonth.__format__('%Y-%m-%d')},{afterMonth.__format__('%Y-%m-%d')},{totleUsers},{totleOrders},{o2eOrderList}")
             logging.info(f"{i}-{j}-{thisMonth.__format__('%Y-%m-%d')},{afterMonth.__format__('%Y-%m-%d')},{totleUsers},{totleOrders},{','.join(o2eOrderList)}")
     
+def selectTYUserEachMonEachDan():
+    ordersAfterThisMonth = ""
+    ordersAndUsersAfterThisMonth = ""
+    for i in range(13):
+        ordersAfterThisMonth = ordersAfterThisMonth+f"sum(case when 订单年月= DATE_FORMAT(date_add(o.首单时间, interval {i} MONTH),'%Y-%m') THEN 每月单数 else 0 END) as {i}月后单数 ,"
+        for j in range(5):
+            ordersAndUsersAfterThisMonth = ordersAndUsersAfterThisMonth + f"""
+                    ,sum(case when 首月单数 =1 and {i}月后单数>0  then 1 else 0 end) {i}月后{j}单用户数 
+                    ,sum(case when 首月单数 =1 and {i}月后单数>0 then {i}月后单数 else 0 end) {i}月后{j}单数单数 
+                """
+    sql = f"""
+        select count(a.`首月单数`),a.`首月单数`
+        ,sum(case when 首月单数 =1 and 1月后单数>0  then 1 else 0 end) 1月后1单用户数 
+        ,sum(case when 首月单数 =1 and 1月后单数>0 then 1月后单数 else 0 end) 1月后1单数单数 
+
+        ,sum(case when 首月单数 =1 and 2月后单数>0  then 1 else 0 end) 2月后1单用户数 
+        ,sum(case when 首月单数 =1 and 2月后单数>0 then 2月后单数 else 0 end) 2月后1单数单数 
+
+        ,sum(case when 首月单数 =2 and 1月后单数>0  then 1 else 0 end) 1月后2单用户数 
+        ,sum(case when 首月单数 =2 and 1月后单数>0 then 1月后单数 else 0 end) 1月后2单数单数 
+        -- 		,count(1月后单数) 1月后
+        -- 		,count(2月后单数)
+        -- 		,count(3月后单数)
+        -- 		,count(1月后单数)
+        ,a.* 
+        from (
+                select count(o.user_id) ,
+                sum(case when 订单年月= DATE_FORMAT(o.首单时间,'%Y-%m') THEN 每月单数 else 0 END) as 首月单数 ,
+               {ordersAfterThisMonth}
+                o.*
+                from (
+                    select DATE_FORMAT(a.order_create_time,'%Y-%m') 订单年月,首单时间,count(a.user_id) 每月单数,a.user_id,a.order_create_time
+                    from (
+                                SELECT count(o.user_id) 每个用户总单数,min(o.order_create_time) 首单时间,DATE_FORMAT(o.order_create_time,'%Y-%m') 首单年月,o.user_id 
+                                from v_ty_app_44 o 
+                                GROUP BY o.user_id
+                                HAVING 首单时间 BETWEEN '2018-07-01 00:00:00' and '2019-06-30 23:59:59'
+                        ) o left join v_ty_app_44 a on o.user_id = a.user_id 
+                    GROUP BY a.user_id,订单年月
+                ) as o 
+                GROUP BY o.user_id
+        ) a
+        GROUP BY a.首月单数 
+        ORDER BY a.首月单数
+        ;
+    """
+    res = querySQL(sql)
 
 if __name__ == "__main__":
-
-    a = '92,88'.split(',')
+    selectTYUserEachMonEachDan()
     logging.info(a)
     # selectTYUserGrow()
     # selectTYThisMonthOrderUsers()
@@ -308,14 +354,14 @@ if __name__ == "__main__":
     # selectTYUserKeep()
     # db.commit()
 
-    ydId = '200'
-    start = '2020-04-01'
-    end = '2020-05-01'
-    selectNewRegister(ydId,start,end)
-    selectOrderUsers(ydId,start,end)
-    selectRepeatOrderUsersMoreThan2(ydId,start,end)
-    selectRepeatOrderUsersMoreThan3(ydId,start,end)
-    selectNewOrderUsers(ydId,start,end)
+    # ydId = '200'
+    # start = '2020-04-01'
+    # end = '2020-05-01'
+    # selectNewRegister(ydId,start,end)
+    # selectOrderUsers(ydId,start,end)
+    # selectRepeatOrderUsersMoreThan2(ydId,start,end)
+    # selectRepeatOrderUsersMoreThan3(ydId,start,end)
+    # selectNewOrderUsers(ydId,start,end)
     db.commit()
 
     
