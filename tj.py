@@ -158,7 +158,7 @@ def selectTYUserGrow():
 def selectTYThisMonthOrderUsers():
     """ 2、20190501-20200430期间，以月为单位，当月下单的老用户数（即当月下单的全部用户减去在当月下首单的用户），以及这些老用户当月产生的订单总数；"""
     day = '2019-05-01'
-    worksheet = workbook.add_sheet(day)
+    # worksheet = workbook.add_sheet(day)
     for i in range(13):
         # nextMonth = datetime.datetime.strptime(day,'%Y-%m-%d') + relativedelta(months=+i)
         # logging.info(f"nextMonth {nextMonth}")
@@ -300,27 +300,17 @@ def selectTYUserKeep():
 def selectTYUserEachMonEachDan():
     ordersAfterThisMonth = ""
     ordersAndUsersAfterThisMonth = ""
-    for i in range(13):
-        ordersAfterThisMonth = ordersAfterThisMonth+f"sum(case when 订单年月= DATE_FORMAT(date_add(o.首单时间, interval {i} MONTH),'%Y-%m') THEN 每月单数 else 0 END) as {i}月后单数 ,"
-        for j in range(5):
-            ordersAndUsersAfterThisMonth = ordersAndUsersAfterThisMonth + f"""
-                    ,sum(case when 首月单数 =1 and {i}月后单数>0  then 1 else 0 end) {i}月后{j}单用户数 
-                    ,sum(case when 首月单数 =1 and {i}月后单数>0 then {i}月后单数 else 0 end) {i}月后{j}单数单数 
+    for i in range(1,13):
+        ordersAfterThisMonth = ordersAfterThisMonth+f"""
+                sum(case when 订单年月= DATE_FORMAT(date_add(o.首单时间, interval {i} MONTH),'%Y-%m') THEN 每月单数 else 0 END) as {i}月后单数 ,
                 """
+        ordersAndUsersAfterThisMonth = ordersAndUsersAfterThisMonth + f"""
+                ,sum(case when  {i}月后单数>0  then 1 else 0 end) {i}月后用户数 
+                ,sum(case when   {i}月后单数>0  then {i}月后单数 else 0 end) {i}月后用户订单数 
+            """
     sql = f"""
         select count(a.`首月单数`),a.`首月单数`
-        ,sum(case when 首月单数 =1 and 1月后单数>0  then 1 else 0 end) 1月后1单用户数 
-        ,sum(case when 首月单数 =1 and 1月后单数>0 then 1月后单数 else 0 end) 1月后1单数单数 
-
-        ,sum(case when 首月单数 =1 and 2月后单数>0  then 1 else 0 end) 2月后1单用户数 
-        ,sum(case when 首月单数 =1 and 2月后单数>0 then 2月后单数 else 0 end) 2月后1单数单数 
-
-        ,sum(case when 首月单数 =2 and 1月后单数>0  then 1 else 0 end) 1月后2单用户数 
-        ,sum(case when 首月单数 =2 and 1月后单数>0 then 1月后单数 else 0 end) 1月后2单数单数 
-        -- 		,count(1月后单数) 1月后
-        -- 		,count(2月后单数)
-        -- 		,count(3月后单数)
-        -- 		,count(1月后单数)
+        {ordersAndUsersAfterThisMonth}
         ,a.* 
         from (
                 select count(o.user_id) ,
@@ -344,10 +334,12 @@ def selectTYUserEachMonEachDan():
         ;
     """
     res = querySQL(sql)
+    return res
+    # logging.info(res)
 
 if __name__ == "__main__":
     selectTYUserEachMonEachDan()
-    logging.info(a)
+    # logging.info(a)
     # selectTYUserGrow()
     # selectTYThisMonthOrderUsers()
 
@@ -362,7 +354,7 @@ if __name__ == "__main__":
     # selectRepeatOrderUsersMoreThan2(ydId,start,end)
     # selectRepeatOrderUsersMoreThan3(ydId,start,end)
     # selectNewOrderUsers(ydId,start,end)
-    db.commit()
+    # db.commit()
 
     
 # select count(o.user_id),

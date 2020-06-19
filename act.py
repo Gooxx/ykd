@@ -132,50 +132,7 @@ class ActInfo:
     #             'data':[]
     #         }
     #     return id
-    def test(self, actId,actName,startTime,endTime,pharmacyId):
-        '''创建am_act_info'''
-        sql = f"""INSERT INTO `medstore`.`am_act_info` (`act_id`, `act_name`, `act_type`, `act_status`, `act_content`
-                , `act_update_time`, `act_create_time`, `act_start_time`, `act_end_time`, `act_level`, `act_remark`
-                , `act_img`, `act_url`, `pharmacy_id`)
-                VALUES ('{actId}', '{actName}', 'date', '1', '活动', now(), now(), '{startTime}', '{endTime}', '1', '', '', '', '{pharmacyId}');"""
-        # print(sql)
-        # res = insertSQL(sql)
-        # id = res['lastId']
-        # logging.debug(f'完成创建am_act_info1----id:{id}')
-        # logging.info(f'完成创建am_act_info2----id:{id}')
-
-        try:
-            # cursor.execute(sql2)
-            # # db.commit()
-
-            # print(cursor.lastrowid)
-            # cursor.execute(sql)
-            
-            # res = insertSQL(sql2)
-            # res2 = insertSQL(sql3)
-            res3 = insertSQL(sql)
-            id = res['lastId']
-            id2 = res2['lastId']
-            id3 = res3['lastId']
-            logging.info(f'完成创建am_act_info2----id:{id}')
-            logging.info(f'完成创建am_act_info3----id:{id2}')
-            logging.info(f'完成创建am_act_info4----id:{id3}')
-            db.commit()
-            id = res['lastId']
-            logging.info(f'完成创建am_act_info2----id:{id}')
-
-        # except Exception:
-        except Exception as err:
-            logging.error("Error %s for execute sql: %s" % (err, sql))
-            logging.debug('语句失败！！！')
-            db.rollback()
-            return {
-                'code':404,
-                'count':0,
-                'lastId':0,
-                'data':[]
-            }
-        return id
+   
 
 # class ActManager:
 
@@ -224,7 +181,7 @@ def queryTable(tableName,result='*',where ='',order=''):
     res =querySQL(sql)
 
     if res['code']==200:
-        list = res['data']
+        # list = res['data']
         # for i in range(len(list)):
         #     dic = list[i]
         #     # logging.info(dic)
@@ -353,16 +310,24 @@ def selectActInfo(itemId):
     list = selectOneBy(sql)
     return list
 
-def addPmDirInfo(sufDirCode,dirName,drugstoreId,img='',color='',num='1',level='1',parentDirId=''):
+def addPmDirInfo(sufDirCode,dirName,drugstoreId,img='',color='',num='1',level='1',parentDirId='',dirId='',):
     logging.debug('根据提供的盘货信息，创建展示目录 dir ')
     genCode = queryBaseDirCode(drugstoreId)
     dirCode = genCode+sufDirCode
-    sql = f'''
-        INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
-        , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
-        , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
-        value ('{dirCode}','{dirName}','dir','1',NULL,100,'{num}',{level},'{img}','{parentDirId}',NOW(),NOW(),'{color}','',NULL,'{drugstoreId}',NULL,NULL) ;
-    '''
+    if dirId=='':
+        sql = f'''
+            INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('{dirCode}','{dirName}','dir','1',NULL,100,'{num}',{level},'{img}','{parentDirId}',NOW(),NOW(),'{color}','',NULL,'{drugstoreId}',NULL,NULL) ;
+        '''
+    else:
+        sql = f'''
+            INSERT INTO `medstore`.`pm_dir_info` ( dir_id, `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('{dirId}','{dirCode}','{dirName}','dir','1',NULL,100,'{num}',{level},'{img}','{parentDirId}',NOW(),NOW(),'{color}','',NULL,'{drugstoreId}',NULL,NULL) ;
+        '''
     res = insertSQL(sql)
     if res["code"]==200:
         return {
@@ -407,12 +372,12 @@ def addNewSku4JHSMS(tableName,preHuohao,drugstoreId):
             '''.format(tableName,drugstoreId)
         res = insertSQL(sql1)
 def addPmActSale(tableName,drugstoreId,startTime,endTime):
-    '''创建活动价格 fee price
+    '''创建活动价格 fee price  ,只要 price 不是null 不等于0 就会取 fee 和price的数值 *100
     '''
     # for drugstoreId in self.drugstoreIdList:
     sql1 = '''
             INSERT INTO `medstore`.`pm_sku_sale` ( `sku_id`, `sale_fee`, `sale_price`, `sale_start_time`, `sale_end_time`, `sale_status`, `sale_create_time`, `sale_update_time`, `sale_remark`) 
-            SELECT s.`sku_id`,a.fee*100 `sale_fee`,a.price*100 `sale_price`
+            SELECT s.`sku_id`,s.sku_fee `sale_fee`,a.price*100 `sale_price`
             ,'{}' `sale_start_time`,'{}' `sale_end_time`
             ,0 `sale_status`,NOW() `sale_create_time`,NOW() `sale_update_time`,'' `sale_remark` 
             from {} a,pm_prod_sku s
@@ -498,14 +463,14 @@ def addAmItemRange(itemId,rangeId):
         res = insertSQL(sql)
         return res['code']
 
-def addAmItemDetails( itemId,details_value,details_remark,details_content,details_type='discount'):
+def addAmItemDetails( itemId,details_value,details_remark,details_content,details_type='discount',details_level=1):
         '''创建am_item_details
         '''
         sql = f'''
             INSERT INTO `medstore`.`am_item_details` (  `details_level`, `item_id`, `details_type`
             , `details_val_type`, `details_value`, `details_update_time`, `details_create_time`
             , `details_remark`, `details_content`) 
-            VALUES ( '1', '{itemId}', '{details_type}', 'rate', '{details_value}', now(), now(), '{details_remark}', '{details_content}');
+            VALUES ( '{details_level}', '{itemId}', '{details_type}', 'rate', '{details_value}', now(), now(), '{details_remark}', '{details_content}');
         '''
         res = insertSQL(sql)
         return res['lastId']
@@ -622,6 +587,7 @@ def stopPacket(tableName,drugstoreId,where = '1=1',stop=0):
             and {where} ;
             """
     res = updateSQL(sql)
+    return res
 
 def addPmPacketSku(packetId,skuId,combSkuId, name,packethuohao,drugstoreId,disprice,price,count,combPrice):
     """关联多盒Packetsku 和单盒sku"""
@@ -674,7 +640,8 @@ def copyAmStatInfoBySkuId( item_id,sku_id):
         limit 1;
         '''.format(sku_id,item_id)
     res = insertSQL(statSql)
-    # return res['lastId']
+    return res
+
 def copyAmStatInfoByHuohao( itemId,huohao,drugstoreId):
     '''根据查询到的活动信息，复制amstatinfo数据，修改skuid即可'''
     sql = '''
@@ -691,7 +658,7 @@ def copyAmStatInfoByHuohao( itemId,huohao,drugstoreId):
 def addSmImageLink(drugstoreId,index,img,url,name,dirId,start,end,link_view):
     sql = f'''
         INSERT INTO `medstore`.`sm_image_link` (  `drugstore_id`, `seq_num`, `image_url`, `link_url`, `link_type`, `link_name`, `link_param`, `link_status`, `link_update_time`, `link_create_time`, `link_remark`, `link_start_time`, `link_end_time`, `link_view`, `link_version`)
-        VALUES (  '{drugstoreId}', '{index}', '{img}', '{url}{dirId}', 'url', '{name}', '{dirId}', '1', now(), now(), '', '{start} 00:00:00', '{end} 23:59:59', '{link_view}', '1');
+        VALUES (  '{drugstoreId}', '{index}', '{img}', '{url}{dirId}', 'url', '{name}', '{dirId}', '1', now(), now(), '', '{start}', '{end}', '{link_view}', '1');
         '''
     res = insertSQL(sql)
     logging.info(f"创建sm_image_link类型为 {link_view} 的{name} 活动 , dirId= {dirId} ,url={url}{dirId},药店:{drugstoreId} ")
@@ -702,7 +669,7 @@ def addSmImageLinkWindow(drugstoreId,index,img,url,name,dirId,start,end,type='ev
     INSERT INTO `medstore`.`sm_image_link_window` (  `drugstore_id`, `seq_num`, `image_url`, `window_url`, `window_type`
     , `window_name`, `window_param`, `window_status`, `window_update_time`, `window_create_time`
     , `window_remark`, `window_start_time`, `window_end_time`, `window_view`, `window_go_type`) 
-    VALUES (  '{drugstoreId}', '{index}', '{img}', '{url}{dirId}', '{type}', '{name}', '{dirId}', '1', now(), now(), '', '{start} 00:00:00', '{end} 23:59:59', '', '0');
+    VALUES (  '{drugstoreId}', '{index}', '{img}', '{url}{dirId}', '{type}', '{name}', '{dirId}', '1', now(), now(), '', '{start}', '{end}', '', '0');
         '''
     res = insertSQL(sql)
     logging.info(f"创建sm_image_link_window  的{name} 活动 , dirId= {dirId} ,url={url}{dirId},药店:{drugstoreId} ")
@@ -834,19 +801,25 @@ def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,im
                 quotaId = addAmQuotaInfo( itemId,limit,itemDesc,limit_group)
                 logging.info(f'创建 限购规则 quota  {itemName}{itemDesc}')
         if itemType=='discount':
-            details_value =itemInfo.details_value
-            rule_value =itemInfo.rule_value
-            logging.info(f'创建 活动规则 details  {itemName}- {itemDesc} -{details_value}- {rule_value}')
+            details_values =itemInfo.details_value
+            rule_values =itemInfo.rule_value
+            logging.info(f'创建 活动规则 details  {itemName}- {itemDesc} -{details_values}- {rule_values}')
             # logging.info(f'details_value-- -{details_value};rule_value--{rule_value}')
-            if details_value!='':
+            if details_values!='':
                 details_remark = itemName
                 details_content =itemDesc
+                details_value_list = details_values.split(',')
+                for details_value in details_value_list:
                 # logging.info(f'detailsId------------------------{itemId,details_value,details_remark,details_content}')
-                detailsId = addAmItemDetails( itemId,details_value,details_remark,details_content,details_type='discount')
-                
-                # logging.info(f'detailsId------------------------{detailsId}')
-                if detailsId!='' and rule_value !='':
-                    addAmDetailsRule(detailsId,rule_value)
+                    details_level = details_value_list.index(details_value)+1
+                    detailsId = addAmItemDetails( itemId,details_value,details_remark,details_content,details_type='discount',details_level=details_level)
+                    
+                    # logging.info(f'detailsId------------------------{detailsId}')
+                    if detailsId!='' and rule_values !='':
+                        rule_value_list = rule_values.split(',')
+                        # for details_value in details_value_list:
+                        rule_value = rule_value_list[details_value_list.index(details_value)]
+                        addAmDetailsRule(detailsId,rule_value)
             # quotaId = addAmQuotaInfo( itemId,itemInfo.limit,itemDesc,itemInfo.limit_group)
             
         dicId = dirDic['dir_id']
@@ -872,6 +845,153 @@ def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,im
     #     logging.error(err)
     #     db.rollback()
 
+def createDirByTable(actId,drugstoreId,tableName='as_test.ykd_base_dir',act=''):
+    """根据所给 ykd_base_dir 创建活动目录"""
+    idir = queryTableLastOne('pm_dir_info',field='dir_id',where ='',order='dir_id desc')
+    idirId = idir['dir_id']
+    dirList = queryTable(tableName,where=f' act ="{act}" ')
+    # logging.info(dirList)
+    for dir in dirList:
+        name = dir['name']
+        code = dir['code']
+        img = dir['img']
+        num = dir['num']
+        dirId = idirId+dirList.index(dir)+1
+        parentId = '' if dir['parent_id']==None else  dir['parent_id']+idirId
+        lvl = dir['lvl']
+        toDirId = '' if dir['to_dir_id']== None else dir['to_dir_id']+idirId
+
+        addPmDirInfo(f'act{actId}{code}',name,drugstoreId,img=img,color=toDirId,num=num,level=lvl,parentDirId=parentId,dirId=dirId)
+
+
+def buildActInfoByTableWithChild(tableName,actId,actName,drugstoreId,startTime,endTime,img='',color='',linkurl='',linkimg='',linkView = '',windowimg=''):
+    """ 创建基础表的时候，如果有会场，保证有dir_code,dir_name,pharmacy_id 可选 dir_img,dir_num
+        如果有活动 保证有 item_code(在dirinfo中使用),item_name,item_desc,item_type()
+        **** 都有code为准，名称重复率太高
+        1：item_type = quota 需要有limit （格式为 1:1:1） 可选limit group， 如果有库存 需要有 kc_day , （此处需扩展为 每日库存，总库存，天数）
+        2：item_type = discount 需要有 子级手动配置detail（因为活动中类比较多） 
+        3：item_type = drugtag ,由于文字不会显示在list和detail，一般是配置dir_img用的
+        3：item_type = cut  满减
+        5：item_type = nothing  列表页显示，详情页不显示
+        buy	购买婴幼儿奶粉加9元换购特殊商品，满1000元加19元换购其他商品
+        gift	购买热销商品满100元送体温计，满200元送电子体温计 
+        excoupon	不可使用优惠券
+        如果会场需要有楼层跳转到某个链接或者目录。，需要预先创建好子级dirinfo，然后再创建主页面dirinfo，【把子页面的dir_code 设置为主页面对应楼层的dircode*2 ，ps:主 abc, 子  abcabc】
+    'dir','actskudir','skudir','item','range','itemrange','quota','stock','stock-pday','ms-sale','ms-packet'"""
+    # try:
+    addAmActInfo(actId,actName,startTime,endTime,drugstoreId=drugstoreId)
+    skuList = querySkuIdByTable(tableName,drugstoreId)
+    # dirList = queryTable(tableName,where=' dir_code !="" group by dir_code')
+    dirList = queryTable('pm_dir_info',result='*',where =f' dir_code like "%act{actId}%" and pharmacy_id = "{drugstoreId}" ',order='')
+    itemList = queryTable(tableName,where='  item_code !="" group by item_code')
+    if len(dirList)>0 or len(itemList)>0:
+        logging.info(f'开始创建活动目录 {drugstoreId}')
+        # logging.error('开始创建活动目录error')
+        # parentdirDic = addPmDirInfo(f'act{actId}',actName,drugstoreId,img=img,color=color,num='1',level='2',parentDirId='')
+        parentdirDic = dirList[0]
+        parentDirId = parentdirDic['dir_id']
+        logging.info(f'创建zhu活动目录 {parentdirDic}')
+        if linkurl!='' and linkimg!='':
+            addSmImageLink(drugstoreId,1,linkimg,linkurl,actName,parentDirId,startTime,endTime,linkView)
+        if linkurl!='' and windowimg!='':
+            addSmImageLinkWindow(drugstoreId,1,windowimg,linkurl,actName,parentDirId,startTime,endTime)
+    for dir in dirList:
+        # logging.info(f'创建子目录 {dir}')
+        # dirInfo = ActInfo(dir)
+        # sufDirCode = dirInfo.dir_code
+        # # logging.info(f'创建子活动目录 {dirInfo}')
+        # genCode = queryBaseDirCode(drugstoreId)
+        # sdirCode = f'{genCode}act{actId}{sufDirCode}{sufDirCode}'
+        # sdir = queryTableLastOne('pm_dir_info','*',f"dir_code = '{sdirCode}'",'dir_id desc')
+        # remark = ''
+        # if sdir!=None:
+        #     remark = sdir['dir_id']
+        # dic = addPmDirInfo(f'act{actId}{dirInfo.dir_code}',dirInfo.dir_name,drugstoreId,img=dirInfo.dir_img,color=remark,num=dirInfo.dir_num,level='3',parentDirId=parentDirId)
+        genCode = queryBaseDirCode(drugstoreId)
+        dic = dir
+        dicId = dic['dir_id']
+        dicCode = dic['dir_code']
+        # sufdicCode = dir['dir_code']
+        logging.info(f'创建子会场目录 {dic}')
+        for sku in skuList:
+            # skuDicCodeId=sku['dir_code']
+            pSkuDirCode =sku['dir_code']
+            skuDicCodeId=f'{genCode}act{actId}{pSkuDirCode}'
+            order = sku['xh']
+            if skuDicCodeId==dicCode:
+                skuId=sku['sku_id']
+                addPmSkuDir(skuId,dicId,dicCode,order)
+                
+    for item in itemList:
+        
+        itemInfo = ActInfo(item)
+        itemName = itemInfo.item_name
+        itemDesc = itemInfo.item_desc
+        itemType = itemInfo.item_type
+        itemCode = itemInfo.item_code
+
+        itemImg = itemInfo.item_img
+        itemImgR = itemInfo.item_img_r
+        otherImg = f'{{"itemImageR":"{itemImgR}","itemImage":"{itemImg}"}}' if itemImg!='' and itemImgR!='' else ''
+
+        dirDic = addPmDirInfo(f'act{actId}{itemCode}',itemName,drugstoreId,level='3')
+        idicInfo = ActInfo(dirDic)
+        rangeId =addAmActRange( idicInfo.dir_id,itemName,itemDesc)
+        itemId = addAmActItem(itemName,itemDesc,itemType,actId,drugstoreId,img=itemImg,imgR=itemImgR)
+        addAmItemRange(itemId,rangeId)
+        logging.info(f'创建 活动 item range dir    {itemId}  {rangeId}  {idicInfo.dir_id} {itemName}')
+        quotaId= ''
+        # logging.info(f'itemType-- -{itemType};details_value--{itemInfo.details_value}')
+        if itemType=='quota':
+            limit = itemInfo.limit
+            if limit!='':
+                limit_group = itemInfo.limit_group
+                quotaId = addAmQuotaInfo( itemId,limit,itemDesc,limit_group)
+                logging.info(f'创建 限购规则 quota  {itemName}{itemDesc}')
+        if itemType=='discount':
+            details_values =itemInfo.details_value
+            rule_values =itemInfo.rule_value
+            logging.info(f'创建 活动规则 details  {itemName}- {itemDesc} -{details_values}- {rule_values}')
+            # logging.info(f'details_value-- -{details_value};rule_value--{rule_value}')
+            if details_values!='':
+                details_remark = itemName
+                details_content =itemDesc
+                details_value_list = details_values.split(',')
+                for details_value in details_value_list:
+                # logging.info(f'detailsId------------------------{itemId,details_value,details_remark,details_content}')
+                    details_level = details_value_list.index(details_value)
+                    detailsId = addAmItemDetails( itemId,details_value,details_remark,details_content,details_type='discount',details_level=details_level)
+                    
+                    # logging.info(f'detailsId------------------------{detailsId}')
+                    if detailsId!='' and rule_values !='':
+                        rule_value_list = rule_values.split(',')
+                        # for details_value in details_value_list:
+                        rule_value = rule_value_list[details_value_list.index(details_value)]
+                        addAmDetailsRule(detailsId,rule_value)
+            # quotaId = addAmQuotaInfo( itemId,itemInfo.limit,itemDesc,itemInfo.limit_group)
+            
+        dicId = dirDic['dir_id']
+        dicCode = dirDic['dir_code']
+        sufdicCode = item['item_code']
+        for sku in skuList:
+            skuDicCodeId=sku['item_code']
+            if skuDicCodeId==sufdicCode:
+                skuId=sku['sku_id']
+                addPmSkuDir(skuId,dicId,dicCode)
+                if hasattr(item,'kc_day') and item.get('kc_day')!='':
+                    skuTotal = item.get('kc_day',0)
+                    days = item.get('days',0)
+                    maxTotal = int(days)*int(skuTotal)
+                    addAmStockLimit(skuId,itemId,quotaId,skuTotal,maxTotal,remark='')
+                    addAmStockPday(skuId,actId,itemId,quotaId,drugstoreId,skuTotal,maxTotal,remark='')
+                addAmStatInfo(skuId,actId,itemId,itemName,itemDesc,itemType,startTime,endTime,quotaId =quotaId,otherStr1=otherImg)
+            # copyAmStatInfoByHuohao( '78',huohao,drugstoreId)
+                # logging.info(f'创建 addAmStatInfo')
+    # db.commit()
+    logging.info('创建成功')
+    # except Exception as err:
+    #     logging.error(err)
+    #     db.rollback()
     
 def addSkuDirByItemId(huohao,drugstoreId,itemId,skuTotal=0,maxTotal=0):
     """根据itemid增加到对应dir中 添加到amstatinfo中，如果库存不为0，增加到对应stock库存中"""
@@ -898,12 +1018,13 @@ def addSkuDirByItemId(huohao,drugstoreId,itemId,skuTotal=0,maxTotal=0):
     if itemRemark!=None:
         logging.info("itemRemark------------------")
         logging.info(itemRemark)
-        dicRemark = json.loads(itemRemark)
-        logging.info(dicRemark)
-        itemImgR = dicRemark['itemImageR']
-        itemImg = dic.get('item_img') 
-        otherImg = f'{{"itemImageR":"{itemImgR}","itemImage":"{itemImg}"}}' if itemImg!='' and itemImgR!='' else ''
-        logging.info(otherImg)
+        if itemRemark!=None and itemRemark!='':
+            dicRemark = json.loads(itemRemark)
+            logging.info(dicRemark)
+            itemImgR = dicRemark['itemImageR']
+            itemImg = dic.get('item_img') 
+            otherImg = f'{{"itemImageR":"{itemImgR}","itemImage":"{itemImg}"}}' if itemImg!='' and itemImgR!='' else ''
+            logging.info(otherImg)
     res = addAmStatInfo(skuId,actId,itemId,itemName,itemDesc,itemType,startTime,endTime,quotaId =quotaId,otherStr1=otherImg)
     # logging.info('statId %s',res)
     addPmSkuDir(skuId,dirId,dirCode)
@@ -981,8 +1102,8 @@ def createNewSkuByTable(tableName):
 def buildSkuBaseByHuohao(huohao,drugstoreId,itemId=0,quotaId=0,skuImage='当日达',limitquan=False):
     
     # 首单免费
-    copyAmStatInfoByHuohao( '1350',huohao,drugstoreId) 
-    logging.debug('首单免费')
+    # copyAmStatInfoByHuohao( '1350',huohao,drugstoreId) 
+    # logging.debug('首单免费')
     # 下单返券
     copyAmStatInfoByHuohao( '1517',huohao,drugstoreId)
     logging.debug('下单返券')
@@ -1042,7 +1163,8 @@ def xrzq2():
     endTime='2020-12-31'
     tableName ='as_test.202004_xc_xr'
 
-    actIds = [233,234]
+    # actIds = [233,234]
+    actIds = [275,276]
     actName = '欣臣4月新人专区'
 
     img = 'http://image.ykd365.cn/act/202004/01.jpg'
@@ -1059,7 +1181,7 @@ def xrzq2():
             buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime=startTime,endTime=endTime,img=img,color=color)
             db.commit()
     except Exception as err:
-        logging.error("Error %s for execute sql: %s" % (err, sql))
+        logging.error("Error %s for execute sql: %s" % (err, tableName))
         db.rollback()
 
 def mqj(actName = '感恩母亲节',tableName ='as_test.202005_ty_mqj',ydList = [200],startTime='2020-05-01',endTime='2020-05-17',img = 'http://image.ykd365.cn/act/202005/mqj/02.jpg',color = '#e7e7e7'):
@@ -1227,6 +1349,182 @@ def xyx(actId=0,actName = '家庭必备小药箱',tableName ='as_test.202005_ty_
 # ORDER BY stat_id DESC;
 
 
+def build292388(actId=0,actName = '2件92折、3件88折',tableName ='as_test.',ydList = [],startTime='',endTime='',img = '',color = '',linkimg = '',linkurl = '',linkView = '',windowimg= ''):
+    ''' 2件92折、3件88折 重新配置，下掉之前的所有 2件92折3件88折活动，重新建一份'''
+    if actId==0:
+        iAct = queryTableLastOne('am_act_info',field='act_id',where ='',order='act_id desc')
+        iActId = iAct['act_id']
+        actId = iActId+1
+    
+    for index in range(len(ydList)):
+        try:
+            drugstoreId = ydList[index]
+            # 创建特价
+            # addPmActSale(tableName,drugstoreId,startTime,endTime)
+            # logging.info('创建价格------------')
+            # # 列表页左上角标志
+            list =  querySkuIdByTable(  tableName,drugstoreId,where='1=1')
+            xjxxzskuIdList =[]
+            lczskuIdList =[]
+            # hjjkskuIdList =[]
+            # jtcbskuIDList= []
+            for dic in list:
+                list_logo = dic['list_logo']
+                sku_id=dic['sku_id']
+                if list_logo =='2件92折、3件88折':
+                    xjxxzskuIdList.append(dic['sku_id'])
+                elif  list_logo =='疗程装':
+                    lczskuIdList.append(dic['sku_id'])
+                # elif  list_logo =='换季健康':
+                #     hjjkskuIdList.append(dic['sku_id'])
+                # elif  list_logo =='家庭常备':
+                #     jtcbskuIDList.append(dic['sku_id'])
+                # 限券
+                if 'is_xq' in dic.keys() and dic['is_xq']!=None and dic['is_xq']==1:
+                    copyAmStatInfoBySkuId( 78,sku_id)
+                # huohao =  dic['pharmacy_huohao']
+                # copyAmStatInfoByHuohao( '78',huohao,drugstoreId)
+
+            addPmLabelImage('2件92折、3件88折','http://image.ykd365.cn/act/2002/notouch/list88.png','1',drugstoreId,skuIdList=xjxxzskuIdList)
+            addPmLabelImage('疗程装','http://image.ykd365.cn/act/202005/mqj/lcz_logo.png','1',drugstoreId,skuIdList=lczskuIdList)
+            # addPmLabelImage('换季健康','http://image.ykd365.cn/act/202005/xz/xz_logo.png','1',drugstoreId,skuIdList=hjjkskuIdList)
+            # addPmLabelImage('家庭常备','http://image.ykd365.cn/act/202005/xyx/list_jtbb.png','1',drugstoreId,skuIdList=jtcbskuIDList)
+            logging.info('创建list logo------------')
+            # 暂停疗程购
+            stopPacket(tableName,drugstoreId,where = 'stop_lcz=1')
+            stopPacket(tableName,drugstoreId,where = 'list_logo="疗程装"',stop=1)
+            logging.info('暂停疗程购------------')
+            
+            
+            buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime=startTime,endTime=endTime,img=img,color=color,linkurl=linkurl,linkimg=linkimg,windowimg=windowimg)
+            db.commit()
+        except Exception as err:
+            logging.error(err)
+            db.rollback()
+    return actId
+def act618(actId=0,actName = '',tableName ='',ydList = [],startTime='',endTime='',img = '',color = '',linkimg = '',linkurl = '',linkView = '',windowimg= ''):
+    '''  '''
+    if actId==0:
+        iAct = queryTableLastOne('am_act_info',field='act_id',where ='',order='act_id desc')
+        iActId = iAct['act_id']
+        actId = iActId+1
+        # iAct = queryTableLastOne('am_act_info',field='*',where ='',order='act_id desc')
+        # iActId = iAct['act_id']+1
+        logging.info(f'活动id：{actId}')
+        # queryTableLastOne(tableName,field='*',where ='',order='')
+        # buildActInfoByTableWithChild(tableName,actId,actName,drugstoreId,startTime,endTime,img='',color='',linkurl='',linkimg='',linkView = '',windowimg='')
+
+    
+    for index in range(len(ydList)):
+        try:
+            drugstoreId = ydList[index]
+            createDirByTable(actId=actId,drugstoreId=drugstoreId)
+            # 创建特价
+            addPmActSale(tableName,drugstoreId,startTime,endTime)
+            logging.info('创建价格------------')
+            # # 列表页左上角标志
+            list =  querySkuIdByTable(  tableName,drugstoreId,where='1=1')
+            mqjskuIdList =[]
+            lczskuIdList =[]
+            hjjkskuIdList =[]
+            jtcbskuIDList= []
+            for dic in list:
+                list_logo = dic['list_logo']
+                sku_id=dic['sku_id']
+                if list_logo =='感恩母亲节':
+                    mqjskuIdList.append(dic['sku_id'])
+                elif  list_logo =='疗程装':
+                    lczskuIdList.append(dic['sku_id'])
+                elif  list_logo =='换季健康':
+                    hjjkskuIdList.append(dic['sku_id'])
+                elif  list_logo =='家庭常备':
+                    jtcbskuIDList.append(dic['sku_id'])
+                # 限券
+                if 'is_xq' in dic.keys() and dic['is_xq']!=None and dic['is_xq']==1:
+                    copyAmStatInfoBySkuId( 78,sku_id)
+                # huohao =  dic['pharmacy_huohao']
+                # copyAmStatInfoByHuohao( '78',huohao,drugstoreId)
+
+            addPmLabelImage('母亲节','http://image.ykd365.cn/act/202005/mqj/mqj_logo.png','1',drugstoreId,skuIdList=mqjskuIdList)
+            addPmLabelImage('疗程装','http://image.ykd365.cn/act/202005/mqj/lcz_logo.png','1',drugstoreId,skuIdList=lczskuIdList)
+            addPmLabelImage('换季健康','http://image.ykd365.cn/act/202005/xz/xz_logo.png','1',drugstoreId,skuIdList=hjjkskuIdList)
+            addPmLabelImage('家庭常备','http://image.ykd365.cn/act/202005/xyx/list_jtbb.png','1',drugstoreId,skuIdList=jtcbskuIDList)
+            logging.info('创建list logo------------')
+            # 暂停疗程购
+            stopPacket(tableName,drugstoreId,where = 'stop_lcz=1')
+            stopPacket(tableName,drugstoreId,where = 'list_logo="疗程装"',stop=1)
+            logging.info('暂停疗程购------------')
+            
+            
+            buildActInfoByTableWithChild(tableName,actId,actName,drugstoreId,startTime=startTime,endTime=endTime,img=img,color=color,linkurl=linkurl,linkimg=linkimg,windowimg=windowimg)
+            db.commit()
+        except Exception as err:
+            logging.error(err)
+            db.rollback()
+    return actId
+
+def actfqj(actId=0,actName = '',tableName ='',ydList = [],startTime='',endTime='',img = '',color = '',linkimg = '',linkurl = '',linkView = '',windowimg= ''):
+    '''  '''
+    if actId==0:
+        iAct = queryTableLastOne('am_act_info',field='act_id',where ='',order='act_id desc')
+        iActId = iAct['act_id']
+        actId = iActId+1
+        # iAct = queryTableLastOne('am_act_info',field='*',where ='',order='act_id desc')
+        # iActId = iAct['act_id']+1
+        logging.info(f'活动id：{actId}')
+        # queryTableLastOne(tableName,field='*',where ='',order='')
+        # buildActInfoByTableWithChild(tableName,actId,actName,drugstoreId,startTime,endTime,img='',color='',linkurl='',linkimg='',linkView = '',windowimg='')
+
+    
+    for index in range(len(ydList)):
+        try:
+            drugstoreId = ydList[index]
+            createDirByTable(actId=actId,drugstoreId=drugstoreId,act='202006father')
+            logging.info('创建目录------------')
+            # 创建特价
+            addPmActSale(tableName,drugstoreId,startTime,endTime)
+            logging.info('创建价格------------')
+            # # 列表页左上角标志
+            list =  querySkuIdByTable(  tableName,drugstoreId,where='1=1')
+            fqjskuIdList =[]
+            lczskuIdList =[]
+            hjjkskuIdList =[]
+            jtcbskuIDList= []
+            for dic in list:
+                list_logo = dic['list_logo']
+                sku_id=dic['sku_id']
+                if list_logo =='爆款直降':
+                    fqjskuIdList.append(dic['sku_id'])
+                elif  list_logo =='疗程装':
+                    lczskuIdList.append(dic['sku_id'])
+                elif  list_logo =='换季健康':
+                    hjjkskuIdList.append(dic['sku_id'])
+                elif  list_logo =='家庭常备':
+                    jtcbskuIDList.append(dic['sku_id'])
+                # 限券
+                if 'is_xq' in dic.keys() and dic['is_xq']!=None and dic['is_xq']==1:
+                    copyAmStatInfoBySkuId( 78,sku_id)
+                # huohao =  dic['pharmacy_huohao']
+                # copyAmStatInfoByHuohao( '78',huohao,drugstoreId)
+
+            addPmLabelImage('父亲节','http://image.ykd365.cn/act/202006/fqj/bkzj.png','1',drugstoreId,skuIdList=fqjskuIdList)
+            addPmLabelImage('疗程装','http://image.ykd365.cn/act/202005/mqj/lcz_logo.png','1',drugstoreId,skuIdList=lczskuIdList)
+            addPmLabelImage('换季健康','http://image.ykd365.cn/act/202005/xz/xz_logo.png','1',drugstoreId,skuIdList=hjjkskuIdList)
+            addPmLabelImage('家庭常备','http://image.ykd365.cn/act/202005/xyx/list_jtbb.png','1',drugstoreId,skuIdList=jtcbskuIDList)
+            logging.info('创建list logo------------')
+            # 暂停疗程购
+            stopPacket(tableName,drugstoreId,where = 'stop_lcz=1')
+            stopPacket(tableName,drugstoreId,where = 'list_logo="疗程装"',stop=1)
+            logging.info('暂停疗程购------------')
+            
+            
+            buildActInfoByTableWithChild(tableName,actId,actName,drugstoreId,startTime=startTime,endTime=endTime,img=img,color=color,linkurl=linkurl,linkimg=linkimg,windowimg=windowimg)
+            db.commit()
+        except Exception as err:
+            logging.error(err)
+            db.rollback()
+    return actId
+
 def update9GG():
     ydIds=[200,1600,1601,1620,
     1621,
@@ -1260,65 +1558,42 @@ def update9GG():
 
 def updateHuodong():
     """更新基础活动表中的数据，填满"""
-    # actName ='夏至·春未央'
-    # start = '2020-05-05'
-    # end = '2020-05-31'
-    # img = 'http://image.ykd365.cn/act/202005/xz/02.jpg'
-    # color = '#e7e7e7'
+    dirkv=[{
+      "id": "1",
+      "act": "202006father",
+      "name": "父亲节",
+      "code": "",
+      "img": "",
+      "num": "2",
+      "drugstore_ids": "",
+      "parent_id": "",
+      "lvl": "2",
+      "to_dir_id": ""
+    }]
 
-    # dirkv=[{'dir_name':'防敏防护','dir_code':'fmfh','dir_num':'2','dir_img':'http://image.ykd365.cn/act/202005/xz/fangm.jpg'},
-    #     {'dir_name':'感冒咳嗽','dir_code':'gmks','dir_num':'4','dir_img':'http://image.ykd365.cn/act/202005/xz/ganm.jpg'},
-    #     {'dir_name':'调节免疫','dir_code':'tjmy','dir_num':'6','dir_img':'http://image.ykd365.cn/act/202005/xz/tiaoj.jpg'},
-    #     {'dir_name':'肠胃不适','dir_code':'cwbs','dir_num':'8','dir_img':'http://image.ykd365.cn/act/202005/xz/changw.jpg'},
-    #     {'dir_name':'日常保健','dir_code':'rcbj','dir_num':'10','dir_img':'http://image.ykd365.cn/act/202005/xz/ric.jpg'}]
-
-    # itemkv=[{'item_name':'特价','item_code':'tj','item_desc':'特价','item_type':'discount','item_img':'','item_img_r':'',
-    #             'detail_value':'','rule':'','limit':'','limit_group':'','kc_day':''},
-    #     {'item_name':'2件92折3件88折','item_code':'9285','item_desc':'2件92折3件88折','item_type':'drugtag'
-    #     ,'item_img':'http://image.ykd365.cn/act/202005/xz/xz_detail.png','item_img_r':'646',
-    #             'detail_value':'','rule':'','limit':'','limit_group':'','kc_day':''},]
-# {"itemImageR":"465","itemImage":"http://image.ykd365.cn/act/2002/notouch/detail_88.png"}
-# {"itemImageR":"497","itemImage":"http://image.ykd365.cn/act/202004/xr_detail.png"}
-# {"itemImageR":"642","itemImage":"http://image.ykd365.cn/act/202005/mqj/mqj_detail.png"}
-# {"itemImageR":"646","itemImage":"http://image.ykd365.cn/act/202005/xz/xz_detail.png"}
-# [{'id': 1, 'act': '202005xyx', 'name': '感冒退烧', 'code': 'gmts', 'img': 'http://image.ykd365.cn/act/202005/xyx/gmts.jpg', 'num': 4, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}, {'id': 2, 'act': '202005xyx', 'name': '止咳化痰', 'code': 'zkht', 'img': 'http://image.ykd365.cn/act/202005/xyx/zkht.jpg', 'num': 6, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}, {'id': 3, 'act': '202005xyx', 'name': '消炎止痛', 'code': 'xyzt', 'img': 'http://image.ykd365.cn/act/202005/xyx/xyzt.jpg', 'num': 8, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}, {'id': 4, 'act': '202005xyx', 'name': '消化系统', 'code': 'xhxt', 'img': 'http://image.ykd365.cn/act/202005/xyx/xhxt.jpg', 'num': 10, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}, {'id': 5, 'act': '202005xyx', 'name': '外用药品', 'code': 'wyyp', 'img': 'http://image.ykd365.cn/act/202005/xyx/wyyp.jpg', 'num': 12, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}, {'id': 6, 'act': '202005xyx', 'name': '儿童用药', 'code': 'etyy', 'img': 'http://image.ykd365.cn/act/202005/xyx/etyy.jpg', 'num': 14, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}, {'id': 7, 'act': '202005xyx', 'name': '慢病必备', 'code': 'mbbb', 'img': 'http://image.ykd365.cn/act/202005/xyx/mbbb.jpg', 'num': 16, 'drugstore_ids': '200'}]
-
-    dirkv=[{  'act': '202005xyx', 'dir_name': '感冒退烧', 'dir_code': 'gmts', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/gmts.jpg', 'dir_num': 4, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}
-            , {  'act': '202005xyx', 'dir_name': '止咳化痰', 'dir_code': 'zkht', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/zkht.jpg', 'dir_num': 6, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}
-            , {  'act': '202005xyx', 'dir_name': '消炎止痛', 'dir_code': 'xyzt', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/xyzt.jpg', 'dir_num': 8, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}
-            , {  'act': '202005xyx', 'dir_name': '消化系统', 'dir_code': 'xhxt', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/xhxt.jpg', 'dir_num': 10, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}
-            , {  'act': '202005xyx', 'dir_name': '外用药品', 'dir_code': 'wyyp', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/wyyp.jpg', 'dir_num': 12, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}
-            , {  'act': '202005xyx', 'dir_name': '儿童用药', 'dir_code': 'etyy', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/etyy.jpg', 'dir_num': 14, 'drugstore_ids': '1620,1621,1622,1627,1629,1631,1600,1601,200'}
-            , { 'act': '202005xyx', 'dir_name': '慢病必备', 'dir_code': 'mbbb', 'dir_img': 'http://image.ykd365.cn/act/202005/xyx/mbbb.jpg', 'dir_num': 16, 'drugstore_ids': '200'}]
-
-    itemkv=[{'item_name': '第2件5折', 'item_desc': '第二件5折', 'item_code': 'd2j5', 'item_img': 'http://image.ykd365.cn/act/202005/xyx/detail.jpg', 'item_img_r': '600', 'num': 100, 'item_type': 'discount', 'details_value': '75', 'rule': '>=2', 'limit': None, 'limit_group': None, 'kc_day': None, 'act_name': '家庭必备小药箱'}
-            , { 'item_name': '第2件6折', 'item_desc': '第二件6折', 'item_code': 'd2j6', 'item_img': 'http://image.ykd365.cn/act/202005/xyx/detail.jpg', 'item_img_r': '600', 'num': 100, 'item_type': 'discount', 'details_value': '80', 'rule': '>=2', 'limit': None, 'limit_group': None, 'kc_day': None, 'act_name': '家庭必备小药箱'}
-            , { 'item_name': '第2件7折', 'item_desc': '第二件7折', 'item_code': 'd2j7', 'item_img': 'http://image.ykd365.cn/act/202005/xyx/detail.jpg', 'item_img_r': '600', 'num': 100, 'item_type': 'discount', 'details_value': '85', 'rule': '>=2', 'limit': None, 'limit_group': None, 'kc_day': None, 'act_name': '家庭必备小药箱'}
-            , { 'item_name': '第2件8折', 'item_desc': '第二件8折', 'item_code': 'd2j8', 'item_img': 'http://image.ykd365.cn/act/202005/xyx/detail.jpg', 'item_img_r': '600', 'num': 100, 'item_type': 'discount', 'details_value': '90', 'rule': '>=2', 'limit': None, 'limit_group': None, 'kc_day': None, 'act_name': '家庭必备小药箱'}
-            , { 'item_name': '第2件9折', 'item_desc': '第二件9折', 'item_code': 'd2j9', 'item_img': 'http://image.ykd365.cn/act/202005/xyx/detail.jpg', 'item_img_r': '600', 'num': 100, 'item_type': 'discount', 'details_value': '95', 'rule': '>=2', 'limit': None, 'limit_group': None, 'kc_day': None, 'act_name': '家庭必备小药箱'}]
- # dirkv=[{'dir_name':'防敏防护','dir_code':'fmfh','dir_num':'2','dir_img':'http://image.ykd365.cn/act/202005/xz/fangm.jpg'},
-    #         {'dir_name':'感冒咳嗽','dir_code':'gmks','dir_num':'4','dir_img':'http://image.ykd365.cn/act/202005/xz/ganm.jpg'},
-    #         {'dir_name':'调节免疫','dir_code':'tjmy','dir_num':'6','dir_img':'http://image.ykd365.cn/act/202005/xz/tiaoj.jpg'},
-    #         {'dir_name':'肠胃不适','dir_code':'cwbs','dir_num':'8','dir_img':'http://image.ykd365.cn/act/202005/xz/changw.jpg'},
-    #         {'dir_name':'日常保健','dir_code':'rcbj','dir_num':'10','dir_img':'http://image.ykd365.cn/act/202005/xz/ric.jpg'}]
-
-    # itemkv=[{'item_name':'特价','item_code':'tj','item_desc':'特价','item_type':'discount','item_img':'','item_img_r':'',
-    #             'detail_value':'','rule':'','limit':'','limit_group':'','kc_day':''},
-    #     {'item_name':'2件92折3件88折','item_code':'9285','item_desc':'2件92折3件88折','item_type':'drugtag'
-    #     ,'item_img':'http://image.ykd365.cn/act/202005/xz/xz_detail.png','item_img_r':'646',
-    #             'detail_value':'','rule':'','limit':'','limit_group':'','kc_day':''},]
     for dir in dirkv:
-        # updateActTable('as_test.202005_ty_xyx',set=f"""dir_code='{dir['dir_code']}',dir_num='{dir['dir_num']}',dir_img='{dir['dir_img']}'""",where=f"dir_name='{dir['dir_name']}'")
-        # updateActTable('as_test.202005_xc_xyx',set=f"""dir_code='{dir['dir_code']}',dir_num='{dir['dir_num']}',dir_img='{dir['dir_img']}'""",where=f"dir_name='{dir['dir_name']}'")
-        updateActTable('as_test.202005_bj_xyx',set=f"""dir_code='{dir['dir_code']}',dir_num='{dir['dir_num']}',dir_img='{dir['dir_img']}'""",where=f"dir_name='{dir['dir_name']}'")
+        # updateActTable('as_test.202006_ty_618',set=f"""dir_code='{dir['code']}',dir_num='{dir['num']}',dir_img='{dir['img']}'""",where=f"dir_name='{dir['name']}'")
+        updateActTable('as_test.202006_xc_fqj',set=f"""dir_code='{dir['code']}',dir_num='{dir['num']}',dir_img='{dir['img']}'""",where=f"dir_name='{dir['name']}'")
         db.commit()
-        logging.info(f"更新基础表中的目录数据{dir['dir_name']}")
-    # for dir in itemkv:
-    #     updateActTable('as_test.202005_ty_xyx',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',detail_value='{dir['detail_value']}',rule='{dir['rule']}'""",where=f"item_name='{dir['item_name']}'")
-    #     updateActTable('as_test.202005_xc_xyx',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',detail_value='{dir['detail_value']}',rule='{dir['rule']}'""",where=f"item_name='{dir['item_name']}'")
-    #     updateActTable('as_test.202005_bj_xyx',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',detail_value='{dir['detail_value']}',rule='{dir['rule']}'""",where=f"item_name='{dir['item_name']}'")
-    #     db.commit()
-    #     logging.info(f"更新基础表中的活动数据{dir['item_name']}")
+        logging.info(f"更新基础表中的目录数据{dir['name']}")
+
+    itemkv=[{'item_name': '特价', 'item_desc': '特价', 'item_code': 'tj'
+            , 'item_img': ''
+            , 'item_img_r': '', 'num': 100, 'item_type': 'discount'
+            , 'details_value': '', 'rule_value': '', 'quota_rule': None, 'quota_group': None
+            , 'kc_day': None, 'act_name': ''},
+            {'item_name': '2件92折、3件88折', 'item_desc': '2件92折、3件88折', 'item_code': 'd292388'
+            , 'item_img': ''
+            , 'item_img_r': '', 'num': 100, 'item_type': 'discount'
+            , 'details_value': '92,88', 'rule_value': '2,3', 'quota_rule': None, 'quota_group': None
+            , 'kc_day': None, 'act_name': ''}
+       ]
+ 
+    for dir in itemkv:
+        # updateActTable('as_test.202006_ty_618',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',details_value='{dir['details_value']}',rule_value='{dir['rule_value']}'""",where=f"item_name='{dir['item_name']}'")
+        updateActTable('as_test.202006_xc_fqj',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',details_value='{dir['details_value']}',rule_value='{dir['rule_value']}'""",where=f"item_name='{dir['item_name']}'")
+        db.commit()
+        logging.info(f"更新基础表中的活动数据{dir['item_name']}")
 
 def test():
     logging.info('test---------')
@@ -1344,23 +1619,133 @@ def test():
 # 1600,1601
 # 200
 if __name__ == "__main__":
+    logging.info(f'开始！~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     # updateHuodong()
-    actName = '家庭必备小药箱'
-    start = '2020-05-26' # '2020-05-22'
-    end = '2020-06-15'
-    img = 'http://image.ykd365.cn/act/202005/xyx/02.jpg'
-    color = '#c4cde6'
-    linkimg = 'http://image.ykd365.cn/act/202005/xyx/xyx_lb.jpg'
-    # linkurl = 'http://deve.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId=' 
+    actName = '父亲节'
+    linkurl = ''
+    start = '2020-06-19 00:00:00'
 
-    linkurl =  'http://store.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId='
-    windowimg = 'http://image.ykd365.cn/act/202005/xyx/xyx_tc.png'
-    xyx(actId=0,actName = actName,tableName ='as_test.202005_ty_xyx',ydList = [200],startTime=start,endTime=end
-        ,img = img,color = color,linkimg = linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
-    xyx(actId=0,actName = actName,tableName ='as_test.202005_xc_xyx',ydList = [1600,1601],startTime=start,endTime=end
-        ,img = img,color = color,linkimg = linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
-    xyx(actId=0,actName = actName,tableName ='as_test.202005_bj_xyx',ydList = [1620,1621,1622,1627,1629,1631],startTime=start,endTime=end
-        ,img = img,color = color,linkimg = linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
+    # linkurl = '' 
+    # start = '2020-06-15 21:00:00'
+
+    end = '2020-06-21 23:59:59'
+    color = ''
+    linkimg = 'http://image.ykd365.cn/act/202006/fqj/lb.jpg'
+    windowimg = ''
+    updateHuodong()
+
+    # actfqj(actId=0,actName = actName,tableName ='as_test.202006_ty_fqj',ydList = [200]
+    #     ,startTime=start,endTime=end,color = color,linkimg =linkimg
+    #     ,linkurl = linkurl
+    #     ,linkView = '',windowimg= windowimg)
+    actfqj(actId=0,actName = actName,tableName ='as_test.202006_xc_fqj',ydList = [1600,1601,1602,1603]
+        ,startTime=start,endTime=end,color = color,linkimg =linkimg
+        ,linkurl = linkurl
+        ,linkView = '',windowimg= windowimg)
+    # db.commit()
+
+    
+    
+    dirId = 1002764370	
+    dirCode = '618limitcoupon'
+    sql = f"""INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            SELECT '{dirId}',s.sku_id,'{dirCode}','100', now()
+            from as_test.202006_xc_fqj a 
+            left join pm_prod_sku s on a.huohao = s.pharmacy_huohao and s.drugstore_id in (1600,1601,1602,1603)
+            """
+    res = insertSQL(sql)
+    db.commit()
+
+    
+    # try:
+    #     ydIds = [1600,1601,1602,1603]
+    #     huohaos = ['1007312','1007256']
+    #     prodIds = [331726,331727]
+    #     for ydId in ydIds:
+    #         for huohao in huohaos:
+    #             skuId = querySkuId(f"10件装{huohao}",ydId)
+    #             # createCombByHuohao(huohao,ydId,prodIds[huohaos.index(huohao)],2000,2000,count=10)
+    #             # buildSkuBaseByHuohao(f"10件装{huohao}",ydId,itemId=0,quotaId=0,skuImage='30分钟',limitquan=False)
+    #             dir =  queryTableLastOne('pm_dir_info',field='*',where =f'pharmacy_id={ydId} and dir_name like "%戴口罩%"',order='dir_id desc')
+    #             logging.info('查询出的dir信息 %s',dir)
+    #             dirId = dir['dir_id']
+    #             dirCode = dir['dir_code']
+    #             order = 1
+    #             addPmSkuDir(skuId,dirId,dirCode,order=order)
+
+    #             dir =  queryTableLastOne('pm_dir_info',field='*',where =f'pharmacy_id={ydId} and dir_name like "%首单优选推荐%" ',order='dir_id desc')
+    #             logging.info('查询出的dir信息 %s',dir)
+    #             dirId = dir['dir_id']
+    #             dirCode = dir['dir_code']
+    #             order = 1
+    #             addPmSkuDir(skuId,dirId,dirCode,order=order)
+    #     db.commit()
+    # except Exception as err:
+    #         logging.error(err)
+    #         db.rollback()
+    # hh=f"10件装1007312"
+    # addSkuDirByItemId(hh,1600,1633)
+    # addSkuDirByItemId(hh,1601,1634)
+    # addSkuDirByItemId(hh,1602,1739)
+    # addSkuDirByItemId(hh,1603,1756)
+
+    # hh2=f"10件装1007256"
+    # addSkuDirByItemId(hh2,1600,1633)
+    # addSkuDirByItemId(hh2,1601,1634)
+    # addSkuDirByItemId(hh2,1602,1739)
+    # addSkuDirByItemId(hh2,1603,1756)
+    # db.commit()
+
+#     1756	1603
+# 1739	1602
+# 1634	1601
+# 1633	1600
+
+    # actName = '2件92折、3件88折'
+    # start = '2020-05-30' # '2020-05-22'
+    # end = '2020-06-15'
+    # img = ''
+    # color = ''
+    # linkimg = ''
+    # # linkurl = 'http://deve.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId=' 
+
+    # linkurl =  ''
+    # windowimg = ''
+    # # xyx(actId=0,actName = actName,tableName ='as_test.202005_ty_xyx',ydList = [200],startTime=start,endTime=end
+    # #     ,img = img,color = color,linkimg = linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
+    # # build292388(actId=0,actName = actName,tableName ='as_test.202005_ty_292388',ydList = [200]
+    # #     ,startTime=start,endTime=end,img = '',color = '',linkimg = '',linkurl = '',linkView = '',windowimg= '')
+    # # build292388(actId=0,actName = actName,tableName ='as_test.202005_xc_292388',ydList = [1600,1601,1602,1603]
+    # #     ,startTime=start,endTime=end,img = '',color = '',linkimg = '',linkurl = '',linkView = '',windowimg= '')
+    # build292388(actId=0,actName = actName,tableName ='as_test.202005_bj_292388',ydList = [1620,1621,1622,1627,1629,1631]
+    #     ,startTime=start,endTime=end,img = '',color = '',linkimg = '',linkurl = '',linkView = '',windowimg= '')
+    
+# http://image.ykd365.cn/act/1906/1906_list3.png
+# http://image.ykd365.cn/act/1910/drug_list_2.png
+# http://image.ykd365.cn/act/2002/notouch/list.png
+# http://image.ykd365.cn/act/2002/notouch/list88.png
+# http://image.ykd365.cn/act/202005/mqj/lcz_logo.png
+# http://image.ykd365.cn/act/202005/mqj/mqj_logo.png
+# http://image.ykd365.cn/act/202005/xyx/list_jtbb.png
+# http://image.ykd365.cn/act/202005/xz/xz_logo.png
+# http://image.ykd365.cn/drugstore/list.png
+    # updateHuodong()
+    # actName = '家庭必备小药箱'
+    # start = '2020-05-26' # '2020-05-22'
+    # end = '2020-06-15'
+    # img = 'http://image.ykd365.cn/act/202005/xyx/02.jpg'
+    # color = '#c4cde6'
+    # linkimg = 'http://image.ykd365.cn/act/202005/xyx/xyx_lb.jpg'
+    # # linkurl = 'http://deve.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId=' 
+
+    # linkurl =  'http://store.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId='
+    # windowimg = 'http://image.ykd365.cn/act/202005/xyx/xyx_tc.png'
+    # xyx(actId=0,actName = actName,tableName ='as_test.202005_ty_xyx',ydList = [200],startTime=start,endTime=end
+    #     ,img = img,color = color,linkimg = linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
+    # xyx(actId=0,actName = actName,tableName ='as_test.202005_xc_xyx',ydList = [1600,1601],startTime=start,endTime=end
+    #     ,img = img,color = color,linkimg = linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
+    # xyx(actId=0,actName = actName,tableName ='as_test.202005_bj_xyx',ydList = [1620,1621,1622,1627,1629,1631],startTime=start,endTime=end
+    #     ,img = img,color = color,linkimg = linkimg,linkurl = linkurl,linkView = '',windowimg= windowimg)
     
 
 
@@ -1553,4 +1938,28 @@ if __name__ == "__main__":
     #     addPmSkuDir(skuId,dirId,dirCode,order=order)
 
 
- 
+#  http://image.ykd365.cn/act/202006/618/02.jpg
+# http://image.ykd365.cn/act/202006/618/yjbk.jpg
+# http://image.ykd365.cn/act/202006/618/etjk.jpg
+# http://image.ykd365.cn/act/202006/618/nvxjk.jpg
+# http://image.ykd365.cn/act/202006/618/nanxjk.jpg
+# http://image.ykd365.cn/act/202006/618/fmjk.jpg
+# http://image.ykd365.cn/act/202006/618/et_02.jpg
+# http://image.ykd365.cn/act/202006/618/nv_02.jpg
+# http://image.ykd365.cn/act/202006/618/nan_02.jpg
+# http://image.ykd365.cn/act/202006/618/fm_02.jpg
+# http://image.ykd365.cn/act/202006/618/etgm.jpg
+# http://image.ykd365.cn/act/202006/618/zkht.jpg
+# http://image.ykd365.cn/act/202006/618/pwjk.jpg
+# http://image.ykd365.cn/act/202006/618/etyy.jpg
+# http://image.ykd365.cn/act/202006/618/mrjf.jpg
+# http://image.ykd365.cn/act/202006/618/yybj.jpg
+# http://image.ykd365.cn/act/202006/618/fkyy.jpg
+# http://image.ykd365.cn/act/202006/618/byyy.jpg
+# http://image.ykd365.cn/act/202006/618/bszy.jpg
+# http://image.ykd365.cn/act/202006/618/nkyy.jpg
+# http://image.ykd365.cn/act/202006/618/rcbj.jpg
+# http://image.ykd365.cn/act/202006/618/xxg.jpg
+# http://image.ykd365.cn/act/202006/618/tnb.jpg
+# http://image.ykd365.cn/act/202006/618/zbjk.jpg
+# http://image.ykd365.cn/act/202006/618/zqmy.jpg
