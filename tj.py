@@ -338,7 +338,7 @@ def selectTYUserEachMonEachDan():
     # logging.info(res)
 
 if __name__ == "__main__":
-    selectTYUserEachMonEachDan()
+    # selectTYUserEachMonEachDan()
     # logging.info(a)
     # selectTYUserGrow()
     # selectTYThisMonthOrderUsers()
@@ -346,15 +346,20 @@ if __name__ == "__main__":
     # selectTYUserKeep()
     # db.commit()
 
-    # ydId = '200'
-    # start = '2020-04-01'
-    # end = '2020-05-01'
-    # selectNewRegister(ydId,start,end)
-    # selectOrderUsers(ydId,start,end)
-    # selectRepeatOrderUsersMoreThan2(ydId,start,end)
-    # selectRepeatOrderUsersMoreThan3(ydId,start,end)
-    # selectNewOrderUsers(ydId,start,end)
-    # db.commit()
+    # "1、新用户：
+    #     需导出当月新增用户的手机号和对应的订单号
+    #     （“当月新增用户”是指无历史成功下单的用户，不仅仅是当月新注册的）；
+    # 2、铜川2020年5月留存数据；
+    # 3、铜川5月运营数据表，表1标黄部分"
+    ydId = '1600,1601,1602,1603'
+    start = '2020-05-01'
+    end = '2020-06-01'
+    selectNewRegister(ydId,start,end)
+    selectOrderUsers(ydId,start,end)
+    selectRepeatOrderUsersMoreThan2(ydId,start,end)
+    selectRepeatOrderUsersMoreThan3(ydId,start,end)
+    selectNewOrderUsers(ydId,start,end)
+    db.commit()
 
     
 # select count(o.user_id),

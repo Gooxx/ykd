@@ -6,7 +6,7 @@ import logging
 
 logger = logging.getLogger()
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
-logging.basicConfig(filename='my-619.log', level=logging.DEBUG, format=LOG_FORMAT)
+logging.basicConfig(filename='my-71.log', level=logging.DEBUG, format=LOG_FORMAT)
 #  创建一个handler，用于将日志输出到控制台
 # log = logging.StreamHandler()
 # log.setLevel(logging.DEBUG)
@@ -15,7 +15,7 @@ ch.setLevel(logging.INFO)
 logger.addHandler(ch)
 # 基于pymysql 
  
-isDeve = True
+isDeve = True # 是否准生产
 if isDeve: # 准生产
    host = 'rm-2ze7fnv9ydw78u07a7o.mysql.rds.aliyuncs.com'
    logging.info('deve准生产数据库连接--------'+host)

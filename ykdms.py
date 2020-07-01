@@ -3,7 +3,7 @@ from db2 import db,logging,cursor,querySQL,updateSQL,insertSQL,selectBy,selectOn
 import time
 import datetime
 import logging
-# import ykdbase
+import act
 
 def delayMsDateFrom(day,addDays,ydId):
     """延期秒杀活动专用，day为目前已有秒杀的最后一天时间，adddays是要延期的天数，ydid是药店id"""
@@ -131,6 +131,18 @@ def copyMsStat(day,addDays,ydId):
         res = insertSQL(sql)
 
         # logging.info(sql)
+
+def creatJHS(tableName,drugstoreId,startTime,endTime):
+    try:
+     
+        addNewSku4JHSMS(tableName,'JHS',drugstoreId)
+        addPmActSale(tableName,drugstoreId,startTime,endTime)
+        
+        1501
+        db.commit()
+    except Exception as err:
+        logging.error("Error %s for execute sql: %s" % (err, tableName))
+        db.rollback()
 
 if __name__ == "__main__":
     logging.info('2222')

@@ -377,7 +377,7 @@ def addPmActSale(tableName,drugstoreId,startTime,endTime):
     # for drugstoreId in self.drugstoreIdList:
     sql1 = '''
             INSERT INTO `medstore`.`pm_sku_sale` ( `sku_id`, `sale_fee`, `sale_price`, `sale_start_time`, `sale_end_time`, `sale_status`, `sale_create_time`, `sale_update_time`, `sale_remark`) 
-            SELECT s.`sku_id`,s.sku_fee `sale_fee`,a.price*100 `sale_price`
+            SELECT s.`sku_id`,a.fee*100 `sale_fee`,a.price*100 `sale_price`
             ,'{}' `sale_start_time`,'{}' `sale_end_time`
             ,0 `sale_status`,NOW() `sale_create_time`,NOW() `sale_update_time`,'' `sale_remark` 
             from {} a,pm_prod_sku s
@@ -386,7 +386,7 @@ def addPmActSale(tableName,drugstoreId,startTime,endTime):
         '''.format(startTime,endTime,tableName,drugstoreId)
     res = insertSQL(sql1)
     return res['code']
-def addAmStatInfo(skuId,actId,itemId,itemName,itemDesc,itemType,startTime,endTime,quotaId='',itemPriority='100',itemAttr='multi',otherStr1=''):
+def addAmStatInfo(skuId,actId,itemId,itemName,itemDesc,itemType,startTime,endTime,quotaId='',itemPriority='100',itemAttr='multi',otherStr1='',flag=itemFlag):
     configSql = '''SELECT config_value from sm_config WHERE config_key = 'act_batch';'''
     configDic = selectOneBy(configSql)
     configValue =configDic.get('config_value')
@@ -395,7 +395,7 @@ def addAmStatInfo(skuId,actId,itemId,itemName,itemDesc,itemType,startTime,endTim
         , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
         VALUES ( '{configValue}', '{skuId}', '{actId}', '{itemId}', '{itemDesc}', '{itemName}'
         , '{itemAttr}', now(), now(), '{startTime}', '{endTime}'
-        , '{itemType}', '{otherStr1}', '{quotaId}', NULL, '{itemPriority}');
+        , '{itemType}', '{otherStr1}', '{quotaId}', '{flag}', '{itemPriority}');
         """
     res = insertSQL(sql)
     return res['lastId']
@@ -655,10 +655,10 @@ def copyAmStatInfoByHuohao( itemId,huohao,drugstoreId):
         skuId = sku['sku_id']
         copyAmStatInfoBySkuId(itemId,skuId)
 
-def addSmImageLink(drugstoreId,index,img,url,name,dirId,start,end,link_view):
+def addSmImageLink(drugstoreId,index,img,url,name,dirId,start,end,link_view,link_remark='',link_type='url'):
     sql = f'''
         INSERT INTO `medstore`.`sm_image_link` (  `drugstore_id`, `seq_num`, `image_url`, `link_url`, `link_type`, `link_name`, `link_param`, `link_status`, `link_update_time`, `link_create_time`, `link_remark`, `link_start_time`, `link_end_time`, `link_view`, `link_version`)
-        VALUES (  '{drugstoreId}', '{index}', '{img}', '{url}{dirId}', 'url', '{name}', '{dirId}', '1', now(), now(), '', '{start}', '{end}', '{link_view}', '1');
+        VALUES (  '{drugstoreId}', '{index}', '{img}', '{url}{dirId}', '{link_type}', '{name}', '{dirId}', '1', now(), now(), '{link_remark}', '{start}', '{end}', '{link_view}', '1');
         '''
     res = insertSQL(sql)
     logging.info(f"创建sm_image_link类型为 {link_view} 的{name} 活动 , dirId= {dirId} ,url={url}{dirId},药店:{drugstoreId} ")
@@ -722,7 +722,7 @@ def updateActTable(tableName,set='1=1',where='1=1'):
     sql = f'''update {tableName} set {set} WHERE {where}'''
     res = updateSQL(sql)
 
-def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,img='',color='',linkurl='',linkimg='',linkView = '',windowimg=''):
+def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,img='',color='',linkurl='',linkimg='',linkView = '',windowimg='',link_remark='',link_type=''):
     """ 创建基础表的时候，如果有会场，保证有dir_code,dir_name,pharmacy_id 可选 dir_img,dir_num
         如果有活动 保证有 item_code(在dirinfo中使用),item_name,item_desc,item_type()
         **** 都有code为准，名称重复率太高
@@ -748,7 +748,7 @@ def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,im
         parentDirId = parentdirDic['dir_id']
         logging.info(f'创建zhu活动目录 {parentdirDic}')
         if linkurl!='' and linkimg!='':
-            addSmImageLink(drugstoreId,1,linkimg,linkurl,actName,parentDirId,startTime,endTime,linkView)
+            addSmImageLink(drugstoreId,1,linkimg,linkurl,actName,parentDirId,startTime,endTime,linkView,link_remark=link_remark,link_type=link_type)
         if linkurl!='' and windowimg!='':
             addSmImageLinkWindow(drugstoreId,1,windowimg,linkurl,actName,parentDirId,startTime,endTime)
     for dir in dirList:
@@ -775,12 +775,18 @@ def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,im
                 addPmSkuDir(skuId,dicId,dicCode,order)
                 
     for item in itemList:
-        
+        itemFlag = ''
+        if 'is_eq' in dic.keys() and dic['is_xq']!=None and dic['is_xq']==1:
+            itemFlag = 'false'
+                    # copyAmStatInfoBySkuId( 78,sku_id)
+
         itemInfo = ActInfo(item)
         itemName = itemInfo.item_name
         itemDesc = itemInfo.item_desc
         itemType = itemInfo.item_type
         itemCode = itemInfo.item_code
+
+
 
         itemImg = itemInfo.item_img
         itemImgR = itemInfo.item_img_r
@@ -789,7 +795,7 @@ def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,im
         dirDic = addPmDirInfo(f'act{actId}{itemCode}',itemName,drugstoreId,level='3')
         idicInfo = ActInfo(dirDic)
         rangeId =addAmActRange( idicInfo.dir_id,itemName,itemDesc)
-        itemId = addAmActItem(itemName,itemDesc,itemType,actId,drugstoreId,img=itemImg,imgR=itemImgR)
+        itemId = addAmActItem(itemName,itemDesc,itemType,actId,drugstoreId,img=itemImg,imgR=itemImgR,flag=itemFlag)
         addAmItemRange(itemId,rangeId)
         logging.info(f'创建 活动 item range dir    {itemId}  {rangeId}  {idicInfo.dir_id} {itemName}')
         quotaId= ''
@@ -836,7 +842,7 @@ def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,im
                     maxTotal = int(days)*int(skuTotal)
                     addAmStockLimit(skuId,itemId,quotaId,skuTotal,maxTotal,remark='')
                     addAmStockPday(skuId,actId,itemId,quotaId,drugstoreId,skuTotal,maxTotal,remark='')
-                addAmStatInfo(skuId,actId,itemId,itemName,itemDesc,itemType,startTime,endTime,quotaId =quotaId,otherStr1=otherImg)
+                addAmStatInfo(skuId,actId,itemId,itemName,itemDesc,itemType,startTime,endTime,quotaId =quotaId,otherStr1=otherImg,flag=itemFlag)
             # copyAmStatInfoByHuohao( '78',huohao,drugstoreId)
                 # logging.info(f'创建 addAmStatInfo')
     # db.commit()
@@ -1525,6 +1531,26 @@ def actfqj(actId=0,actName = '',tableName ='',ydList = [],startTime='',endTime='
             db.rollback()
     return actId
 
+def actweeksale(actId=0,actName = '',tableName ='as_test.',ydList = [200],startTime='2020-05-22',endTime='2020-06-15',img = 'http://image.ykd365.cn/act/202005/xyx/02.jpg',color = '#c4cde6',linkimg = '',linkurl = '',linkView = '',windowimg= '',link_remark='',link_type=''):
+    ''' 夏季爆品 周周特价'''
+    if actId==0:
+        iAct = queryTableLastOne('am_act_info',field='act_id',where ='',order='act_id desc')
+        iActId = iAct['act_id']
+        actId = iActId+1
+    
+    for index in range(len(ydList)):
+        try:
+            drugstoreId = ydList[index]
+            # 创建特价
+            addPmActSale(tableName,drugstoreId,startTime,endTime)
+            logging.info('创建价格------------')
+
+            buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime=startTime,endTime=endTime,img=img,color=color,linkurl=linkurl,linkimg=linkimg,linkView=linkView,windowimg=windowimg,link_remark=link_remark, link_type=link_type)
+            db.commit()
+        except Exception as err:
+            logging.error(err)
+            db.rollback()
+    return actId
 def update9GG():
     ydIds=[200,1600,1601,1620,
     1621,
@@ -1561,10 +1587,21 @@ def updateHuodong():
     dirkv=[{
       "id": "1",
       "act": "202006father",
-      "name": "父亲节",
-      "code": "",
+      "name": "主推特价",
+      "code": "zttj",
       "img": "",
       "num": "2",
+      "drugstore_ids": "",
+      "parent_id": "",
+      "lvl": "2",
+      "to_dir_id": ""
+    },{
+      "id": "2",
+      "act": "202006father",
+      "name": "更多推荐",
+      "code": "gdtj",
+      "img": "http://image.ykd365.cn/act/202006/zztj/gdtj.jpg",
+      "num": "4",
       "drugstore_ids": "",
       "parent_id": "",
       "lvl": "2",
@@ -1572,8 +1609,8 @@ def updateHuodong():
     }]
 
     for dir in dirkv:
-        # updateActTable('as_test.202006_ty_618',set=f"""dir_code='{dir['code']}',dir_num='{dir['num']}',dir_img='{dir['img']}'""",where=f"dir_name='{dir['name']}'")
-        updateActTable('as_test.202006_xc_fqj',set=f"""dir_code='{dir['code']}',dir_num='{dir['num']}',dir_img='{dir['img']}'""",where=f"dir_name='{dir['name']}'")
+        updateActTable('as_test.202006_ty_weeksale',set=f"""dir_code='{dir['code']}',dir_num='{dir['num']}',dir_img='{dir['img']}'""",where=f"dir_name='{dir['name']}'")
+        updateActTable('as_test.202006_xc_weeksale',set=f"""dir_code='{dir['code']}',dir_num='{dir['num']}',dir_img='{dir['img']}'""",where=f"dir_name='{dir['name']}'")
         db.commit()
         logging.info(f"更新基础表中的目录数据{dir['name']}")
 
@@ -1590,8 +1627,8 @@ def updateHuodong():
        ]
  
     for dir in itemkv:
-        # updateActTable('as_test.202006_ty_618',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',details_value='{dir['details_value']}',rule_value='{dir['rule_value']}'""",where=f"item_name='{dir['item_name']}'")
-        updateActTable('as_test.202006_xc_fqj',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',details_value='{dir['details_value']}',rule_value='{dir['rule_value']}'""",where=f"item_name='{dir['item_name']}'")
+        updateActTable('as_test.202006_ty_weeksale',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',details_value='{dir['details_value']}',rule_value='{dir['rule_value']}'""",where=f"item_name='{dir['item_name']}'")
+        updateActTable('as_test.202006_xc_weeksale',set=f"""item_code='{dir['item_code']}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{dir['item_img']}',item_img_r='{dir['item_img_r']}',details_value='{dir['details_value']}',rule_value='{dir['rule_value']}'""",where=f"item_name='{dir['item_name']}'")
         db.commit()
         logging.info(f"更新基础表中的活动数据{dir['item_name']}")
 
@@ -1621,40 +1658,75 @@ def test():
 if __name__ == "__main__":
     logging.info(f'开始！~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     # updateHuodong()
-    actName = '父亲节'
-    linkurl = ''
-    start = '2020-06-19 00:00:00'
+    actName = '夏季爆品 周周特价'
 
-    # linkurl = '' 
-    # start = '2020-06-15 21:00:00'
+    linkimg = 'http://image.ykd365.cn/act/202006/zztj/tl.jpg'
+    linkView = 'activity'
+    link_remark = '{"aspect_ratio":506,"having_line":0,"image_seat":1}'
+    link_type='web2'
 
-    end = '2020-06-21 23:59:59'
+    linkurl ='http://deve.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId=' 
+    start = '2020-07-01 00:00:00'
+
+    # linkurl = 'http://deve.ykd365.com/medstore/actUserpage/medicineKit_2005?dirId=' 
+    # start = '2020-07-02 21:00:00'
+
+    end = '2020-07-31 23:59:59'
     color = ''
-    linkimg = 'http://image.ykd365.cn/act/202006/fqj/lb.jpg'
-    windowimg = ''
-    updateHuodong()
+    
+    # windowimg = ''
+    # updateHuodong()
+
+    hcimage = 'http://image.ykd365.cn/act/202006/zztj/02.jpg'
+
+    
+    actweeksale(actId=0,actName = actName,tableName ='as_test.202006_ty_weeksale',ydList = [200]
+    ,startTime=start,endTime=end
+    ,img = hcimage
+    ,color = '',linkimg = linkimg,linkurl = linkurl,linkView = linkView
+    ,windowimg= '',link_remark=link_remark, link_type=link_type)
+   
+    actweeksale(actId=0,actName = actName,tableName ='as_test.202006_xc_weeksale',ydList = [1600,1601,1602,1603]
+    ,startTime=start,endTime=end
+    ,img = hcimage
+    ,color = '',linkimg = linkimg,linkurl = linkurl,linkView = linkView
+    ,windowimg= '',link_remark=link_remark, link_type=link_type)
+   
+
+    # actName = '父亲节'
+    # linkurl = ''
+    # start = '2020-06-19 00:00:00'
+
+    # # linkurl = '' 
+    # # start = '2020-06-15 21:00:00'
+
+    # end = '2020-06-21 23:59:59'
+    # color = ''
+    # linkimg = 'http://image.ykd365.cn/act/202006/fqj/lb.jpg'
+    # windowimg = ''
+    # updateHuodong()
 
     # actfqj(actId=0,actName = actName,tableName ='as_test.202006_ty_fqj',ydList = [200]
     #     ,startTime=start,endTime=end,color = color,linkimg =linkimg
     #     ,linkurl = linkurl
     #     ,linkView = '',windowimg= windowimg)
-    actfqj(actId=0,actName = actName,tableName ='as_test.202006_xc_fqj',ydList = [1600,1601,1602,1603]
-        ,startTime=start,endTime=end,color = color,linkimg =linkimg
-        ,linkurl = linkurl
-        ,linkView = '',windowimg= windowimg)
+    # actfqj(actId=0,actName = actName,tableName ='as_test.202006_xc_fqj',ydList = [1600,1601,1602,1603]
+    #     ,startTime=start,endTime=end,color = color,linkimg =linkimg
+    #     ,linkurl = linkurl
+    #     ,linkView = '',windowimg= windowimg)
     # db.commit()
 
     
     
-    dirId = 1002764370	
-    dirCode = '618limitcoupon'
-    sql = f"""INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
-            SELECT '{dirId}',s.sku_id,'{dirCode}','100', now()
-            from as_test.202006_xc_fqj a 
-            left join pm_prod_sku s on a.huohao = s.pharmacy_huohao and s.drugstore_id in (1600,1601,1602,1603)
-            """
-    res = insertSQL(sql)
-    db.commit()
+    # dirId = 1002764370	
+    # dirCode = '618limitcoupon'
+    # sql = f"""INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+    #         SELECT '{dirId}',s.sku_id,'{dirCode}','100', now()
+    #         from as_test.202006_xc_fqj a 
+    #         left join pm_prod_sku s on a.huohao = s.pharmacy_huohao and s.drugstore_id in (1600,1601,1602,1603)
+    #         """
+    # res = insertSQL(sql)
+    # db.commit()
 
     
     # try:
