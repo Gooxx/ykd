@@ -1,0 +1,203 @@
+
+<!DOCTYPE html lang="en">
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>开方测试</title>
+	<meta name="description" content="药快到一小时送药上门随叫随到！即日起，线下药房全线开幕，众多商品仅售0.1元，数量有限，先到先得！">
+	<meta id="device" name="viewport"
+		content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<meta name="format-detection" content="telephone=no, email=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<script src="https://image.ykd365.cn/js/jquery-1.9.0.min.js"></script>
+	<script src="https://js-css-camore.oss-cn-beijing.aliyuncs.com/js/alert.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+	<script>
+        console.log('测试机----')
+        var paramsurl =  window.location.search.substr(1)
+        console.log(paramsurl)
+        var paramlist =  paramsurl.split('&')
+        $('.res').val(paramsurl)
+        // paramlist =  ["email=peiyao.mi@ykd365.com", "sign=8728d10ae199dc44ba25c0b107bcb27b", "uid=79f6188edb9e40bfbcd1a421465e3d42", "cid=b66381cdb3ad41108b9deb6fa82b4b99", "createChatTime=1594797103827"]
+        // console.log(paramlist)
+        var diclist = []
+        var dic = {}
+        for (let index = 0; index < paramlist.length; index++) {
+            var paramstr = paramlist[index]
+            // console.log(paramstr)
+            // console.log(typeof element)
+            var kvlist = []
+            kvlist = paramstr.split('=')
+            // console.log(kvlist)
+            if(kvlist&&kvlist.length>=2){
+                var k = kvlist[0]
+                var v = kvlist[1]
+                dic[k] = v
+                // diclist.push({
+                //     k2:v
+                // })
+            }
+        }
+        console.log(dic)
+
+        
+/**
+*orderStatus 订单状态枚举值(前端传对应的数字):
+*待付款: 1,
+*待发货: 2,
+*运输中: 3,
+*派送中: 4,
+*已完成: 5,
+*待评价: 6,
+*已取消: 7
+**/
+/**
+*  goods 数据结构
+*[{
+*  "name":"商品名称1",					
+* "pictureUrl":"http://goodsPicture1"   			
+*  },{
+*  "name":"商品名称2",					
+*  "pictureUrl":"http://goodsPicture2"   			
+*  }]
+**/
+// document.getElementById("send").addEventListener("click",function () {
+    function dosend(){
+        console.log(dic)
+    var data = {
+ 				"title":"药快到",//订单状态
+		        "desc":"云客服,在线客服系统,云呼叫中心,机器人客服,工单客服,智能客服",
+		        "picture":"https://img.sobot.com/console/common/face/admin.png",
+                "payMoney":"100",
+                "showCustomMsg":1,
+                "orderId":"23213",
+                "orderTime":"2020-02-02 00:00:00",
+                "orderStatus":"1",
+                "tags":[{"label": "按钮1","url":"https://baidu.com"},{"label": "按钮2","url":"http://store.ykd365.com/"}],
+
+		        "url":'http://www.baidu.com'
+    };
+    window.parent.postMessage(data, '*');
+
+//    window.parent.postMessage({
+//        cid: cid,
+//        uid: uid,
+//        msgType: 25,  //固定值
+//        miniPage:JSON.stringify(data)
+//    }, '*');
+// },false);
+    }
+
+        function dopost(){
+		    var data = {
+		        title:"药快到",//订单状态
+		        desc:"云客服",
+		        picture:"https://img.sobot.com/console/common/face/admin.png",
+				showCustomMsg:1,
+		        url:'http://www.baidu.com'
+		    };
+		    window.parent.postMessage(data, '*');
+
+        //     window.parent.postMessage({
+        //     type:'createOrder',
+        //     params:{
+        //         "card_title":"云客服_智齿客服123",
+        //         "card_url":"http://www.sobot.com",
+        //         "card_desc":"云客服,在线客服系统,云呼叫中心,机器人客服,工单客服,智能客服",
+        //         "card_note":"1500元",
+        //         "card_picture":"https://img.sobot.com/console/common/face/admin.png"
+        //     }
+        // },"*")
+        }
+
+
+	</script>
+	
+</head>
+
+<body>
+	<div class="content clearfix" id="app" v-cloak>
+        <button onclick="dopost()"> 发送数据</button>
+        <button   onclick="dosend()">发送订单信息</button>
+        <button id="send" >七鱼发送订单信息</button>
+        <input type="number" value="123">
+        <!-- <script src="https://qiyukf.com/script/72d08b55bcc6f7f3b44a7341699fd3f5.js"></script> -->
+        <script>
+            (function (w, d, n, a, j) {
+                w[n] = w[n] || function () {
+                    (w[n].a = w[n].a || []).push(arguments);
+                };
+                j = d.createElement('script');
+                j.async = true;
+                j.src ='https://qiyukf.com/script/72d08b55bcc6f7f3b44a7341699fd3f5.js';
+                d.body.appendChild(j);
+            })(window, document, 'ysf');
+        </script>
+	</div>
+</body>
+<script type="text/babel">
+document.getElementById("send").addEventListener("click",function () {
+    // var data = {
+    //     orderStatus:1,//订单状态
+    //     createTime:+new Date(),//下单时间  时间戳
+    //     orderCode:'88888888',//订单编号
+    //     orderUrl:'http://order.com/1',//订单链接
+    //     totalFee:'100',//订单金额（以分为单位，total_fee=1000相当与total_fee=10.00元，不支持小数）
+    //     goodsCount:2,//商品数量
+    //     goods:JSON.parse(getValue('goods'))
+    // };
+    // window.parent.postMessage({
+    //     cid: '111111',
+    //     uid: '222222',
+    //     msgType: 25,  //固定值
+    //     miniPage:JSON.stringify(data)
+    // }, '*');
+
+    var data = {
+ 				"title":"药快到",//订单状态
+		        "desc":"云客服,在线客服系统,云呼叫中心,机器人客服,工单客服,智能客服",
+		        "picture":"https://img.sobot.com/console/common/face/admin.png",
+				"showCustomMsg":"1",
+		        "url":'http://www.baidu.com'
+    };
+    window.parent.postMessage(data, '*');
+},false);
+	// 截取指定字符串
+	function getQueryString(name) {
+	      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	      var r = window.location.search.substr(1).match(reg);
+	      if (r != null)
+	      return unescape(r[2]);
+	      return null;
+		}
+	var dirId = parseInt(getQueryString("dirId"));
+	var pharmacyId = parseInt(getQueryString("pharmacy_id"));
+	var topImg = '${current.imgUrl }'
+	new Vue({
+		el: "#app",
+		data() {
+			return {
+				list: [],
+				topImg,
+				dirId,
+                params:'123',
+				pharmacyId
+			}
+		},
+		mounted() {
+            console.log('测试机2----')
+			this.getList()
+            
+		},
+		methods: {
+
+			getList() {
+				 
+			}
+			 
+		}
+	})
+</script>
+
+</html>

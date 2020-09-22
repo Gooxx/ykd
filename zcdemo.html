@@ -1,0 +1,260 @@
+
+<!DOCTYPE html lang="en">
+<html>
+
+<head>
+	<meta charset="UTF-8">
+    <title>智齿</title>
+    <style>
+        .d1{
+            width: 300px;
+            height: 100px;
+            background-color: red;
+        }
+        .d2{
+            width: 600px;
+            height: 100px;
+            background-color: blue;
+        }
+    </style>
+	<script src="https://image.ykd365.cn/js/jquery-1.9.0.min.js"></script>
+	<script src="https://js-css-camore.oss-cn-beijing.aliyuncs.com/js/alert.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+	<script>
+        console.log('测试智齿啊---------')
+        var paramsurl =  window.location.search.substr(1)
+        console.log(paramsurl)
+        var paramlist =  paramsurl.split('&')
+        $('.res').val(paramsurl)
+        // paramlist =  ["email=peiyao.mi@ykd365.com", "sign=8728d10ae199dc44ba25c0b107bcb27b", "uid=79f6188edb9e40bfbcd1a421465e3d42", "cid=b66381cdb3ad41108b9deb6fa82b4b99", "createChatTime=1594797103827"]
+        // console.log(paramlist)
+        var diclist = []
+        var dic = {}
+        for (let index = 0; index < paramlist.length; index++) {
+            var paramstr = paramlist[index]
+            // console.log(paramstr)
+            // console.log(typeof element)
+            var kvlist = []
+            kvlist = paramstr.split('=')
+            // console.log(kvlist)
+            if(kvlist&&kvlist.length>=2){
+                var k = kvlist[0]
+                var v = kvlist[1]
+                dic[k] = v
+                // diclist.push({
+                //     k2:v
+                // })
+            }
+        }
+        console.log(dic)
+
+        
+/**
+*orderStatus 订单状态枚举值(前端传对应的数字):
+*待付款: 1,
+*待发货: 2,
+*运输中: 3,
+*派送中: 4,
+*已完成: 5,
+*待评价: 6,
+*已取消: 7
+**/
+/**
+*  goods 数据结构
+*[{
+*  "name":"商品名称1",					
+* "pictureUrl":"http://goodsPicture1"   			
+*  },{
+*  "name":"商品名称2",					
+*  "pictureUrl":"http://goodsPicture2"   			
+*  }]
+**/
+// document.getElementById("send").addEventListener("click",function () {
+function showcard(){
+    cid = dic['cid']
+     uid = dic['uid']
+	 window.parent.postMessage({
+    //   puid: "",
+      cid: cid,
+      uid: uid,
+      msgType: 24, // 固定值
+      miniPage:JSON.stringify({"title":"药快到的标题试一下","url":"https://www.baidu.com","description":"描述点什么呢---。。。。222222","label":"一刀999","thumbnail":"https://img.sobot.com/chatres/dd67a23fdac54b8082b2dea3c5c30e82/msg/20190620/9583a4709ae147a690b459399d4afe57.png"})
+    }, '*');  
+}
+    function dosend(){
+        console.log('send  click')
+        console.log(dic)
+        cid = dic['cid']
+        uid = dic['uid']
+    var data = {
+        orderStatus:1,//订单状态
+        createTime:+new Date(),//下单时间  时间戳
+        orderCode:'88888888',//订单编号
+        orderUrl:'http://order.com/1',//订单链接
+        totalFee:'100',//订单金额（以分为单位，total_fee=1000相当与total_fee=10.00元，不支持小数）
+        goodsCount:2,//商品数量
+        goods:[{
+                "name":"商品名称1",					
+                "pictureUrl":"http://image.ykd365.cn/act/2001/banner.jpg"   			
+                },{
+                "name":"商品名称2",					
+                "pictureUrl":"http://image.ykd365.cn/act/2001/banner.jpg"   			
+                }]
+    };
+    window.parent.postMessage({
+        cid: cid,
+        uid: uid,
+        msgType: 25,  //固定值
+        miniPage:JSON.stringify(data)
+    }, '*');
+// },false);
+    }
+
+        function dopost(){
+            console.log('post  event')
+            cid = dic['cid']
+                uid = dic['uid']
+            var data = {
+                // orderStatus:1,//订单状态
+                // createTime:+new Date(),//下单时间  时间戳
+                // orderCode:'test新闻',//订单编号
+                // orderUrl:'http://order.com/1',//订单链接
+                // totalFee:'100',//订单金额（以分为单位，total_fee=1000相当与total_fee=10.00元，不支持小数）
+                // goodsCount:2,//商品数量
+                goods:[{
+                        "name":"商品名称1",					
+                        "pictureUrl":"http://image.ykd365.cn/act/2001/banner.jpg"   			
+                        }]
+            };
+
+          
+            window.parent.postMessage({
+                cid: cid,
+                uid: uid,
+                msgType: 25,  //固定值
+                miniPage:JSON.stringify(data)
+            }, '*');
+
+            // window.parent.postMessage({
+            //     type:"createOrder",
+            //     params:{
+            //         "card_title":"云客服_智齿客服",
+            //         "card_url":"http://www.sobot.com",
+            //         "card_desc":"云客服,在线客服系统,云呼叫中心,机器人客服,工单客服,智能客服",
+            //         "card_note":"1500元",
+            //         "card_picture":"https://img.sobot.com/console/common/face/admin.png"
+            //     }
+            // },"*")
+
+            // window.parent.postMessage({
+            // // type:'createOrder',
+            // // params:{
+            //     // "card_title":"云客服_智齿客服123",
+            //     // "card_url":"http://www.sobot.com",
+            //     // "card_desc":"云客服,在线客服系统,云呼叫中心,机器人客服,工单客服,智能客服",
+            //     // "card_note":"1500元",
+            //     // "card_picture":"https://img.sobot.com/console/common/face/admin.png"
+
+            //     card_title:"云客服_智齿客服",
+            //     card_url:encodeURIComponent("http://www.sobot.com"),
+            //     card_desc:"云客服,在线客服系统,云呼叫中心,机器人客服,工单客服,智能客服",
+            //     card_note:"1500,2000",
+            //     card_picture:encodeURIComponent("https://img.sobot.com/console/common/face/admin.png")
+            // // }
+            // },"*")
+
+
+            // zc("config",{
+            //     card_title:"云客服_智齿客服",
+            //     card_url:encodeURIComponent("http://www.sobot.com"),
+            //     card_desc:"云客服,在线客服系统,云呼叫中心,机器人客服,工单客服,智能客服",
+            //     card_note:"1500,2000",
+            //     card_picture:encodeURIComponent("https://img.sobot.com/console/common/face/admin.png")
+            //     })
+
+            // window.parent.postMessage({
+            // type:'createOrder',
+            // params:{
+            //     "card_title":"云客服_智齿客服123",
+            //     "card_url":"http://www.sobot.com",
+            //     "card_desc":"云客服,在线客服系统,云呼叫中心,机器人客服,工单客服,智能客服",
+            //     "card_note":"1500元",
+            //     "card_picture":"https://img.sobot.com/console/common/face/admin.png"
+            // }
+            // },"*")
+        }
+
+
+	</script>
+	
+</head>
+
+<body>
+	<div class="content clearfix" id="app" v-cloak>
+        <button onclick="dopost()"> 发送数据</button>
+        <button id="send" onclick="dosend()">发送订单信息</button>
+        <button id="" onclick="showcard()">发送商品卡片</button>
+
+        <input id="res" type="number" value="123">
+        
+        <div class="d1"></div>
+        <div class="d2"></div>
+	</div>
+</body>
+<script type="text/babel">
+document.getElementById("send").addEventListener("click",function () {
+    console.log('send  event')
+    var data = {
+        orderStatus:1,//订单状态
+        createTime:+new Date(),//下单时间  时间戳
+        orderCode:'88888888',//订单编号
+        orderUrl:'http://order.com/1',//订单链接
+        totalFee:'100',//订单金额（以分为单位，total_fee=1000相当与total_fee=10.00元，不支持小数）
+        goodsCount:2,//商品数量
+        goods:JSON.parse(getValue('goods'))
+    };
+    window.parent.postMessage({
+        cid: '111111',
+        uid: '222222',
+        msgType: 25,  //固定值
+        miniPage:JSON.stringify(data)
+    }, '*');
+},false);
+	// 截取指定字符串
+	function getQueryString(name) {
+	      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	      var r = window.location.search.substr(1).match(reg);
+	      if (r != null)
+	      return unescape(r[2]);
+	      return null;
+		}
+	var dirId = parseInt(getQueryString("dirId"));
+	var pharmacyId = parseInt(getQueryString("pharmacy_id"));
+	var topImg = '${current.imgUrl }'
+	new Vue({
+		el: "#app",
+		data() {
+			return {
+				list: [],
+				topImg,
+				dirId,
+                params:'123',
+				pharmacyId
+			}
+		},
+		mounted() {
+            console.log('测试机2----')
+			this.getList()
+            
+		},
+		methods: {
+
+			getList() {
+				 
+			}
+			 
+		}
+	})
+</script>
+
+</html>

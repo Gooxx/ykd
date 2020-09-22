@@ -2,6 +2,7 @@ from db2 import db,cursor,querySQL,updateSQL,insertSQL,selectBy,selectOneBy
 import time
 import datetime
 from dateutil.relativedelta import relativedelta
+import math
 # import datetime from dateutil.relativedelta import relativedelta
 import json
 import logging
@@ -336,8 +337,88 @@ def selectTYUserEachMonEachDan():
     res = querySQL(sql)
     return res
     # logging.info(res)
-
+def 分析用户每次下单间隔():
+    # sql = f"""
+    #     SELECT oo.*,
+    #     sum(if(oo.days>=0 and oo.days<30,1,0)) '0',
+    #     sum(if(oo.days>=31 and oo.days<60,1,0)) '30',
+    #     sum(if(oo.days>=61 and oo.days<90,1,0)) '60',
+    #     sum(if(oo.days>=91 and oo.days<120,1,0)) '90',
+    #     sum(if(oo.days>=121 and oo.days<150,1,0)) '120',
+    #     sum(if(oo.days>=151 and oo.days<180,1,0)) '150',
+    #     sum(if(oo.days>=181 and oo.days<210,1,0)) '180',
+    #     sum(if(oo.days>=211 and oo.days<240,1,0)) '210',
+    #     sum(if(oo.days>=241 and oo.days<270,1,0)) '240',
+    #     sum(if(oo.days>=271 and oo.days<300,1,0)) '270',
+    #     sum(if(oo.days>=301 and oo.days<330,1,0)) '300',
+    #     sum(if(oo.days>=331 and oo.days<366,1,0)) '330'
+    #     from (
+    #         select datediff(o2.order_create_time,o.order_create_time) days,o.* from 
+    #         (SELECT  o.user_id,order_create_time,order_id FROM om_order_info o  
+    #         where o.order_create_time between '2018-08-31' and  '2019-08-31 23:59:59'
+    #         and order_status=44 and pharmacy_id =200  
+    #         group by user_id) o ,
+    #         (SELECT  o.user_id,order_create_time,order_id FROM om_order_info o  
+    #         where o.order_create_time between '2018-08-31' and  '2020-08-31 23:59:59'
+    #         and order_status=44 and pharmacy_id =200  
+    #         ) o2
+    #         where o.user_id = o2.user_id
+    #         and o.order_id !=o2.order_id
+    #     // ) oo group by oo.user_id
+    # """
+    # // ,o.order_create_time,o2.order_create_time
+    sql = f"""
+         select * from (
+            select datediff(o2.order_create_time,o.order_create_time) days
+                    
+                    ,o.phone_num 
+                    from 
+                    (SELECT  o.user_id,order_create_time,order_id,u.phone_num FROM om_order_info o,um_user_info u 
+                    where o.user_id = u.user_id 
+                    and o.order_create_time between '2018-08-31' and  '2019-08-31 23:59:59'
+                    and order_status=44 and pharmacy_id =200  
+                    group by user_id) o ,
+                    (SELECT  o.user_id,order_create_time,order_id FROM om_order_info o  
+                    where o.order_create_time >= '2018-08-31'   
+                    and order_status=44 and pharmacy_id =200  
+                    ) o2
+                    where o.user_id = o2.user_id
+            ) a where a.days<=365;"""
+    res = querySQL(sql)
+    db.commit()
+    list = res["data"]
+    resList = []
+    tempDays = 0
+    tempPhone = ''
+    tempRow = [0]*13
+    for dic in list:
+        days = dic['days']
+        phone = dic['phone_num']
+        if tempPhone != phone:
+            resList.append(tempRow)
+            tempRow = [0]*13
+            tempRow[0] = phone
+            tempPhone = phone
+            tempDays=0
+        else:
+            tdays = days-tempDays
+            index = int(tdays/30)+ int(0 if tdays%30==0 else 1)
+            index = index if index!=0 else 1
+            index = 12 if tdays>360  else index
+            tempRow[index] = tempRow[index]+1
+            tempDays = days
+    resList.append(tempRow)
+    # logging.info(f'分析用户每次下单间隔{list}')
+    # logging.info(f'分析用户每次下单间隔{resList}')
+    sheet = workbook.add_sheet('sheet1')
+    for i in range(len(resList)):
+        rows = resList[i]
+        for j in range(len(rows)):
+            sheet.write(i,j,rows[j])
+    workbook.save('分析用户每次下单间隔2.xls')
 if __name__ == "__main__":
+    分析用户每次下单间隔()
+    
     # selectTYUserEachMonEachDan()
     # logging.info(a)
     # selectTYUserGrow()
@@ -351,15 +432,16 @@ if __name__ == "__main__":
     #     （“当月新增用户”是指无历史成功下单的用户，不仅仅是当月新注册的）；
     # 2、铜川2020年5月留存数据；
     # 3、铜川5月运营数据表，表1标黄部分"
-    ydId = '1600,1601,1602,1603'
-    start = '2020-05-01'
-    end = '2020-06-01'
-    selectNewRegister(ydId,start,end)
-    selectOrderUsers(ydId,start,end)
-    selectRepeatOrderUsersMoreThan2(ydId,start,end)
-    selectRepeatOrderUsersMoreThan3(ydId,start,end)
-    selectNewOrderUsers(ydId,start,end)
-    db.commit()
+    # ydId = '1600,1601,1602,1603'
+    # ydId = '200'
+    # start = '2020-08-01'
+    # end = '2020-09-01'
+    # selectNewRegister(ydId,start,end)
+    # selectOrderUsers(ydId,start,end)
+    # selectRepeatOrderUsersMoreThan2(ydId,start,end)
+    # selectRepeatOrderUsersMoreThan3(ydId,start,end)
+    # selectNewOrderUsers(ydId,start,end)
+    # db.commit()
 
     
 # select count(o.user_id),

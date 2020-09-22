@@ -6,18 +6,21 @@ import logging
 
 logger = logging.getLogger()
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
-logging.basicConfig(filename='my-71.log', level=logging.DEBUG, format=LOG_FORMAT)
+logging.basicConfig(filename='./log/my-908.log', level=logging.DEBUG, format=LOG_FORMAT)
 #  创建一个handler，用于将日志输出到控制台
 # log = logging.StreamHandler()
 # log.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 ch.setLevel(logging.INFO)
 logger.addHandler(ch)
+
 # 基于pymysql 
  
-isDeve = True # 是否准生产
+# isDeve = False #  生产
+isDeve = True # 准生产
 if isDeve: # 准生产
    host = 'rm-2ze7fnv9ydw78u07a7o.mysql.rds.aliyuncs.com'
+   # host = 'rm-2ze5nu148mg523l6emo.mysql.rds.aliyuncs.com'
    logging.info('deve准生产数据库连接--------'+host)
 else:# 生产
    host = 'rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com'
@@ -73,7 +76,7 @@ def querySQL(sql):
    except Exception as err:
       db.rollback()
       logging.error("Error %s for execute sql: %s" % (err, sql))
-      logging.debug('新建商品的品牌墙，insert语句失败！！！')
+      logging.debug(' insert语句失败！！！')
       return {
          'code':404,
          'count':0,
@@ -145,7 +148,7 @@ def selectBy(sql):
    except Exception as err:
       db.rollback()
       logging.error("Error %s for execute sql: %s" % (err, sql))
-      logging.debug('新建商品的品牌墙，insert语句失败！！！')
+      logging.debug(' ，insert语句失败！！！')
       return []
 
 def selectOneBy(sql):

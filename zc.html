@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+<!-- <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"> -->
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+
+<body  style="width: 300px;"  >
+    <div id="app" class="app">
+        湿哒哒所大所
+        <button onclick="test()">22www2sss2</button>
+    <!-- <button class="getBtn" @click="loadData">测试一下2</button>
+    {{dic}}
+    <el-input v-model="this.res"></el-input>
+    {{res}}
+    {{this.res}}
+    <el-input v-model="res"></el-input> -->
+    </div>
+    
+</body>
+<script type="text/babel">
+// $(document).ready(function(){
+//   $("p").click(function(){
+//     $(this).hide();
+//   });
+// });
+window.onload = function () {
+    // 执行代码
+    console.log('测试页面ww')
+    test()
+}
+$(function(){
+    console.log('测试页面jq')
+ // 开始写 jQuery 代码...
+
+});
+// console.log('测试页面')
+//         var paramsurl =  window.location.search.substr(1)
+//         console.log(paramsurl)
+//         var paramlist =  paramsurl.split('&')
+//         // paramlist =  ["email=peiyao.mi@ykd365.com", "sign=8728d10ae199dc44ba25c0b107bcb27b", "uid=79f6188edb9e40bfbcd1a421465e3d42", "cid=b66381cdb3ad41108b9deb6fa82b4b99", "createChatTime=1594797103827"]
+//         console.log(paramlist)
+//         var diclist = []
+//         var dic = {}
+//         for (let index = 0; index < paramlist.length; index++) {
+//             var paramstr = paramlist[index]
+//             console.log(paramstr)
+//             // console.log(typeof element)
+//             var kvlist = []
+//             kvlist = paramstr.split('=')
+//             // console.log(kvlist)
+//             if(kvlist&&kvlist.length>=2){
+//                 var k = kvlist[0]
+//                 var v = kvlist[1]
+//                 dic[k] = v
+//                 // diclist.push({
+//                 //     k2:v
+//                 // })
+//             }
+//         }
+//         console.log(dic)
+//     new Vue({
+// 		el: "#app",
+// 		data() {
+// 			return {
+// 				list: [],
+//                 dic:{},
+// 				res:'222'
+// 			}
+// 		},
+// 		mounted() {
+//             console.log('测试页面2')
+// 			this.loadData()
+
+// 		},
+// 		methods: {
+//             loadData(){
+//                 alert(112332)
+//                     var paramsurl =  window.location.search.substr(1)
+//                     console.log(paramsurl)
+//                     var paramlist =  paramsurl.split('&')
+//                     // paramlist =  ["email=peiyao.mi@ykd365.com", "sign=8728d10ae199dc44ba25c0b107bcb27b", "uid=79f6188edb9e40bfbcd1a421465e3d42", "cid=b66381cdb3ad41108b9deb6fa82b4b99", "createChatTime=1594797103827"]
+//                     console.log(paramlist)
+//                     var diclist = []
+//                     var dic = {}
+//                     for (let index = 0; index < paramlist.length; index++) {
+//                         var paramstr = paramlist[index]
+//                         console.log(paramstr)
+//                         // console.log(typeof element)
+//                         var kvlist = []
+//                         kvlist = paramstr.split('=')
+//                         // console.log(kvlist)
+//                         if(kvlist&&kvlist.length>=2){
+//                             var k = kvlist[0]
+//                             var v = kvlist[1]
+//                             dic[k] = v
+//                             // diclist.push({
+//                             //     k2:v
+//                             // })
+//                         }
+//                     }
+//                     console.log(dic)
+//                     this.dic = dic
+//             }            
+// 		}
+// 	})
+    // function getQueryString(name) {
+	//       var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	//       var r = window.location.search.substr(1).match(reg);
+	//       if (r != null)
+	//       return unescape(r[2]);
+	//       return null;
+	// 	}
+    // (function(){
+    //     var paramsurl =  window.location.search.substr(1)
+    //     console.log(paramsurl)
+    //     var paramlist =  paramsurl.split('&')
+    //     // paramlist =  ["email=peiyao.mi@ykd365.com", "sign=8728d10ae199dc44ba25c0b107bcb27b", "uid=79f6188edb9e40bfbcd1a421465e3d42", "cid=b66381cdb3ad41108b9deb6fa82b4b99", "createChatTime=1594797103827"]
+    //     console.log(paramlist)
+    //     var diclist = []
+    //     var dic = {}
+    //     for (let index = 0; index < paramlist.length; index++) {
+    //         var paramstr = paramlist[index]
+    //         console.log(paramstr)
+    //         // console.log(typeof element)
+    //         var kvlist = []
+    //         kvlist = paramstr.split('=')
+    //         // console.log(kvlist)
+    //         if(kvlist&&kvlist.length>=2){
+    //             var k = kvlist[0]
+    //             var v = kvlist[1]
+    //             dic[k] = v
+    //             // diclist.push({
+    //             //     k2:v
+    //             // })
+    //         }
+    //     }
+    //     console.log(dic)
+    // })
+    // window.parent.postMessage({
+    // type:"createOrder",
+    // params:{
+    //     "card_title":"云客服_智齿客服",
+    //     "card_url":"http://www.sobot.com",
+    //     "card_desc":"云客服,在线客服系统,云呼叫中心,机器人客服,工单客服,智能客服",
+    //     "card_note":"1500元",
+    //     "card_picture":"https://img.sobot.com/console/common/face/admin.png"
+    // }
+    // },"*")
+    function test() {
+        // console.log(params)
+        // console.log(window.location.search)
+        var paramsurl =  window.location.search.substr(1)
+        console.log(paramsurl)
+        var paramlist =  paramsurl.split('&')
+        // paramlist =  ["email=peiyao.mi@ykd365.com", "sign=8728d10ae199dc44ba25c0b107bcb27b", "uid=79f6188edb9e40bfbcd1a421465e3d42", "cid=b66381cdb3ad41108b9deb6fa82b4b99", "createChatTime=1594797103827"]
+        console.log(paramlist)
+        var diclist = []
+        var dic = {}
+        for (let index = 0; index < paramlist.length; index++) {
+            var paramstr = paramlist[index]
+            console.log(paramstr)
+            // console.log(typeof element)
+            var kvlist = []
+            kvlist = paramstr.split('=')
+            // console.log(kvlist)
+            if(kvlist&&kvlist.length>=2){
+                var k = kvlist[0]
+                var v = kvlist[1]
+                dic[k] = v
+                // diclist.push({
+                //     k2:v
+                // })
+            }
+        }
+        console.log(dic)
+      
+        
+    }
+    
+
+    // var parentId = getQueryString('parentId')
+    // console.log('parentId='+parentId)
+</script>
+
+</html>
+<!-- console.log(9899999)
+<script>
+    console.log(19899999)
+</script> -->

@@ -7,54 +7,78 @@ import act
 
 def delayMsDateFrom(day,addDays,ydId):
     """延期秒杀活动专用，day为目前已有秒杀的最后一天时间，adddays是要延期的天数，ydid是药店id"""
-    sql = f'''SELECT * from am_stages_sale s left join am_stages_sale_detail sd on s.sg_id = sd.sg_id 
+    try:
+        sql = f'''SELECT * from am_stages_sale s 
                 WHERE sg_start_time >= '{day} 00:00:00' and sg_end_time <= '{day} 23:59:59'
                 and s.pharmacy_id = {ydId}
                 ;'''
-    stagesList = selectBy(sql)
+        stagesList = selectBy(sql)
+        
+        for dic in stagesList:
+            lineSql =''
+            sgId = dic['sg_id']
+
+            # dirId = dic['dir_id']
+            # remark = dic['sg_detail_remark'] if dic['sg_detail_remark']!=None else 'NULL'
+            # flag = dic['sg_detail_flag']
+            # type = dic['sg_detail_type']
+            start = dic['sg_start_time'].strftime('%Y-%m-%d %H:%M:%S')
+            end = dic['sg_end_time'].strftime('%Y-%m-%d %H:%M:%S')
+            for i in range(addDays):
+                # logging.info(datetime.datetime.strptime(day,'%Y-%m-%d')+datetime.timedelta(days=i+1))
+                today = (datetime.datetime.strptime(day,'%Y-%m-%d')+datetime.timedelta(days=i+1)).strftime('%Y-%m-%d')
+                # logging.info('%s----%s----%s',day,today,type(start))
+                sd = start.replace(day, today)
+                nd = end.replace(day, today)
+                # logging.info('%s----%s----',sd,nd)
+                lineSql += f"""('{dic['pharmacy_id']}','{dic['sg_title']}','{dic['sg_status']}','{sd}','{nd}','{dic['quota_id']}','{dic['act_id']}','{dic['item_id']}',now(),now()),"""
+            lineSql=lineSql[:-1]
+
+
+            sql = f"""INSERT INTO `medstore`.`am_stages_sale` ( `pharmacy_id`, `sg_title`, `sg_status`, `sg_start_time`, `sg_end_time`, `quota_id`, `act_id`, `item_id`, `sg_create_time`, `sg_update_time`)
+                    VALUES {lineSql} ; """
+            res = insertSQL(sql)
+
+            # logging.info(sql)
+            firstId = res['lastId']
+            count = res['count']
+            lastId = firstId+count-1
+
+            sql = f'''SELECT * from am_stages_sale s left join am_stages_sale_detail sd on s.sg_id = sd.sg_id 
+                WHERE sg_start_time >= '{day} 00:00:00' and sg_end_time <= '{day} 23:59:59'
+                and s.pharmacy_id = {ydId}
+                and s.sg_id = {sgId}
+                ;'''
+            stagesdetailList = selectBy(sql)
+            for ddic in stagesdetailList:
+                dirId = ddic['dir_id']
+                remark = ddic['sg_detail_remark'] if ddic['sg_detail_remark']!=None else 'NULL'
+                flag = ddic['sg_detail_flag']
+                type = ddic['sg_detail_type']
+
+                detailSql= f"""INSERT INTO `medstore`.`am_stages_sale_detail` (  `sg_id`, `act_id`, `item_id`, `quota_id`, `pharmacy_id`, `dir_id`, `sg_detail_create_time`, `sg_detail_update_time`, `sg_detail_remark`, `sg_detail_flag`, `sg_detail_type`) 
+                                SELECT `sg_id`, `act_id`, `item_id`, `quota_id`, `pharmacy_id`,'{dirId}' `dir_id`,NOW() `sg_detail_create_time`,NOW() `sg_detail_update_time`
+                                ,'{remark}' `sg_detail_remark`,'{flag}' `sg_detail_flag`,'{type}' `sg_detail_type` 
+                                from am_stages_sale
+                                WHERE sg_id between {firstId} and {lastId} ;"""
+                insertSQL(detailSql)
+
+            # saleSql= f"""INSERT INTO `medstore`.`am_stages_sale_detail` (  `sg_id`, `act_id`, `item_id`, `quota_id`, `pharmacy_id`, `dir_id`, `sg_detail_create_time`, `sg_detail_update_time`, `sg_detail_remark`, `sg_detail_flag`, `sg_detail_type`) 
+            #                 SELECT `sg_id`, `act_id`, `item_id`, `quota_id`, `pharmacy_id`,'{dirId}' `dir_id`,NOW() `sg_detail_create_time`,NOW() `sg_detail_update_time`
+            #                 ,{remark} `sg_detail_remark`,'{flag}' `sg_detail_flag`,'{type}' `sg_detail_type` 
+            #                 from am_stages_sale
+            #                 WHERE sg_id between {firstId} and {lastId} ;"""
+            # insertSQL(saleSql)
+        copyMsSale(day,addDays,ydId)
+        copyMsStat(day,addDays,ydId)
+        logging.info('----------------------------------over---------------------------')
+        db.commit()
+    except Exception as err:
+        logging.error("Error %s for execute sql: %s" % (err, tableName))
+        db.rollback()
+
+
     
-    for dic in stagesList:
-        lineSql =''
-        dirId = dic['dir_id']
-        remark = dic['sg_detail_remark'] if dic['sg_detail_remark']!=None else 'NULL'
-        flag = dic['sg_detail_flag']
-        type = dic['sg_detail_type']
-        start = dic['sg_start_time'].strftime('%Y-%m-%d %H:%M:%S')
-        end = dic['sg_end_time'].strftime('%Y-%m-%d %H:%M:%S')
-        for i in range(addDays):
-            # logging.info(datetime.datetime.strptime(day,'%Y-%m-%d')+datetime.timedelta(days=i+1))
-            today = (datetime.datetime.strptime(day,'%Y-%m-%d')+datetime.timedelta(days=i+1)).strftime('%Y-%m-%d')
-            # logging.info('%s----%s----%s',day,today,type(start))
-            sd = start.replace(day, today)
-            nd = end.replace(day, today)
-            # logging.info('%s----%s----',sd,nd)
-            lineSql += f"""('{dic['pharmacy_id']}','{dic['sg_title']}','{dic['sg_status']}','{sd}','{nd}','{dic['quota_id']}','{dic['act_id']}','{dic['item_id']}',now(),now()),"""
-        lineSql=lineSql[:-1]
-        sql = f"""INSERT INTO `medstore`.`am_stages_sale` ( `pharmacy_id`, `sg_title`, `sg_status`, `sg_start_time`, `sg_end_time`, `quota_id`, `act_id`, `item_id`, `sg_create_time`, `sg_update_time`)
-                VALUES {lineSql} ; """
-        res = insertSQL(sql)
-
-        # logging.info(sql)
-        firstId = res['lastId']
-        count = res['count']
-        lastId = firstId+count-1
-
-        detailSql= f"""INSERT INTO `medstore`.`am_stages_sale_detail` (  `sg_id`, `act_id`, `item_id`, `quota_id`, `pharmacy_id`, `dir_id`, `sg_detail_create_time`, `sg_detail_update_time`, `sg_detail_remark`, `sg_detail_flag`, `sg_detail_type`) 
-                        SELECT `sg_id`, `act_id`, `item_id`, `quota_id`, `pharmacy_id`,'{dirId}' `dir_id`,NOW() `sg_detail_create_time`,NOW() `sg_detail_update_time`
-                        ,{remark} `sg_detail_remark`,'{flag}' `sg_detail_flag`,'{type}' `sg_detail_type` 
-                        from am_stages_sale
-                        WHERE sg_id between {firstId} and {lastId} ;"""
-        insertSQL(detailSql)
-
-        # saleSql= f"""INSERT INTO `medstore`.`am_stages_sale_detail` (  `sg_id`, `act_id`, `item_id`, `quota_id`, `pharmacy_id`, `dir_id`, `sg_detail_create_time`, `sg_detail_update_time`, `sg_detail_remark`, `sg_detail_flag`, `sg_detail_type`) 
-        #                 SELECT `sg_id`, `act_id`, `item_id`, `quota_id`, `pharmacy_id`,'{dirId}' `dir_id`,NOW() `sg_detail_create_time`,NOW() `sg_detail_update_time`
-        #                 ,{remark} `sg_detail_remark`,'{flag}' `sg_detail_flag`,'{type}' `sg_detail_type` 
-        #                 from am_stages_sale
-        #                 WHERE sg_id between {firstId} and {lastId} ;"""
-        # insertSQL(saleSql)
-    copyMsSale(day,addDays,ydId)
-    copyMsStat(day,addDays,ydId)
-    logging.info('----------------------------------over---------------------------')
 
 def copyMsSale(day,addDays,ydId):
     sql = f'''SELECT * from pm_sku_sale sale,pm_prod_sku s
@@ -132,25 +156,43 @@ def copyMsStat(day,addDays,ydId):
 
         # logging.info(sql)
 
-def creatJHS(tableName,drugstoreId,startTime,endTime):
-    try:
+# def creatJHS(tableName,drugstoreId,startTime,endTime):
+#     try:
      
-        addNewSku4JHSMS(tableName,'JHS',drugstoreId)
-        addPmActSale(tableName,drugstoreId,startTime,endTime)
+#         addNewSku4JHSMS(tableName,'JHS',drugstoreId)
+#         addPmActSale(tableName,drugstoreId,startTime,endTime)
         
-        1501
-        db.commit()
-    except Exception as err:
-        logging.error("Error %s for execute sql: %s" % (err, tableName))
-        db.rollback()
+#         # 1501
+#         db.commit()
+#     except Exception as err:
+#         logging.error("Error %s for execute sql: %s" % (err, tableName))
+#         db.rollback()
 
 if __name__ == "__main__":
-    logging.info('2222')
-    day = '2020-05-01'
-    addDays = 100
-    ydId = '1601'
+    logging.info('开始延期秒杀活动啦--------------------------------------------------')
+    # day1 = '2020-08-12'
+    # addDays1 = 141
+    # ydId1 = '1600'
+    # delayMsDateFrom(day1,addDays1,ydId1)
+
+    # day2 = '2020-08-09'
+    # addDays2 = 143
+    # ydId2 = '1601'
+    # delayMsDateFrom(day2,addDays2,ydId2)
+
+    # day3 = '2020-08-09'
+    # addDays3 = 143
+    # ydId3 = '1603'
+    # delayMsDateFrom(day3,addDays3,ydId3)
+    # db.commit()
+
+    day = '2020-08-12'
+    addDays = 141
+    ydId = '1603'
     delayMsDateFrom(day,addDays,ydId)
     db.commit()
+
+    logging.info(f'延期秒杀活动完成， 根据{day}的秒杀数据，在{ydId}店---延期了{addDays}天--------------------------------------------------')
 
     # copyMsSale(day,addDays,ydId)
     # copyMsStat(day,addDays,ydId)

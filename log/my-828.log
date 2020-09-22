@@ -1,0 +1,168 @@
+2020-08-28 15:48:32,321 - INFO - deve准生产数据库连接--------rm-2ze7fnv9ydw78u07a7o.mysql.rds.aliyuncs.com
+2020-08-28 15:48:32,751 - INFO -  测试 药快到专用工具--------
+2020-08-28 15:48:32,757 - DEBUG - select * from pm_dir_info   
+2020-08-28 15:48:49,698 - DEBUG - querySQL语句受影响的行数：：177237  None
+2020-08-28 15:48:49,698 - DEBUG - 
+     UPDATE sm_image_link set image_url = 'http://image.ykd365.cn/act/202008/kx/ty_9gg.jpg' 
+        WHERE drugstore_id = 200
+        and link_status=1
+        and link_view = 'all_essence'
+        ORDER BY link_id desc   
+2020-08-28 15:48:49,807 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:48:49,808 - INFO - 修改sm_image_link类型为all_essence  的九宫格大图 药店:200，图片http://image.ykd365.cn/act/202008/kx/ty_9gg.jpg 
+2020-08-28 15:48:49,810 - DEBUG - UPDATE lm_tem_instance a LEFT JOIN lm_tem_item_ins b on a.tem_ins_id = b.tem_ins_id 
+        LEFT JOIN sm_image_link c on b.relation_id = c.link_id 
+        LEFT JOIN sm_image_link c2 on c.drugstore_id = c2.drugstore_id
+        set c.link_remark = c.link_url, c.link_url =  c2.link_url,c.link_name=c2.link_name ,c.link_start_time='2020-08-25 00:00:00',c.link_end_time='2020-09-10 23:59:59',c.link_status = 1
+        WHERE pharmacy_id = 200 and tem_id = 7 and c2.link_name = '开学必备小药箱' and c2.link_view = 'activity'
+        and ins_desc = 5;
+2020-08-28 15:48:49,883 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:48:49,884 - INFO - 修改sm_image_link类型为 essence 的九宫格 第 5格链接, 药店:200，开始2020-08-25 00:00:00-结束2020-09-10 23:59:59 
+2020-08-28 15:48:49,936 - DEBUG - 
+     UPDATE sm_image_link set image_url = 'http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg' 
+        WHERE drugstore_id = 1600
+        and link_status=1
+        and link_view = 'all_essence'
+        ORDER BY link_id desc   
+2020-08-28 15:48:49,959 - DEBUG - insert语句受影响的行数：1  0
+2020-08-28 15:48:49,959 - INFO - 修改sm_image_link类型为all_essence  的九宫格大图 药店:1600，图片http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg 
+2020-08-28 15:48:50,017 - DEBUG - UPDATE lm_tem_instance a LEFT JOIN lm_tem_item_ins b on a.tem_ins_id = b.tem_ins_id 
+        LEFT JOIN sm_image_link c on b.relation_id = c.link_id 
+        LEFT JOIN sm_image_link c2 on c.drugstore_id = c2.drugstore_id
+        set c.link_remark = c.link_url, c.link_url =  c2.link_url,c.link_name=c2.link_name ,c.link_start_time='2020-08-25 00:00:00',c.link_end_time='2020-09-10 23:59:59',c.link_status = 1
+        WHERE pharmacy_id = 1600 and tem_id = 7 and c2.link_name = '开学必备小药箱' and c2.link_view = 'activity'
+        and ins_desc = 5;
+2020-08-28 15:48:50,047 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:48:50,047 - INFO - 修改sm_image_link类型为 essence 的九宫格 第 5格链接, 药店:1600，开始2020-08-25 00:00:00-结束2020-09-10 23:59:59 
+2020-08-28 15:48:50,086 - DEBUG - 
+     UPDATE sm_image_link set image_url = 'http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg' 
+        WHERE drugstore_id = 1601
+        and link_status=1
+        and link_view = 'all_essence'
+        ORDER BY link_id desc   
+2020-08-28 15:48:50,111 - DEBUG - insert语句受影响的行数：1  0
+2020-08-28 15:48:50,112 - INFO - 修改sm_image_link类型为all_essence  的九宫格大图 药店:1601，图片http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg 
+2020-08-28 15:48:50,155 - DEBUG - UPDATE lm_tem_instance a LEFT JOIN lm_tem_item_ins b on a.tem_ins_id = b.tem_ins_id 
+        LEFT JOIN sm_image_link c on b.relation_id = c.link_id 
+        LEFT JOIN sm_image_link c2 on c.drugstore_id = c2.drugstore_id
+        set c.link_remark = c.link_url, c.link_url =  c2.link_url,c.link_name=c2.link_name ,c.link_start_time='2020-08-25 00:00:00',c.link_end_time='2020-09-10 23:59:59',c.link_status = 1
+        WHERE pharmacy_id = 1601 and tem_id = 7 and c2.link_name = '开学必备小药箱' and c2.link_view = 'activity'
+        and ins_desc = 5;
+2020-08-28 15:48:50,178 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:48:50,179 - INFO - 修改sm_image_link类型为 essence 的九宫格 第 5格链接, 药店:1601，开始2020-08-25 00:00:00-结束2020-09-10 23:59:59 
+2020-08-28 15:48:50,213 - DEBUG - 
+     UPDATE sm_image_link set image_url = 'http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg' 
+        WHERE drugstore_id = 1602
+        and link_status=1
+        and link_view = 'all_essence'
+        ORDER BY link_id desc   
+2020-08-28 15:48:50,236 - DEBUG - insert语句受影响的行数：1  0
+2020-08-28 15:48:50,236 - INFO - 修改sm_image_link类型为all_essence  的九宫格大图 药店:1602，图片http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg 
+2020-08-28 15:48:50,257 - DEBUG - UPDATE lm_tem_instance a LEFT JOIN lm_tem_item_ins b on a.tem_ins_id = b.tem_ins_id 
+        LEFT JOIN sm_image_link c on b.relation_id = c.link_id 
+        LEFT JOIN sm_image_link c2 on c.drugstore_id = c2.drugstore_id
+        set c.link_remark = c.link_url, c.link_url =  c2.link_url,c.link_name=c2.link_name ,c.link_start_time='2020-08-25 00:00:00',c.link_end_time='2020-09-10 23:59:59',c.link_status = 1
+        WHERE pharmacy_id = 1602 and tem_id = 7 and c2.link_name = '开学必备小药箱' and c2.link_view = 'activity'
+        and ins_desc = 5;
+2020-08-28 15:48:50,292 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:48:50,293 - INFO - 修改sm_image_link类型为 essence 的九宫格 第 5格链接, 药店:1602，开始2020-08-25 00:00:00-结束2020-09-10 23:59:59 
+2020-08-28 15:48:50,310 - DEBUG - 
+     UPDATE sm_image_link set image_url = 'http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg' 
+        WHERE drugstore_id = 1603
+        and link_status=1
+        and link_view = 'all_essence'
+        ORDER BY link_id desc   
+2020-08-28 15:48:50,330 - DEBUG - insert语句受影响的行数：1  0
+2020-08-28 15:48:50,330 - INFO - 修改sm_image_link类型为all_essence  的九宫格大图 药店:1603，图片http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg 
+2020-08-28 15:48:50,360 - DEBUG - UPDATE lm_tem_instance a LEFT JOIN lm_tem_item_ins b on a.tem_ins_id = b.tem_ins_id 
+        LEFT JOIN sm_image_link c on b.relation_id = c.link_id 
+        LEFT JOIN sm_image_link c2 on c.drugstore_id = c2.drugstore_id
+        set c.link_remark = c.link_url, c.link_url =  c2.link_url,c.link_name=c2.link_name ,c.link_start_time='2020-08-25 00:00:00',c.link_end_time='2020-09-10 23:59:59',c.link_status = 1
+        WHERE pharmacy_id = 1603 and tem_id = 7 and c2.link_name = '开学必备小药箱' and c2.link_view = 'activity'
+        and ins_desc = 5;
+2020-08-28 15:48:50,388 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:48:50,389 - INFO - 修改sm_image_link类型为 essence 的九宫格 第 5格链接, 药店:1603，开始2020-08-25 00:00:00-结束2020-09-10 23:59:59 
+2020-08-28 15:56:20,840 - INFO - deve准生产数据库连接--------rm-2ze7fnv9ydw78u07a7o.mysql.rds.aliyuncs.com
+2020-08-28 15:56:21,532 - INFO -  测试 药快到专用工具--------
+2020-08-28 15:56:21,533 - DEBUG - select * from pm_dir_info   
+2020-08-28 15:56:38,431 - DEBUG - querySQL语句受影响的行数：：177237  None
+2020-08-28 15:56:38,433 - DEBUG - 
+     UPDATE sm_image_link set image_url = 'http://image.ykd365.cn/act/202008/kx/ty_9gg.jpg' 
+        WHERE drugstore_id = 200
+        and link_status=1
+        and link_view = 'all_essence'
+        ORDER BY link_id desc   
+2020-08-28 15:56:38,571 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:56:38,571 - INFO - 修改sm_image_link类型为all_essence  的九宫格大图 药店:200，图片http://image.ykd365.cn/act/202008/kx/ty_9gg.jpg 
+2020-08-28 15:56:38,571 - DEBUG - UPDATE lm_tem_instance a LEFT JOIN lm_tem_item_ins b on a.tem_ins_id = b.tem_ins_id 
+        LEFT JOIN sm_image_link c on b.relation_id = c.link_id 
+        LEFT JOIN sm_image_link c2 on c.drugstore_id = c2.drugstore_id
+        set c.link_remark = c.link_url, c.link_url =  c2.link_url,c.link_name=c2.link_name ,c.link_start_time='2020-08-25 00:00:00',c.link_end_time='2020-09-10 23:59:59',c.link_status = 1
+        WHERE pharmacy_id = 200 and tem_id = 7 and c2.link_name = '开学必备小药箱' and c2.link_view = 'activity'
+        and ins_desc = 5;
+2020-08-28 15:56:38,626 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:56:38,626 - INFO - 修改sm_image_link类型为 essence 的九宫格 第 5格链接, 药店:200，开始2020-08-25 00:00:00-结束2020-09-10 23:59:59 
+2020-08-28 15:56:38,626 - DEBUG - 
+     UPDATE sm_image_link set image_url = 'http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg' 
+        WHERE drugstore_id = 1600
+        and link_status=1
+        and link_view = 'all_essence'
+        ORDER BY link_id desc   
+2020-08-28 15:56:38,645 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:56:38,646 - INFO - 修改sm_image_link类型为all_essence  的九宫格大图 药店:1600，图片http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg 
+2020-08-28 15:56:38,671 - DEBUG - UPDATE lm_tem_instance a LEFT JOIN lm_tem_item_ins b on a.tem_ins_id = b.tem_ins_id 
+        LEFT JOIN sm_image_link c on b.relation_id = c.link_id 
+        LEFT JOIN sm_image_link c2 on c.drugstore_id = c2.drugstore_id
+        set c.link_remark = c.link_url, c.link_url =  c2.link_url,c.link_name=c2.link_name ,c.link_start_time='2020-08-25 00:00:00',c.link_end_time='2020-09-10 23:59:59',c.link_status = 1
+        WHERE pharmacy_id = 1600 and tem_id = 7 and c2.link_name = '开学必备小药箱' and c2.link_view = 'activity'
+        and ins_desc = 5;
+2020-08-28 15:56:38,702 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:56:38,703 - INFO - 修改sm_image_link类型为 essence 的九宫格 第 5格链接, 药店:1600，开始2020-08-25 00:00:00-结束2020-09-10 23:59:59 
+2020-08-28 15:56:38,723 - DEBUG - 
+     UPDATE sm_image_link set image_url = 'http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg' 
+        WHERE drugstore_id = 1601
+        and link_status=1
+        and link_view = 'all_essence'
+        ORDER BY link_id desc   
+2020-08-28 15:56:38,742 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:56:38,742 - INFO - 修改sm_image_link类型为all_essence  的九宫格大图 药店:1601，图片http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg 
+2020-08-28 15:56:38,771 - DEBUG - UPDATE lm_tem_instance a LEFT JOIN lm_tem_item_ins b on a.tem_ins_id = b.tem_ins_id 
+        LEFT JOIN sm_image_link c on b.relation_id = c.link_id 
+        LEFT JOIN sm_image_link c2 on c.drugstore_id = c2.drugstore_id
+        set c.link_remark = c.link_url, c.link_url =  c2.link_url,c.link_name=c2.link_name ,c.link_start_time='2020-08-25 00:00:00',c.link_end_time='2020-09-10 23:59:59',c.link_status = 1
+        WHERE pharmacy_id = 1601 and tem_id = 7 and c2.link_name = '开学必备小药箱' and c2.link_view = 'activity'
+        and ins_desc = 5;
+2020-08-28 15:56:38,802 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:56:38,802 - INFO - 修改sm_image_link类型为 essence 的九宫格 第 5格链接, 药店:1601，开始2020-08-25 00:00:00-结束2020-09-10 23:59:59 
+2020-08-28 15:56:38,820 - DEBUG - 
+     UPDATE sm_image_link set image_url = 'http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg' 
+        WHERE drugstore_id = 1602
+        and link_status=1
+        and link_view = 'all_essence'
+        ORDER BY link_id desc   
+2020-08-28 15:56:38,838 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:56:38,839 - INFO - 修改sm_image_link类型为all_essence  的九宫格大图 药店:1602，图片http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg 
+2020-08-28 15:56:38,879 - DEBUG - UPDATE lm_tem_instance a LEFT JOIN lm_tem_item_ins b on a.tem_ins_id = b.tem_ins_id 
+        LEFT JOIN sm_image_link c on b.relation_id = c.link_id 
+        LEFT JOIN sm_image_link c2 on c.drugstore_id = c2.drugstore_id
+        set c.link_remark = c.link_url, c.link_url =  c2.link_url,c.link_name=c2.link_name ,c.link_start_time='2020-08-25 00:00:00',c.link_end_time='2020-09-10 23:59:59',c.link_status = 1
+        WHERE pharmacy_id = 1602 and tem_id = 7 and c2.link_name = '开学必备小药箱' and c2.link_view = 'activity'
+        and ins_desc = 5;
+2020-08-28 15:56:38,908 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:56:38,909 - INFO - 修改sm_image_link类型为 essence 的九宫格 第 5格链接, 药店:1602，开始2020-08-25 00:00:00-结束2020-09-10 23:59:59 
+2020-08-28 15:56:38,930 - DEBUG - 
+     UPDATE sm_image_link set image_url = 'http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg' 
+        WHERE drugstore_id = 1603
+        and link_status=1
+        and link_view = 'all_essence'
+        ORDER BY link_id desc   
+2020-08-28 15:56:38,951 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:56:38,951 - INFO - 修改sm_image_link类型为all_essence  的九宫格大图 药店:1603，图片http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg 
+2020-08-28 15:56:38,972 - DEBUG - UPDATE lm_tem_instance a LEFT JOIN lm_tem_item_ins b on a.tem_ins_id = b.tem_ins_id 
+        LEFT JOIN sm_image_link c on b.relation_id = c.link_id 
+        LEFT JOIN sm_image_link c2 on c.drugstore_id = c2.drugstore_id
+        set c.link_remark = c.link_url, c.link_url =  c2.link_url,c.link_name=c2.link_name ,c.link_start_time='2020-08-25 00:00:00',c.link_end_time='2020-09-10 23:59:59',c.link_status = 1
+        WHERE pharmacy_id = 1603 and tem_id = 7 and c2.link_name = '开学必备小药箱' and c2.link_view = 'activity'
+        and ins_desc = 5;
+2020-08-28 15:56:39,011 - DEBUG - insert语句受影响的行数：0  0
+2020-08-28 15:56:39,011 - INFO - 修改sm_image_link类型为 essence 的九宫格 第 5格链接, 药店:1603，开始2020-08-25 00:00:00-结束2020-09-10 23:59:59 

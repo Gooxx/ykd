@@ -1267,6 +1267,50 @@ def copyStAnalysisCate(iDirId,baseDrugstoreId,drugstoreId):
                 and a.pharmacy_id = {baseDrugstoreId};"""
     insertSQL(sql)
 
+
+
+def createLmTem(drugstoreId,iSmId,baseDrugstoreId):
+    '''# 新建 九宫格 的布局'''
+    tem_name = '新版布1'
+    tem_desc = '左上占2行2列,其余5格包围他'
+    ydids = [200,1600]
+    items = [{'item_seq':'1','row_seq':'1','col_seq':'1','col_width':'66','col_aspect_radio':'100','col_span':'4','row_span':'2'},
+            {'item_seq':'2','row_seq':'1','col_seq':'2','col_width':'33','col_aspect_radio':'100','col_span':'2','row_span':'1'},
+            {'item_seq':'3','row_seq':'2','col_seq':'2','col_width':'33','col_aspect_radio':'100','col_span':'2','row_span':'1'},
+            {'item_seq':'4','row_seq':'3','col_seq':'1','col_width':'33','col_aspect_radio':'100','col_span':'2','row_span':'1'},
+            {'item_seq':'5','row_seq':'3','col_seq':'2','col_width':'33','col_aspect_radio':'100','col_span':'2','row_span':'1'},
+            {'item_seq':'6','row_seq':'3','col_seq':'3','col_width':'33','col_aspect_radio':'100','col_span':'2','row_span':'1'},]
+
+
+    temsql =  f'''INSERT INTO `lm_template` (`tem_status`, `tem_name`, `tem_desc`, `tem_create_time`, `tem_update_time`) 
+    VALUES (1, '{tem_name}', '{tem_desc}', now(), now());'''
+    temres = insertSQL(temsql)
+    tem_id = temres['lastId']
+
+    for item in items:
+        itemsql = f'''INSERT INTO `lm_tem_item` ( `tem_id`, `item_seq`, `row_seq`, `col_seq`, `col_width`, `col_aspect_radio`, `col_span`, `row_span`) VALUES
+                    ( '{tem_id}','{item["item_seq"]}', '{item["row_seq"]}', '{item["col_seq"]}', '{item["col_width"]}', '{item["col_aspect_radio"]}', '{item["col_span"]}', '{item["row_span"]}');'''
+        itemres = insertSQL(itemsql)
+        item_id = itemres['lastId']
+
+        for ydid in ydids:
+            inssql = f'''INSERT INTO `lm_tem_instance` ( `tem_id`, `pharmacy_id`, `effect_time`, `invalid_time`, `ins_priority`, `ins_rule`, `other_info`) VALUES
+                    ( '{tem_id}', '{ydid}', '2020-07-01 00:00:00', '2028-01-01 23:59:59', 2, '', '药店新');'''
+            insres = insertSQL(inssql)
+            ins_id = insres['lastId']
+
+    insSQL = f""" INSERT INTO `medstore`.`lm_tem_instance` ( `tem_id`, `pharmacy_id`, `effect_time`, `invalid_time`, `ins_priority`, `ins_rule`, `other_info`)
+            SELECT `tem_id`,'{drugstoreId}' `pharmacy_id`, `effect_time`, `invalid_time`, `ins_priority`, `ins_rule`, `other_info`
+            from lm_tem_instance WHERE pharmacy_id ={baseDrugstoreId};"""
+    ins = insertSQL(insSQL)   
+    teminsId = ins['lastId']
+    temiteminsSQL = f""" INSERT INTO `medstore`.`lm_tem_item_ins` (  `tem_ins_id`, `tem_item_id`, `relation_object`, `relation_id`, `ins_desc`) 
+                SELECT '{teminsId}' `tem_ins_id`, ii.`tem_item_id`, ii.`relation_object`,si.link_id+{iSmId} `relation_id`,ii.`ins_desc`
+                from lm_tem_instance i 
+                LEFT JOIN lm_tem_item_ins ii on i.tem_ins_id = ii.tem_ins_id 
+                LEFT JOIN as_test.kd_sm_image_link si on ii.relation_id = si.old_link_id
+                WHERE i.pharmacy_id ={baseDrugstoreId};"""
+    insertSQL(temiteminsSQL)  
     
     # return res['lastId']
 # 创建多盒商品 createCombByHuohao('1007150',1601,331474,490,490,count=5)
