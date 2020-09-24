@@ -258,7 +258,8 @@ def 中秋国庆(actId=0,actName = '',tableName ='',ydList = [],startTime='',end
     #     updateActTable(tableName,set=f"""item_code='{code}',item_desc='{dir['item_desc']}',item_type='{dir['item_type']}',item_img='{image}',item_img_r='{dir['item_img_r']}',details_value='{dir['details_value']}',rule_value='{dir['rule_value']}'""",where=f"item_name='{dir['item_name']}'")
     #     db.commit()
     #     logging.info(f"更新基础表中的目录数据{code}")
-
+    # 以上 是对基础表的修改， 上生产的时候直接复制盘货表即可，无需再次执行上面的代码
+    # 以下 是活动的正式内容 ，上生产的时候需要执行
 
     logging.debug('中秋 国庆')
     if actId==0:
@@ -303,6 +304,40 @@ def 中秋国庆(actId=0,actName = '',tableName ='',ydList = [],startTime='',end
             logging.error(err)
             db.rollback()
 
+def update国庆中秋9GG( toDirName ='',ydIds = [],allImags=[],images=[],startTime='',endTime=''):
+    # ydIds=[200]
+
+    # images=[
+    #     'http://image.ykd365.cn/act/202008/kx/ty_9gg.jpg','http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg','http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg','http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg','http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg'
+    # ]
+    # queryTable('pm_dir_info')
+    # start = '2020-08-29 00:00:00'
+    # end = '2020-09-10 23:59:59'
+    # toDirName='开学必备小药箱'
+    # url = 
+    actName = '健康好礼嗨购季'
+    # start = '2010-09-25 00:00:00'
+    # end = '2020-10-11 23:59:59'
+    parentDirId = '1002764884'
+    # linkurl = 'http://store.ykd365.com/medstore/actUserpage/medicineKit_2008?pageSize=1000&dirId='
+    linkurl = 'http://deve.ykd365.com/medstore/actUserpage/moon_2010?pageSize=1000&dirId='
+
+    color = '#deedef'
+    headimg = 'http://image.ykd365.cn/act/202009/zq/02.png'
+    linkimg = 'http://image.ykd365.cn/act/202009/zq/lb.jpg'
+    windowimg = 'http://image.ykd365.cn/act/202009/zq/tc.png'
+    for i in range(len(ydIds)):
+        drugstoreId = ydIds[i]
+        addSmImageLink(drugstoreId,1,linkimg,linkurl,actName,parentDirId,startTime,endTime,link_view='')
+        addSmImageLinkWindow(drugstoreId,1,windowimg,linkurl,actName,parentDirId,startTime,endTime)
+        # if i==0:
+        updateAllEnssence(ydIds[i],allImags[i])
+        updateEnssence(ydIds[i],5,startTime,endTime,toDirName=toDirName,link_view='')
+        # else:
+        #     logging.info(i)
+    db.commit()
+    
+
 if __name__ == "__main__":
     logging.info(' 测试 药快到专用工具--------')
     actName = '健康好礼嗨购季'
@@ -317,11 +352,14 @@ if __name__ == "__main__":
     linkimg = 'http://image.ykd365.cn/act/202009/zq/lb.jpg'
     windowimg = 'http://image.ykd365.cn/act/202009/zq/tc.png'
 
-    中秋国庆(actId=0,actName = actName,tableName ='as_test.202009_ty_zq',ydList = [200]
-        ,startTime=start,endTime=end,img = headimg,color = color,linkimg =linkimg
-        ,linkurl = linkurl
-        ,linkView = '',windowimg= windowimg)
+    allimg = 'http://image.ykd365.cn/act/202009/zq/ty_9gg.jpg'
 
+
+    # 中秋国庆(actId=0,actName = actName,tableName ='as_test.202009_ty_zq',ydList = [200]
+    #     ,startTime=start,endTime=end,img = headimg,color = color,linkimg =linkimg
+    #     ,linkurl = linkurl
+    #     ,linkView = '',windowimg= windowimg)
+    update国庆中秋9GG( toDirName =actName,ydIds = [200],allImags=[allimg],images=[linkimg],startTime=start,endTime=end)
 
     # 新商品打下单返券和30分钟必达的标()
 
