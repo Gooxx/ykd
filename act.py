@@ -694,7 +694,7 @@ def updateEnssence(drugstoreId,part,start,end,toDirName='夏至·春未央',link
         LEFT JOIN sm_image_link c on b.relation_id = c.link_id 
         LEFT JOIN sm_image_link c2 on c.drugstore_id = c2.drugstore_id
         set c.link_remark = c.link_url, c.link_url =  c2.link_url,c.link_name=c2.link_name ,c.link_start_time='{start}',c.link_end_time='{end}',c.link_status = 1
-        WHERE pharmacy_id = {drugstoreId} and tem_id = 7 and c2.link_name = '{toDirName}' and c2.link_view = '{link_view}'
+        WHERE pharmacy_id = {drugstoreId} and tem_id = 7 and c2.link_name = '{toDirName}' and c2.link_view = '{link_view}' and c2.link_status=1
         and ins_desc = {part};'''
     res = insertSQL(sql)
     logging.info(f"修改sm_image_link类型为 essence 的九宫格 第 {part}格链接, 药店:{drugstoreId}，开始{start}-结束{end} ")
@@ -856,17 +856,21 @@ def createDirByTable(actId,drugstoreId,tableName='as_test.ykd_base_dir',act=''):
     """根据所给 ykd_base_dir 创建活动目录"""
     idir = queryTableLastOne('pm_dir_info',field='dir_id',where ='',order='dir_id desc')
     idirId = idir['dir_id']
+    iMLdir = queryTableLastOne(tableName,field='id',where =f' act ="{act}" ',order='id ')
+    iMLdiriD = iMLdir['id']
     dirList = queryTable(tableName,where=f' act ="{act}" ')
     # logging.info(dirList)
     for dir in dirList:
+        id = dir['id']
         name = dir['name']
         code = dir['code']
         img = dir['img']
         num = dir['num']
-        dirId = idirId+dirList.index(dir)+1
-        parentId = '' if dir['parent_id']==None else  dir['parent_id']+idirId
+        # dirId = idirId+dirList.index(dir)+1
+        dirId = idirId+id-iMLdiriD+1
+        parentId = '' if dir['parent_id']==None else  dir['parent_id']+idirId-iMLdiriD+1
         lvl = dir['lvl']
-        toDirId = '' if dir['to_dir_id']== None else dir['to_dir_id']+idirId
+        toDirId = '' if dir['to_dir_id']== None else dir['to_dir_id']+idirId-iMLdiriD+1
 
         addPmDirInfo(f'act{actId}{code}',name,drugstoreId,img=img,color=toDirId,num=num,level=lvl,parentDirId=parentId,dirId=dirId)
 

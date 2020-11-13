@@ -1,4 +1,4 @@
-from db2 import db,cursor,querySQL,updateSQL,insertSQL,selectBy,selectOneBy
+from db3 import db,cursor,querySQL,updateSQL,insertSQL,selectBy,selectOneBy
 import time
 import datetime
 from dateutil.relativedelta import relativedelta
@@ -417,7 +417,7 @@ def 分析用户每次下单间隔():
             sheet.write(i,j,rows[j])
     workbook.save('分析用户每次下单间隔2.xls')
 if __name__ == "__main__":
-    分析用户每次下单间隔()
+    # 分析用户每次下单间隔()
     
     # selectTYUserEachMonEachDan()
     # logging.info(a)
@@ -432,16 +432,21 @@ if __name__ == "__main__":
     #     （“当月新增用户”是指无历史成功下单的用户，不仅仅是当月新注册的）；
     # 2、铜川2020年5月留存数据；
     # 3、铜川5月运营数据表，表1标黄部分"
-    # ydId = '1600,1601,1602,1603'
+#     1、天一、铜川9月新用户：
+# 需导出当月新增用户的手机号和对应的订单号
+# （“当月新增用户”是指无历史成功下单的用户，不仅仅是当月新注册的）；
+# 2、天一、铜川9月与第3季度（7月-9月）留存数据；
+# 3、天一、铜川9月运营数据表，表1标黄部分。
+    ydId = '1600,1601,1602,1603'
     # ydId = '200'
-    # start = '2020-08-01'
-    # end = '2020-09-01'
-    # selectNewRegister(ydId,start,end)
-    # selectOrderUsers(ydId,start,end)
-    # selectRepeatOrderUsersMoreThan2(ydId,start,end)
-    # selectRepeatOrderUsersMoreThan3(ydId,start,end)
-    # selectNewOrderUsers(ydId,start,end)
-    # db.commit()
+    start = '2020-10-01'
+    end = '2020-11-01'
+    selectNewRegister(ydId,start,end)
+    selectOrderUsers(ydId,start,end)
+    selectRepeatOrderUsersMoreThan2(ydId,start,end)
+    selectRepeatOrderUsersMoreThan3(ydId,start,end)
+    selectNewOrderUsers(ydId,start,end)
+    db.commit()
 
     
 # select count(o.user_id),
@@ -473,3 +478,31 @@ if __name__ == "__main__":
 # ) o left join v_ty_app_44 a on o.user_id = a.user_id 
 # GROUP BY a.user_id,aa
 # ;
+
+
+
+
+#  用户留存
+
+# select t.ct 月份,
+#        count(distinct(case when DATE_FORMAT(o.order_create_time, '%Y-%m')= t.ct THEN o.user_id else 0 END)) -1 as '新增用户数'
+# , count(distinct(case when DATE_FORMAT(o.order_create_time, '%Y-%m')= '2019-04' THEN o.user_id else 0 END)) -1 as '2019-04'
+# , count(distinct(case when DATE_FORMAT(o.order_create_time, '%Y-%m')= '2019-05' THEN o.user_id else 0 END)) -1 as '2019-05'
+# , count(distinct(case when DATE_FORMAT(o.order_create_time, '%Y-%m')= '2019-06' THEN o.user_id else 0 END)) -1 as '2019-06'
+# ,count(distinct( CASE WHEN  o.order_create_time  BETWEEN  '2019-01-01' AND '2019-04-01' THEN  o.user_id else 0 END)) -1 as '1JIUD'
+# ,count(distinct( CASE WHEN  o.order_create_time  BETWEEN  '2019-04-01' AND '2019-07-01' THEN  o.user_id else 0 END)) -1 as '2JIUD'
+
+
+# ,count(distinct( CASE WHEN  o.order_create_time  BETWEEN  '2019-01-01' AND '2019-07-01' THEN  o.user_id else 0 END)) -1 as 'BANNIAN'
+#   from(
+# select user_id, min(DATE_FORMAT(order_create_time, '%Y-%m')) as ct
+#   from `om_order_info`
+# where order_status= 44
+#    and `pharmacy_id` in(200)
+#    and `order_type`= 'normal'
+# GROUP BY user_id) t
+#   left join `om_order_info` o on t.user_id= o.user_id
+# where order_status= 44
+#    and `pharmacy_id` in(200)
+#    and `order_type`= 'normal'
+# GROUP BY t.ct;

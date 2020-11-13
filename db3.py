@@ -6,7 +6,7 @@ import logging
 
 logger = logging.getLogger()
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
-logging.basicConfig(filename='./log/my-1111-store.log', level=logging.DEBUG, format=LOG_FORMAT)
+logging.basicConfig(filename='./log/my-tj.log', level=logging.DEBUG, format=LOG_FORMAT)
 #  创建一个handler，用于将日志输出到控制台
 # log = logging.StreamHandler()
 # log.setLevel(logging.DEBUG)

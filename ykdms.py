@@ -169,6 +169,15 @@ def copyMsStat(day,addDays,ydId):
 #         db.rollback()
 
 if __name__ == "__main__":
+    # am_act_info am_act_item 
+    # am_stage_sale am_stage_sale_detai,
+    #  pm_sku_sale,
+    # am_stat_info
+    logging.info('首先创建一天的秒杀活动， 然后延期到计划的天数，')
+
+
+
+
     logging.info('开始延期秒杀活动啦--------------------------------------------------')
     # day1 = '2020-08-12'
     # addDays1 = 141
