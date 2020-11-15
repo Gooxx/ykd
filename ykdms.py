@@ -1,4 +1,4 @@
-
+#coding=utf-8
 from db2 import db,logging,cursor,querySQL,updateSQL,insertSQL,selectBy,selectOneBy
 import time
 import datetime
@@ -10,8 +10,7 @@ def delayMsDateFrom(day,addDays,ydId):
     try:
         sql = f'''SELECT * from am_stages_sale s 
                 WHERE sg_start_time >= '{day} 00:00:00' and sg_end_time <= '{day} 23:59:59'
-                and s.pharmacy_id = {ydId}
-                ;'''
+                and s.pharmacy_id = {ydId};'''
         stagesList = selectBy(sql)
         
         for dic in stagesList:
@@ -168,7 +167,138 @@ def copyMsStat(day,addDays,ydId):
 #         logging.error("Error %s for execute sql: %s" % (err, tableName))
 #         db.rollback()
 
+
+def 创建秒杀(actId=0,actName = '',tableName ='',ydList = [],startTime='',endTime='',img = '',color = '',linkimg = '',linkurl = '',linkView = '',windowimg= ''):
+    logging.debug('开始创建秒杀，名称为{{actName}}--数据表{{tableName}}-----所属药店{{ydList}} ----起止时间 {{startTime}}-{{endTime}}')
+    if actId==0:
+        iAct = queryTableLastOne('am_act_info',field='act_id',where ='',order='act_id desc')
+        iActId = iAct['act_id']
+        actId = iActId+1
+    logging.debug(f'create活动act——id{actId}')
+    for index in range(len(ydList)):
+        try:
+            drugstoreId = ydList[index]
+            # 创建特价
+            addPmActSale(tableName,drugstoreId,startTime,endTime)
+            logging.info('创建价格------------')
+            
+            addAmActInfo(actId,actName,startTime,endTime,drugstoreId=drugstoreId)
+            skuList = querySkuIdByTable(tableName,drugstoreId)
+            dirList = queryTable(tableName,where=' dir_code !="" group by dir_code')
+            itemList = queryTable(tableName,where='  item_code !="" group by item_code')
+            if len(dirList)>0 or len(itemList)>0:
+                logging.info(f'开始创建活动目录 {drugstoreId}')
+                # logging.error('开始创建活动目录error')
+                parentdirDic = addPmDirInfo(f'act{actId}',actName,drugstoreId,img=img,color=color,num='1',level='2',parentDirId='')
+                parentDirId = parentdirDic['dir_id']
+                logging.info(f'创建zhu活动目录 {parentdirDic}')
+                
+            for dir in dirList:
+                # logging.info(f'创建子目录 {dir}')
+                dirInfo = ActInfo(dir)
+                sufDirCode = dirInfo.dir_code
+                # logging.info(f'创建子活动目录 {dirInfo}')
+                genCode = queryBaseDirCode(drugstoreId)
+                sdirCode = f'{genCode}act{actId}{sufDirCode}{sufDirCode}'
+                sdir = queryTableLastOne('pm_dir_info','*',f"dir_code = '{sdirCode}'",'dir_id desc')
+                remark = ''
+                if sdir!=None:
+                    remark = sdir['dir_id']
+                dic = addPmDirInfo(f'act{actId}{dirInfo.dir_code}',dirInfo.dir_name,drugstoreId,img=dirInfo.dir_img,color=remark,num=dirInfo.dir_num,level='3',parentDirId=parentDirId)
+                dicId = dic['dir_id']
+                dicCode = dic['dir_code']
+                sufdicCode = dir['dir_code']
+                logging.info(f'创建子会场目录 {dic}')
+                for sku in skuList:
+                    skuDicCodeId=sku['dir_code']
+                    order = sku['xh']
+                    if skuDicCodeId==sufdicCode:
+                        skuId=sku['sku_id']
+                        addPmSkuDir(skuId,dicId,dicCode,order)
+                        
+            for item in itemList:
+                itemFlag = ''
+                if 'is_eq' in dic.keys() and dic['is_xq']!=None and dic['is_xq']==1:
+                    itemFlag = 'false'
+                            # copyAmStatInfoBySkuId( 78,sku_id)
+
+                itemInfo = ActInfo(item)
+                itemName = itemInfo.item_name
+                itemDesc = itemInfo.item_desc
+                itemType = itemInfo.item_type
+                itemCode = itemInfo.item_code
+
+
+
+                itemImg = itemInfo.item_img
+                itemImgR = itemInfo.item_img_r
+                otherImg = f'{{"itemImageR":"{itemImgR}","itemImage":"{itemImg}"}}' if itemImg!='' and itemImgR!='' else ''
+
+                # dirDic = addPmDirInfo(f'act{actId}{itemCode}',itemName,drugstoreId,level='3')
+                # idicInfo = ActInfo(dirDic)
+                # rangeId =addAmActRange( idicInfo.dir_id,itemName,itemDesc)
+                itemId = addAmActItem(itemName,itemDesc,itemType,actId,drugstoreId,img=itemImg,imgR=itemImgR,flag=itemFlag)
+                addAmItemRange(itemId,rangeId)
+                logging.info(f'创建 活动 item range dir    {itemId}     {itemName}')
+                quotaId= ''
+                # logging.info(f'itemType-- -{itemType};details_value--{itemInfo.details_value}')
+                if itemType=='quota':
+                    limit = itemInfo.quota_rule
+                    if limit!='':
+                        limit_group = itemInfo.quota_group
+                        quotaId = addAmQuotaInfo( itemId,limit,itemDesc,limit_group)
+                        logging.info(f'创建 限购规则 quota  {itemName}{itemDesc}')
+                if itemType=='discount':
+                    details_values =itemInfo.details_value
+                    rule_values =itemInfo.rule_value
+                    logging.info(f'创建 活动规则 details  {itemName}- {itemDesc} -{details_values}- {rule_values}')
+                    # logging.info(f'details_value-- -{details_value};rule_value--{rule_value}')
+                    if details_values!='':
+                        details_remark = itemName
+                        details_content =itemDesc
+                        details_value_list = details_values.split(',')
+                        for details_value in details_value_list:
+                        # logging.info(f'detailsId------------------------{itemId,details_value,details_remark,details_content}')
+                            details_level = details_value_list.index(details_value)+1
+                            detailsId = addAmItemDetails( itemId,details_value,details_remark,details_content,details_type='discount',details_level=details_level)
+                            
+                            # logging.info(f'detailsId------------------------{detailsId}')
+                            if detailsId!='' and rule_values !='':
+                                rule_value_list = rule_values.split(',')
+                                # for details_value in details_value_list:
+                                rule_value = rule_value_list[details_value_list.index(details_value)]
+                                addAmDetailsRule(detailsId,rule_value)
+                    # quotaId = addAmQuotaInfo( itemId,itemInfo.limit,itemDesc,itemInfo.limit_group)
+                    
+                # dicId = dirDic['dir_id']
+                # dicCode = dirDic['dir_code']
+                sufdicCode = item['item_code']
+                for sku in skuList:
+                    skuDicCodeId=sku['item_code']
+                    if skuDicCodeId==sufdicCode:
+                        skuId=sku['sku_id']
+                        # addPmSkuDir(skuId,dicId,dicCode)
+                        # if hasattr(item,'kc_day') and item.get('kc_day')!='':
+                        #     skuTotal = item.get('kc_day',0)
+                        #     days = item.get('days',0)
+                        #     maxTotal = int(days)*int(skuTotal)
+                        #     addAmStockLimit(skuId,itemId,quotaId,skuTotal,maxTotal,remark='')
+                        #     addAmStockPday(skuId,actId,itemId,quotaId,drugstoreId,skuTotal,maxTotal,remark='')
+                        addAmStatInfo(skuId,actId,itemId,itemName,itemDesc,itemType,startTime,endTime,quotaId =quotaId,otherStr1=otherImg,flag=itemFlag)
+                    # copyAmStatInfoByHuohao( '78',huohao,drugstoreId)
+                        # logging.info(f'创建 addAmStatInfo')
+            # db.commit()
+            logging.info('创建成功')
+            db.commit()
+        except Exception as err:
+            logging.error(err)
+            db.rollback()
+
+            
 if __name__ == "__main__":
+    logging.info(f'创建秒杀')
+
+
     logging.info('开始延期秒杀活动啦--------------------------------------------------')
     # day1 = '2020-08-12'
     # addDays1 = 141
@@ -186,13 +316,14 @@ if __name__ == "__main__":
     # delayMsDateFrom(day3,addDays3,ydId3)
     # db.commit()
 
-    day = '2020-08-12'
-    addDays = 141
-    ydId = '1603'
-    delayMsDateFrom(day,addDays,ydId)
-    db.commit()
-
-    logging.info(f'延期秒杀活动完成， 根据{day}的秒杀数据，在{ydId}店---延期了{addDays}天--------------------------------------------------')
+#  秒杀延期
+    # day = '2020-08-12'
+    # addDays = 141
+    # ydId = '1603'
+    # delayMsDateFrom(day,addDays,ydId)
+    # db.commit()
+#  秒杀延期
+    # logging.info(f'延期秒杀活动完成， 根据{day}的秒杀数据，在{ydId}店---延期了{addDays}天--------------------------------------------------')
 
     # copyMsSale(day,addDays,ydId)
     # copyMsStat(day,addDays,ydId)
