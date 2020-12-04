@@ -152,24 +152,24 @@ def act8月开学必备小药箱活动(actId=0,actName = '',tableName ='',ydList
             logging.error(err)
             db.rollback()
 
-# def update9GG():
-#     ydIds=[200,1600,1601,1602,1603]
+def update9GG():
+    ydIds=[200,1600,1601,1602,1603]
 
-#     images=[
-#         'http://image.ykd365.cn/act/202008/kx/ty_9gg.jpg','http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg','http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg','http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg','http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg'
-#     ]
-#     queryTable('pm_dir_info')
-#     start = '2020-08-29 00:00:00'
-#     end = '2020-09-10 23:59:59'
-#     toDirName='开学必备小药箱'
-#     # url = 
-#     for i in range(len(ydIds)):
-#         # if i==0:
-#         updateAllEnssence(ydIds[i],images[i])
-#         updateEnssence(ydIds[i],5,start,end,toDirName=toDirName,link_view='')
-#         # else:
-#         #     logging.info(i)
-#     db.commit()
+    images=[
+        'http://image.ykd365.cn/act/202008/kx/ty_9gg.jpg','http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg','http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg','http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg','http://image.ykd365.cn/act/202008/kx/xc_9gg.jpg'
+    ]
+    queryTable('pm_dir_info')
+    start = '2020-08-29 00:00:00'
+    end = '2020-09-10 23:59:59'
+    toDirName='开学必备小药箱'
+    # url = 
+    for i in range(len(ydIds)):
+        # if i==0:
+        updateAllEnssence(ydIds[i],images[i])
+        updateEnssence(ydIds[i],5,start,end,toDirName=toDirName,link_view='')
+        # else:
+        #     logging.info(i)
+    db.commit()
     
 def 忘记特价价格了():
     logging.info(' 忘记特价价格了--------')
@@ -483,6 +483,39 @@ and a2.item_name = '第二件半价';
 """
 
 
+def updateDate(tableName ='',pre_img = '',suf_img='',dirkv=[],itemkv = []):
+    for dir in dirkv:
+        wordList = pinyin(dir['name'], style=Style.FIRST_LETTER)
+        code =''
+        for item in wordList:
+            code += ''.join(item)
+        updateActTable(tableName,set=f"""dir_code='{code}'
+                                ,dir_num='{dir['num']}'
+                                ,dir_img='{pre_img}{code}{suf_img}'"""
+                                ,where=f"dir_name='{dir['name']}'")
+        db.commit()
+        logging.info(f"更新基础表中的目录数据{code}")
+
+    for dir in itemkv:
+        wordList = pinyin(dir['item_name'], style=Style.FIRST_LETTER)
+        code =''
+        image = ''
+        for item in wordList:
+            code += ''.join(item)
+        
+        image = '' if dir['item_img'] =='' else  f'{pre_img}{code}{suf_img}'
+        updateActTable(tableName
+                    ,set=f"""item_code='{code}'
+                    ,item_desc='{dir['item_desc']}'
+                    ,item_type='{dir['item_type']}'
+                    ,item_img='{image}'
+                    ,item_img_r='{dir['item_img_r']}'
+                    ,details_value='{dir['details_value']}'
+                    ,rule_value='{dir['rule_value']}'"""
+                        ,where=f"item_name='{dir['item_name']}'")
+        db.commit()
+        logging.info(f"更新基础表中的目录数据{code}")
+    # 以上 是对基础表的修改， 上生产的时候直接复制盘货表即可，无需再次执行上面的代码
 
 def update9GG( toDirName ='',ydIds = [],allImags=[],images=[],startTime='',endTime=''):
     for i in range(len(ydIds)):
@@ -547,6 +580,7 @@ def act1111(actId=0,actName = '',tableName ='',ydList = [],startTime='',endTime=
     return actId
 
 
+
 def 标准单会场活动(actId=0,actName = '',tableName ='',ydList = [],startTime='',endTime='',img = '',color = '',linkimg = '',linkurl = '',linkView = '',windowimg= ''):
     logging.debug('开始配置活动----------')
     if actId==0:
@@ -597,50 +631,64 @@ if __name__ == "__main__":
     # 手动把2件xx折活动商品的开始时间调整到双12活动的结束时间上
     logging.info(' 测试 药快到专用工具--------')
     tableName = 'as_test.202012_ty_1212'
-    actId = 296
     actName = '12·12 家庭备药一站购齐'
-    start = '2020-12-04 22:00:00'  #s 生产要改
+    start = '2010-12-04 00:00:00'  # 生产要改
     end = '2020-12-15 23:59:59'
 
-    linkurl = 'http://store.ykd365.com/html-activity/page/twelve/index.html?type=15&prize_id=37&dirId='  # 生产要改
+    linkurl = 'http://deve.ykd365.com/html-activity/page/eleven/index.html?type=15&actId=865&dirId='  # 生产要改
 
     color = '#f44430'
     headimg = 'http://image.ykd365.cn/act/202012/1212/main.jpg'
     linkimg = 'http://image.ykd365.cn/act/202012/1212/lb.jpg'
     windowimg = 'http://image.ykd365.cn/act/202012/1212/tc.png'
 
-    allimg = 'http://image.ykd365.cn/act/202012/1212/9gg.jpg'
+    allimg = 'http://image.ykd365.cn/act/202011/1111/9gg.jpg'
 
-    # 标准单会场活动(actId=actId,actName = actName,tableName =tableName,ydList = [200]
-    #     ,startTime=start,endTime=end,img = headimg,color = color,linkimg =linkimg
-    #     ,linkurl = linkurl
-    #     ,linkView = '',windowimg= windowimg)
-    update9GG( toDirName =actName,ydIds = [200],allImags=[allimg],images=[linkimg],startTime=start,endTime=end)
-
-# #  # 执行以下sql 为了把要暂时结束2件xx折的商品，开始时间改为本次活动的结束时间，以便本活动结束以后，自动上线
-    # sql = f"""
-        # update as_test.202012_ty_1212 a ,pm_prod_sku s   ,am_stat_info aa 
-        # set aa.item_effect_time = '2020-12-16 00:00:00'
-        # -- SELECT * FROM as_test.202012_ty_1212 a ,pm_prod_sku s   ,am_stat_info aa
-        # where
-        # a.huohao= s.pharmacy_huohao and s.drugstore_id = 200
-        # and stop_lcz = '暂停2件92折、3件88折'
-        # and s.sku_id = aa.sku_id 
-        # and aa.item_name = '2件92折、3件88折'
-        # and aa.item_expire_time >NOW()
-    # """
-    # updateSQL(sql)
-# 执行以下sql是为了，让所有商品都有横图 而且能够跳转到助力页面，注意修改 act——id
-    # sql2 = 'UPDATE am_stat_info set other_str1 = \'{"itemImageR":"642","itemImage":"http://image.ykd365.cn/act/202012/1212/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/twelve/invite.html?prize_id=37", "itemTitle":"邀2人助力，领最高50元抵用金"}\' where act_id = 296;'
-    # updateSQL(sql2)
-
-    # db.commit()
+    标准单会场活动(actId=0,actName = actName,tableName =tableName,ydList = [200]
+        ,startTime=start,endTime=end,img = headimg,color = color,linkimg =linkimg
+        ,linkurl = linkurl
+        ,linkView = '',windowimg= windowimg)
 
 
+    # updateDate(tableName ='感恩季 滋补节',pre_img ='http://image.ykd365.cn/act/202011/gej/',suf_img='.jpg',dirkv=[{
+    #   "name": "滋补爆品",
+    #   "num": "02",
+    # },{
+    #  "name": "长辈专区",
+    #   "num": "04",
+    # },{
+    #  "name": "男士专区",
+    #   "num": "06",
+    # },{
+    #  "name": "女士专区",
+    #   "num": "08",
+    #   "code":"nvszq"
+    # },{
+    #  "name": "儿童专区",
+    #   "num": "10",
+    # }],itemkv = [
+    #         {'item_name': '2件92折、3件88折', 'item_desc': '2件92折、3件88折', 'item_code': 'd292388'
+    #         , 'item_img': ''
+    #         , 'item_img_r': '', 'num': 100, 'item_type': 'discount'
+    #         , 'details_value': '92,88', 'rule_value': '2,3', 'quota_rule': None, 'quota_group': None
+    #         , 'kc_day': None, 'act_name': ''},
+            
+    #         {'item_name': '满199减100', 'item_desc': '满199减100' 
+    #         ,'item_img':'http://image.ykd365.cn/act/202011/gej/detail.jpg'
+    #         , 'item_img_r': '642', 'num': 100, 'item_type': 'discount'
+    #         , 'details_value': '', 'rule_value': '', 'quota_rule': None, 'quota_group': None
+    #         , 'kc_day': None, 'act_name': ''},
+    #         {'item_name': '满99减50', 'item_desc': '满99减50' 
+    #         ,'item_img':'http://image.ykd365.cn/act/202011/gej/detail.jpg'
+    #         , 'item_img_r': '642', 'num': 100, 'item_type': 'cut'
+    #         , 'details_value': '', 'rule_value': '', 'quota_rule': None, 'quota_group': None
+    #         , 'kc_day': None, 'act_name': ''}
+            
+    #    ])
 
 
-# ----------------------------------------
-    # logging.info(' 测试 药快到专用工具--------')
+
+    
     # tableName = 'as_test.202011_ty_1111'
     # actName = '双11狂欢购'
     # start = '2020-11-10 00:00:00'  # 生产要改

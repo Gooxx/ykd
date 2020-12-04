@@ -1,0 +1,348 @@
+2020-10-10 14:35:39,870 - INFO - store生产数据库连接--------rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com
+2020-10-10 14:39:58,727 - INFO - store生产数据库连接--------rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com
+2020-10-10 14:40:00,538 - DEBUG - 
+         select * from (
+            select datediff(o2.order_create_time,o.order_create_time) days
+                    
+                    ,o.phone_num 
+                    from 
+                    (SELECT  o.user_id,order_create_time,order_id,u.phone_num FROM om_order_info o,um_user_info u 
+                    where o.user_id = u.user_id 
+                    and o.order_create_time between '2018-08-31' and  '2019-08-31 23:59:59'
+                    and order_status=44 and pharmacy_id =200  
+                    group by user_id) o ,
+                    (SELECT  o.user_id,order_create_time,order_id FROM om_order_info o  
+                    where o.order_create_time >= '2018-08-31'   
+                    and order_status=44 and pharmacy_id =200  
+                    ) o2
+                    where o.user_id = o2.user_id
+            ) a where a.days<=365;
+2020-10-10 14:40:08,811 - DEBUG - querySQL语句受影响的行数：：118205  None
+2020-10-10 14:43:25,037 - INFO - store生产数据库连接--------rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com
+2020-10-10 14:43:26,082 - DEBUG - SELECT   DISTINCT u.`user_id` 
+                FROM `um_user_info` AS u , st_user_visit AS v 
+                WHERE  v.`user_id`= u.`user_id` 
+                    and u.`regist_date` BETWEEN   '2020-09-01'  and '2020-10-01' 
+                    and v.`pharmacy_id` IN (1600,1601,1602,1603) 
+2020-10-10 14:43:27,110 - DEBUG - insert语句受影响的行数：205  None
+2020-10-10 14:43:27,110 - INFO - 新注册用户数：                   人数为： 205 --- 从2020-09-01 到 2020-10-01 注册，并访问1600,1601,1602,1603药店的  
+2020-10-10 14:43:27,267 - DEBUG -   SELECT `user_id` from `om_order_info` o 
+                WHERE `pharmacy_id` IN (1600,1601,1602,1603) 
+                    and o.order_create_time BETWEEN '2020-09-01'  and '2020-10-01'  AND o.`order_status`= 44 
+                    GROUP BY o.`user_id` ; 
+2020-10-10 14:43:27,335 - DEBUG - insert语句受影响的行数：512  None
+2020-10-10 14:43:27,336 - INFO - 月下单用户数：                   人数为： 512 --- 从2020-09-01 到 2020-10-01 在1600,1601,1602,1603药店下单
+2020-10-10 14:43:28,659 - DEBUG -  SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (1600,1601,1602,1603) 
+                and o.order_create_time <= '2020-10-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 2
+            ; 
+2020-10-10 14:43:28,909 - DEBUG - insert语句受影响的行数：3657  None
+2020-10-10 14:43:28,909 - INFO - App累计重复下单用户数（2单以上）：人数为： 3657 --- 从2020-09-01 到 2020-10-01 在1600,1601,1602,1603药店下单
+2020-10-10 14:43:30,027 - DEBUG -   SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (1600,1601,1602,1603) 
+                and o.order_create_time <= '2020-10-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 3; 
+2020-10-10 14:43:30,222 - DEBUG - insert语句受影响的行数：1848  None
+2020-10-10 14:43:30,222 - INFO - App累计重复下单用户数（3单以上）：人数为： 1848 --- 从2020-09-01 到 2020-10-01 在1600,1601,1602,1603药店下单
+2020-10-10 14:43:31,614 - DEBUG -    SELECT o.`user_id` FROM `om_order_info` o   
+                WHERE `pharmacy_id`IN (1600,1601,1602,1603)  
+                and o.order_create_time BETWEEN  '2020-09-01'  and '2020-10-01' 
+                AND o.`order_status`= 44 and o.`order_type`= 'normal' and o.`user_id` NOT IN(  
+                SELECT o1.`user_id` FROM `om_order_info` o1  
+                WHERE o1.`pharmacy_id` IN (1600,1601,1602,1603)  
+                and o1.order_create_time < '2020-09-01' 
+                AND o1.`order_status`= 44 and o1.`order_type`= 'normal' GROUP BY o1.`user_id`) GROUP BY o.`user_id`  ; 
+2020-10-10 14:43:31,681 - DEBUG - querySQL语句受影响的行数：：145  None
+2020-10-10 14:43:31,681 - INFO - 本月新增下单用户数：             人数为： 145 --- 从2020-09-01 到 2020-10-01 在1600,1601,1602,1603药店下单
+2020-10-10 15:21:55,762 - INFO - store生产数据库连接--------rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com
+2020-10-10 15:21:56,769 - DEBUG - SELECT   DISTINCT u.`user_id` 
+                FROM `um_user_info` AS u , st_user_visit AS v 
+                WHERE  v.`user_id`= u.`user_id` 
+                    and u.`regist_date` BETWEEN   '2020-09-01'  and '2020-10-01' 
+                    and v.`pharmacy_id` IN (1600,1601,1602,1603) 
+2020-10-10 15:21:57,472 - DEBUG - insert语句受影响的行数：205  None
+2020-10-10 15:21:57,472 - INFO - 新注册用户数：                   人数为： 205 --- 从2020-09-01 到 2020-10-01 注册，并访问1600,1601,1602,1603药店的  
+2020-10-10 15:21:57,574 - DEBUG -   SELECT `user_id` from `om_order_info` o 
+                WHERE `pharmacy_id` IN (1600,1601,1602,1603) 
+                    and o.order_create_time BETWEEN '2020-09-01'  and '2020-10-01'  AND o.`order_status`= 44 
+                    GROUP BY o.`user_id` ; 
+2020-10-10 15:21:57,621 - DEBUG - insert语句受影响的行数：512  None
+2020-10-10 15:21:57,621 - INFO - 月下单用户数：                   人数为： 512 --- 从2020-09-01 到 2020-10-01 在1600,1601,1602,1603药店下单
+2020-10-10 15:21:58,540 - DEBUG -  SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (1600,1601,1602,1603) 
+                and o.order_create_time <= '2020-10-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 2
+            ; 
+2020-10-10 15:21:58,738 - DEBUG - insert语句受影响的行数：3657  None
+2020-10-10 15:21:58,738 - INFO - App累计重复下单用户数（2单以上）：人数为： 3657 --- 从2020-09-01 到 2020-10-01 在1600,1601,1602,1603药店下单
+2020-10-10 15:21:59,702 - DEBUG -   SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (1600,1601,1602,1603) 
+                and o.order_create_time <= '2020-10-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 3; 
+2020-10-10 15:21:59,890 - DEBUG - insert语句受影响的行数：1848  None
+2020-10-10 15:21:59,890 - INFO - App累计重复下单用户数（3单以上）：人数为： 1848 --- 从2020-09-01 到 2020-10-01 在1600,1601,1602,1603药店下单
+2020-10-10 15:22:00,783 - DEBUG -    SELECT o.`user_id` FROM `om_order_info` o   
+                WHERE `pharmacy_id`IN (1600,1601,1602,1603)  
+                and o.order_create_time BETWEEN  '2020-09-01'  and '2020-10-01' 
+                AND o.`order_status`= 44 and o.`order_type`= 'normal' and o.`user_id` NOT IN(  
+                SELECT o1.`user_id` FROM `om_order_info` o1  
+                WHERE o1.`pharmacy_id` IN (1600,1601,1602,1603)  
+                and o1.order_create_time < '2020-09-01' 
+                AND o1.`order_status`= 44 and o1.`order_type`= 'normal' GROUP BY o1.`user_id`) GROUP BY o.`user_id`  ; 
+2020-10-10 15:22:00,835 - DEBUG - querySQL语句受影响的行数：：145  None
+2020-10-10 15:22:00,836 - INFO - 本月新增下单用户数：             人数为： 145 --- 从2020-09-01 到 2020-10-01 在1600,1601,1602,1603药店下单
+2020-10-10 15:22:09,415 - INFO - store生产数据库连接--------rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com
+2020-10-10 15:22:11,262 - DEBUG - SELECT   DISTINCT u.`user_id` 
+                FROM `um_user_info` AS u , st_user_visit AS v 
+                WHERE  v.`user_id`= u.`user_id` 
+                    and u.`regist_date` BETWEEN   '2020-09-01'  and '2020-10-01' 
+                    and v.`pharmacy_id` IN (1600,1601,1602,1603) 
+2020-10-10 15:22:12,056 - DEBUG - insert语句受影响的行数：205  None
+2020-10-10 15:22:12,056 - INFO - 新注册用户数：                   人数为： 205 --- 从2020-09-01 到 2020-10-01 注册，并访问1600,1601,1602,1603药店的  
+2020-10-10 15:22:12,234 - DEBUG -   SELECT `user_id` from `om_order_info` o 
+                WHERE `pharmacy_id` IN (1600,1601,1602,1603) 
+                    and o.order_create_time BETWEEN '2020-09-01'  and '2020-10-01'  AND o.`order_status`= 44 
+                    GROUP BY o.`user_id` ; 
+2020-10-10 15:22:12,281 - DEBUG - insert语句受影响的行数：512  None
+2020-10-10 15:22:12,281 - INFO - 月下单用户数：                   人数为： 512 --- 从2020-09-01 到 2020-10-01 在1600,1601,1602,1603药店下单
+2020-10-10 15:22:13,169 - DEBUG -  SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (1600,1601,1602,1603) 
+                and o.order_create_time <= '2020-10-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 2
+            ; 
+2020-10-10 15:22:13,369 - DEBUG - insert语句受影响的行数：3657  None
+2020-10-10 15:22:13,369 - INFO - App累计重复下单用户数（2单以上）：人数为： 3657 --- 从2020-09-01 到 2020-10-01 在1600,1601,1602,1603药店下单
+2020-10-10 15:22:14,119 - DEBUG -   SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (1600,1601,1602,1603) 
+                and o.order_create_time <= '2020-10-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 3; 
+2020-10-10 15:22:14,298 - DEBUG - insert语句受影响的行数：1848  None
+2020-10-10 15:22:14,298 - INFO - App累计重复下单用户数（3单以上）：人数为： 1848 --- 从2020-09-01 到 2020-10-01 在1600,1601,1602,1603药店下单
+2020-10-10 15:22:15,098 - DEBUG -    SELECT o.`user_id` FROM `om_order_info` o   
+                WHERE `pharmacy_id`IN (1600,1601,1602,1603)  
+                and o.order_create_time BETWEEN  '2020-09-01'  and '2020-10-01' 
+                AND o.`order_status`= 44 and o.`order_type`= 'normal' and o.`user_id` NOT IN(  
+                SELECT o1.`user_id` FROM `om_order_info` o1  
+                WHERE o1.`pharmacy_id` IN (1600,1601,1602,1603)  
+                and o1.order_create_time < '2020-09-01' 
+                AND o1.`order_status`= 44 and o1.`order_type`= 'normal' GROUP BY o1.`user_id`) GROUP BY o.`user_id`  ; 
+2020-10-10 15:22:15,153 - DEBUG - querySQL语句受影响的行数：：145  None
+2020-10-10 15:22:15,154 - INFO - 本月新增下单用户数：             人数为： 145 --- 从2020-09-01 到 2020-10-01 在1600,1601,1602,1603药店下单
+2020-10-10 15:23:10,100 - INFO - store生产数据库连接--------rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com
+2020-10-10 15:23:11,099 - DEBUG - SELECT   DISTINCT u.`user_id` 
+                FROM `um_user_info` AS u , st_user_visit AS v 
+                WHERE  v.`user_id`= u.`user_id` 
+                    and u.`regist_date` BETWEEN   '2020-09-01'  and '2020-10-01' 
+                    and v.`pharmacy_id` IN (200) 
+2020-10-10 15:23:11,804 - DEBUG - insert语句受影响的行数：335  None
+2020-10-10 15:23:11,804 - INFO - 新注册用户数：                   人数为： 335 --- 从2020-09-01 到 2020-10-01 注册，并访问200药店的  
+2020-10-10 15:23:11,979 - DEBUG -   SELECT `user_id` from `om_order_info` o 
+                WHERE `pharmacy_id` IN (200) 
+                    and o.order_create_time BETWEEN '2020-09-01'  and '2020-10-01'  AND o.`order_status`= 44 
+                    GROUP BY o.`user_id` ; 
+2020-10-10 15:23:12,069 - DEBUG - insert语句受影响的行数：4437  None
+2020-10-10 15:23:12,069 - INFO - 月下单用户数：                   人数为： 4437 --- 从2020-09-01 到 2020-10-01 在200药店下单
+2020-10-10 15:23:12,890 - DEBUG -  SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (200) 
+                and o.order_create_time <= '2020-10-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 2
+            ; 
+2020-10-10 15:23:16,579 - DEBUG - insert语句受影响的行数：31010  None
+2020-10-10 15:23:16,580 - INFO - App累计重复下单用户数（2单以上）：人数为： 31010 --- 从2020-09-01 到 2020-10-01 在200药店下单
+2020-10-10 15:23:16,580 - DEBUG -   SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (200) 
+                and o.order_create_time <= '2020-10-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 3; 
+2020-10-10 15:23:20,121 - DEBUG - insert语句受影响的行数：22658  None
+2020-10-10 15:23:20,121 - INFO - App累计重复下单用户数（3单以上）：人数为： 22658 --- 从2020-09-01 到 2020-10-01 在200药店下单
+2020-10-10 15:23:20,122 - DEBUG -    SELECT o.`user_id` FROM `om_order_info` o   
+                WHERE `pharmacy_id`IN (200)  
+                and o.order_create_time BETWEEN  '2020-09-01'  and '2020-10-01' 
+                AND o.`order_status`= 44 and o.`order_type`= 'normal' and o.`user_id` NOT IN(  
+                SELECT o1.`user_id` FROM `om_order_info` o1  
+                WHERE o1.`pharmacy_id` IN (200)  
+                and o1.order_create_time < '2020-09-01' 
+                AND o1.`order_status`= 44 and o1.`order_type`= 'normal' GROUP BY o1.`user_id`) GROUP BY o.`user_id`  ; 
+2020-10-10 15:23:20,910 - DEBUG - querySQL语句受影响的行数：：349  None
+2020-10-10 15:23:20,910 - INFO - 本月新增下单用户数：             人数为： 349 --- 从2020-09-01 到 2020-10-01 在200药店下单
+2020-11-10 15:51:00,237 - INFO - store生产数据库连接--------rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com
+2020-11-10 15:51:00,707 - DEBUG - SELECT   DISTINCT u.`user_id` 
+                FROM `um_user_info` AS u , st_user_visit AS v 
+                WHERE  v.`user_id`= u.`user_id` 
+                    and u.`regist_date` BETWEEN   '2020-10-01'  and '2020-11-01' 
+                    and v.`pharmacy_id` IN (200) 
+2020-11-10 15:51:02,046 - DEBUG - insert语句受影响的行数：276  None
+2020-11-10 15:51:02,046 - INFO - 新注册用户数：                   人数为： 276 --- 从2020-10-01 到 2020-11-01 注册，并访问200药店的  
+2020-11-10 15:51:02,047 - DEBUG -   SELECT `user_id` from `om_order_info` o 
+                WHERE `pharmacy_id` IN (200) 
+                    and o.order_create_time BETWEEN '2020-10-01'  and '2020-11-01'  AND o.`order_status`= 44 
+                    GROUP BY o.`user_id` ; 
+2020-11-10 15:51:02,155 - DEBUG - insert语句受影响的行数：4257  None
+2020-11-10 15:51:02,156 - INFO - 月下单用户数：                   人数为： 4257 --- 从2020-10-01 到 2020-11-01 在200药店下单
+2020-11-10 15:51:02,156 - DEBUG -  SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (200) 
+                and o.order_create_time <= '2020-11-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 2
+            ; 
+2020-11-10 15:51:08,712 - DEBUG - insert语句受影响的行数：31277  None
+2020-11-10 15:51:08,712 - INFO - App累计重复下单用户数（2单以上）：人数为： 31277 --- 从2020-10-01 到 2020-11-01 在200药店下单
+2020-11-10 15:51:08,713 - DEBUG -   SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (200) 
+                and o.order_create_time <= '2020-11-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 3; 
+2020-11-10 15:51:12,379 - DEBUG - insert语句受影响的行数：22909  None
+2020-11-10 15:51:12,379 - INFO - App累计重复下单用户数（3单以上）：人数为： 22909 --- 从2020-10-01 到 2020-11-01 在200药店下单
+2020-11-10 15:51:12,380 - DEBUG -    SELECT o.`user_id` FROM `om_order_info` o   
+                WHERE `pharmacy_id`IN (200)  
+                and o.order_create_time BETWEEN  '2020-10-01'  and '2020-11-01' 
+                AND o.`order_status`= 44 and o.`order_type`= 'normal' and o.`user_id` NOT IN(  
+                SELECT o1.`user_id` FROM `om_order_info` o1  
+                WHERE o1.`pharmacy_id` IN (200)  
+                and o1.order_create_time < '2020-10-01' 
+                AND o1.`order_status`= 44 and o1.`order_type`= 'normal' GROUP BY o1.`user_id`) GROUP BY o.`user_id`  ; 
+2020-11-10 15:51:13,261 - DEBUG - querySQL语句受影响的行数：：295  None
+2020-11-10 15:51:13,262 - INFO - 本月新增下单用户数：             人数为： 295 --- 从2020-10-01 到 2020-11-01 在200药店下单
+2020-11-10 15:52:59,786 - INFO - store生产数据库连接--------rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com
+2020-11-10 15:52:59,990 - DEBUG - SELECT   DISTINCT u.`user_id` 
+                FROM `um_user_info` AS u , st_user_visit AS v 
+                WHERE  v.`user_id`= u.`user_id` 
+                    and u.`regist_date` BETWEEN   '2020-10-01'  and '2020-11-01' 
+                    and v.`pharmacy_id` IN (1600,1601,1602,1603) 
+2020-11-10 15:53:00,744 - DEBUG - insert语句受影响的行数：174  None
+2020-11-10 15:53:00,745 - INFO - 新注册用户数：                   人数为： 174 --- 从2020-10-01 到 2020-11-01 注册，并访问1600,1601,1602,1603药店的  
+2020-11-10 15:53:00,745 - DEBUG -   SELECT `user_id` from `om_order_info` o 
+                WHERE `pharmacy_id` IN (1600,1601,1602,1603) 
+                    and o.order_create_time BETWEEN '2020-10-01'  and '2020-11-01'  AND o.`order_status`= 44 
+                    GROUP BY o.`user_id` ; 
+2020-11-10 15:53:00,802 - DEBUG - insert语句受影响的行数：496  None
+2020-11-10 15:53:00,802 - INFO - 月下单用户数：                   人数为： 496 --- 从2020-10-01 到 2020-11-01 在1600,1601,1602,1603药店下单
+2020-11-10 15:53:00,803 - DEBUG -  SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (1600,1601,1602,1603) 
+                and o.order_create_time <= '2020-11-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 2
+            ; 
+2020-11-10 15:53:02,822 - DEBUG - insert语句受影响的行数：3747  None
+2020-11-10 15:53:02,822 - INFO - App累计重复下单用户数（2单以上）：人数为： 3747 --- 从2020-10-01 到 2020-11-01 在1600,1601,1602,1603药店下单
+2020-11-10 15:53:02,823 - DEBUG -   SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (1600,1601,1602,1603) 
+                and o.order_create_time <= '2020-11-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 3; 
+2020-11-10 15:53:04,333 - DEBUG - insert语句受影响的行数：1929  None
+2020-11-10 15:53:04,334 - INFO - App累计重复下单用户数（3单以上）：人数为： 1929 --- 从2020-10-01 到 2020-11-01 在1600,1601,1602,1603药店下单
+2020-11-10 15:53:04,334 - DEBUG -    SELECT o.`user_id` FROM `om_order_info` o   
+                WHERE `pharmacy_id`IN (1600,1601,1602,1603)  
+                and o.order_create_time BETWEEN  '2020-10-01'  and '2020-11-01' 
+                AND o.`order_status`= 44 and o.`order_type`= 'normal' and o.`user_id` NOT IN(  
+                SELECT o1.`user_id` FROM `om_order_info` o1  
+                WHERE o1.`pharmacy_id` IN (1600,1601,1602,1603)  
+                and o1.order_create_time < '2020-10-01' 
+                AND o1.`order_status`= 44 and o1.`order_type`= 'normal' GROUP BY o1.`user_id`) GROUP BY o.`user_id`  ; 
+2020-11-10 15:53:04,387 - DEBUG - querySQL语句受影响的行数：：126  None
+2020-11-10 15:53:04,387 - INFO - 本月新增下单用户数：             人数为： 126 --- 从2020-10-01 到 2020-11-01 在1600,1601,1602,1603药店下单
+2020-12-02 09:44:30,152 - INFO - store生产数据库连接--------rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com
+2020-12-02 09:44:31,284 - DEBUG - SELECT   DISTINCT u.`user_id` 
+                FROM `um_user_info` AS u , st_user_visit AS v 
+                WHERE  v.`user_id`= u.`user_id` 
+                    and u.`regist_date` BETWEEN   '2020-11-01'  and '2020-12-01' 
+                    and v.`pharmacy_id` IN (1600,1601,1602,1603) 
+2020-12-02 09:44:32,029 - DEBUG - insert语句受影响的行数：112  None
+2020-12-02 09:44:32,029 - INFO - 新注册用户数：                   人数为： 112 --- 从2020-11-01 到 2020-12-01 注册，并访问1600,1601,1602,1603药店的  
+2020-12-02 09:44:32,029 - DEBUG -   SELECT `user_id` from `om_order_info` o 
+                WHERE `pharmacy_id` IN (1600,1601,1602,1603) 
+                    and o.order_create_time BETWEEN '2020-11-01'  and '2020-12-01'  AND o.`order_status`= 44 
+                    GROUP BY o.`user_id` ; 
+2020-12-02 09:44:32,081 - DEBUG - insert语句受影响的行数：452  None
+2020-12-02 09:44:32,082 - INFO - 月下单用户数：                   人数为： 452 --- 从2020-11-01 到 2020-12-01 在1600,1601,1602,1603药店下单
+2020-12-02 09:44:32,082 - DEBUG -  SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (1600,1601,1602,1603) 
+                and o.order_create_time <= '2020-12-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 2
+            ; 
+2020-12-02 09:44:33,461 - DEBUG - insert语句受影响的行数：3820  None
+2020-12-02 09:44:33,462 - INFO - App累计重复下单用户数（2单以上）：人数为： 3820 --- 从2020-11-01 到 2020-12-01 在1600,1601,1602,1603药店下单
+2020-12-02 09:44:33,462 - DEBUG -   SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (1600,1601,1602,1603) 
+                and o.order_create_time <= '2020-12-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 3; 
+2020-12-02 09:44:34,763 - DEBUG - insert语句受影响的行数：2007  None
+2020-12-02 09:44:34,763 - INFO - App累计重复下单用户数（3单以上）：人数为： 2007 --- 从2020-11-01 到 2020-12-01 在1600,1601,1602,1603药店下单
+2020-12-02 09:44:34,764 - DEBUG -    SELECT o.`user_id` FROM `om_order_info` o   
+                WHERE `pharmacy_id`IN (1600,1601,1602,1603)  
+                and o.order_create_time BETWEEN  '2020-11-01'  and '2020-12-01' 
+                AND o.`order_status`= 44 and o.`order_type`= 'normal' and o.`user_id` NOT IN(  
+                SELECT o1.`user_id` FROM `om_order_info` o1  
+                WHERE o1.`pharmacy_id` IN (1600,1601,1602,1603)  
+                and o1.order_create_time < '2020-11-01' 
+                AND o1.`order_status`= 44 and o1.`order_type`= 'normal' GROUP BY o1.`user_id`) GROUP BY o.`user_id`  ; 
+2020-12-02 09:44:34,815 - DEBUG - querySQL语句受影响的行数：：83  None
+2020-12-02 09:44:34,815 - INFO - 本月新增下单用户数：             人数为： 83 --- 从2020-11-01 到 2020-12-01 在1600,1601,1602,1603药店下单
+2020-12-02 09:45:40,580 - INFO - store生产数据库连接--------rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com
+2020-12-02 09:45:40,765 - DEBUG - SELECT   DISTINCT u.`user_id` 
+                FROM `um_user_info` AS u , st_user_visit AS v 
+                WHERE  v.`user_id`= u.`user_id` 
+                    and u.`regist_date` BETWEEN   '2020-11-01'  and '2020-12-01' 
+                    and v.`pharmacy_id` IN (200) 
+2020-12-02 09:45:41,461 - DEBUG - insert语句受影响的行数：227  None
+2020-12-02 09:45:41,461 - INFO - 新注册用户数：                   人数为： 227 --- 从2020-11-01 到 2020-12-01 注册，并访问200药店的  
+2020-12-02 09:45:41,462 - DEBUG -   SELECT `user_id` from `om_order_info` o 
+                WHERE `pharmacy_id` IN (200) 
+                    and o.order_create_time BETWEEN '2020-11-01'  and '2020-12-01'  AND o.`order_status`= 44 
+                    GROUP BY o.`user_id` ; 
+2020-12-02 09:45:41,551 - DEBUG - insert语句受影响的行数：4411  None
+2020-12-02 09:45:41,551 - INFO - 月下单用户数：                   人数为： 4411 --- 从2020-11-01 到 2020-12-01 在200药店下单
+2020-12-02 09:45:41,552 - DEBUG -  SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (200) 
+                and o.order_create_time <= '2020-12-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 2
+            ; 
+2020-12-02 09:45:45,405 - DEBUG - insert语句受影响的行数：31498  None
+2020-12-02 09:45:45,405 - INFO - App累计重复下单用户数（2单以上）：人数为： 31498 --- 从2020-11-01 到 2020-12-01 在200药店下单
+2020-12-02 09:45:45,405 - DEBUG -   SELECT u.`user_id` 
+                FROM `om_order_info` o  LEFT JOIN `um_user_info` u ON u.`user_id`= o.`user_id` 
+                WHERE `pharmacy_id`  IN (200) 
+                and o.order_create_time <= '2020-12-01' 
+                AND o.`order_status`= 44 
+                and o.`order_type`= 'normal' GROUP BY o.`user_id` HAVING  COUNT(o.`order_id`)>= 3; 
+2020-12-02 09:45:49,137 - DEBUG - insert语句受影响的行数：23132  None
+2020-12-02 09:45:49,137 - INFO - App累计重复下单用户数（3单以上）：人数为： 23132 --- 从2020-11-01 到 2020-12-01 在200药店下单
+2020-12-02 09:45:49,138 - DEBUG -    SELECT o.`user_id` FROM `om_order_info` o   
+                WHERE `pharmacy_id`IN (200)  
+                and o.order_create_time BETWEEN  '2020-11-01'  and '2020-12-01' 
+                AND o.`order_status`= 44 and o.`order_type`= 'normal' and o.`user_id` NOT IN(  
+                SELECT o1.`user_id` FROM `om_order_info` o1  
+                WHERE o1.`pharmacy_id` IN (200)  
+                and o1.order_create_time < '2020-11-01' 
+                AND o1.`order_status`= 44 and o1.`order_type`= 'normal' GROUP BY o1.`user_id`) GROUP BY o.`user_id`  ; 
+2020-12-02 09:45:49,304 - DEBUG - querySQL语句受影响的行数：：251  None
+2020-12-02 09:45:49,304 - INFO - 本月新增下单用户数：             人数为： 251 --- 从2020-11-01 到 2020-12-01 在200药店下单

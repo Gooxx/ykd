@@ -1,0 +1,56 @@
+2020-12-03 16:11:07,694 - INFO - deve准生产数据库连接--------rm-2ze5nu148mg523l6emo.mysql.rds.aliyuncs.com
+2020-12-03 16:11:07,961 - INFO -  测试 药快到专用工具--------
+2020-12-03 16:11:07,961 - DEBUG - 
+        update as_test.202012_ty_1212 a ,pm_prod_sku s   ,am_stat_info aa 
+        set aa.item_effect_time = '2020-12-16 00:00:00'
+        -- SELECT * FROM as_test.202012_ty_1212 a ,pm_prod_sku s   ,am_stat_info aa
+        where
+        a.huohao= s.pharmacy_huohao and s.drugstore_id = 200
+        and stop_lcz = '暂停2件92折、3件88折'
+        and s.sku_id = aa.sku_id 
+        and aa.item_name = '2件92折、3件88折'
+        and aa.item_expire_time >NOW()
+    
+2020-12-03 16:11:08,371 - DEBUG - insert语句受影响的行数：0  0
+2020-12-03 16:11:25,928 - INFO - deve准生产数据库连接--------rm-2ze5nu148mg523l6emo.mysql.rds.aliyuncs.com
+2020-12-03 16:11:26,197 - INFO -  测试 药快到专用工具--------
+2020-12-03 16:11:26,197 - DEBUG - 
+        update as_test.202012_ty_1212 a ,pm_prod_sku s   ,am_stat_info aa 
+        set aa.item_effect_time = '2020-12-16 00:00:00'
+        -- SELECT * FROM as_test.202012_ty_1212 a ,pm_prod_sku s   ,am_stat_info aa
+        where
+        a.huohao= s.pharmacy_huohao and s.drugstore_id = 200
+        and stop_lcz = '暂停2件92折、3件88折'
+        and s.sku_id = aa.sku_id 
+        and aa.item_name = '2件92折、3件88折'
+        and aa.item_expire_time >NOW()
+    
+2020-12-03 16:11:26,620 - DEBUG - insert语句受影响的行数：0  0
+2020-12-03 16:12:05,814 - INFO - deve准生产数据库连接--------rm-2ze5nu148mg523l6emo.mysql.rds.aliyuncs.com
+2020-12-03 16:12:06,221 - INFO -  测试 药快到专用工具--------
+2020-12-03 16:12:06,221 - DEBUG - 
+        update as_test.202012_ty_1212 a ,pm_prod_sku s   ,am_stat_info aa 
+        set aa.item_effect_time = '2020-12-16 00:00:00'
+        -- SELECT * FROM as_test.202012_ty_1212 a ,pm_prod_sku s   ,am_stat_info aa
+        where
+        a.huohao= s.pharmacy_huohao and s.drugstore_id = 200
+        and stop_lcz = '暂停2件92折、3件88折'
+        and s.sku_id = aa.sku_id 
+        and aa.item_name = '2件92折、3件88折'
+        and aa.item_expire_time >NOW()
+    
+2020-12-03 16:12:06,639 - DEBUG - insert语句受影响的行数：0  0
+2020-12-03 16:12:28,452 - INFO - deve准生产数据库连接--------rm-2ze5nu148mg523l6emo.mysql.rds.aliyuncs.com
+2020-12-03 16:12:28,810 - INFO -  测试 药快到专用工具--------
+2020-12-03 16:14:09,991 - INFO - deve准生产数据库连接--------rm-2ze5nu148mg523l6emo.mysql.rds.aliyuncs.com
+2020-12-03 16:14:10,312 - INFO -  测试 药快到专用工具--------
+2020-12-03 16:14:38,697 - INFO - deve准生产数据库连接--------rm-2ze5nu148mg523l6emo.mysql.rds.aliyuncs.com
+2020-12-03 16:14:38,981 - INFO -  测试 药快到专用工具--------
+2020-12-03 16:14:38,981 - DEBUG - UPDATE am_stat_info set other_str1 = '{"itemImageR":"642","itemImage":"http://image.ykd365.cn/act/202012/1212/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/twelve/invite.html?prize_id=37", "itemTitle":"邀2人助力，领最高50元抵用金"}' where act_id = 296;
+2020-12-03 16:14:39,761 - DEBUG - insert语句受影响的行数：281  0
+2020-12-03 16:14:39,778 - INFO -  over --------
+2020-12-03 16:15:01,028 - INFO - deve准生产数据库连接--------rm-2ze5nu148mg523l6emo.mysql.rds.aliyuncs.com
+2020-12-03 16:15:01,286 - INFO -  测试 药快到专用工具--------
+2020-12-03 16:15:01,286 - DEBUG - UPDATE am_stat_info set other_str1 = '{"itemImageR":"642","itemImage":"http://image.ykd365.cn/act/202012/1212/detail.png","itemUrl":"http://deve.ykd365.com/html-activity/page/twelve/invite.html?prize_id=37", "itemTitle":"邀2人助力，领最高50元抵用金"}' where act_id = 296;
+2020-12-03 16:15:02,048 - DEBUG - insert语句受影响的行数：281  0
+2020-12-03 16:15:02,063 - INFO -  over --------

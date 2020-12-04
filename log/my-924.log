@@ -1,0 +1,66 @@
+2020-09-24 14:37:46,827 - INFO - deve准生产数据库连接--------rm-2ze7fnv9ydw78u07a7o.mysql.rds.aliyuncs.com
+2020-09-24 14:37:47,243 - INFO -  测试 药快到专用工具--------
+2020-09-24 14:37:47,244 - DEBUG - 
+        INSERT INTO `medstore`.`sm_image_link` (  `drugstore_id`, `seq_num`, `image_url`, `link_url`, `link_type`, `link_name`, `link_param`, `link_status`, `link_update_time`, `link_create_time`, `link_remark`, `link_start_time`, `link_end_time`, `link_view`, `link_version`)
+        VALUES (  '200', '1', 'http://image.ykd365.cn/act/202009/zq/lb.jpg', 'http://deve.ykd365.com/medstore/actUserpage/moon_2010?pageSize=1000&dirId=1002764884', 'url', '健康好礼嗨购季', '1002764884', '1', now(), now(), '', '2010-09-25 00:00:00', '2020-10-11 23:59:59', '', '1');
+        
+2020-09-24 14:37:47,256 - DEBUG - insert语句受影响的行数：1  7307
+2020-09-24 14:37:47,256 - INFO - 创建sm_image_link类型为  的健康好礼嗨购季 活动 , dirId= 1002764884 ,url=http://deve.ykd365.com/medstore/actUserpage/moon_2010?pageSize=1000&dirId=1002764884,药店:200 
+2020-09-24 14:37:47,374 - DEBUG - 
+    INSERT INTO `medstore`.`sm_image_link_window` (  `drugstore_id`, `seq_num`, `image_url`, `window_url`, `window_type`
+    , `window_name`, `window_param`, `window_status`, `window_update_time`, `window_create_time`
+    , `window_remark`, `window_start_time`, `window_end_time`, `window_view`, `window_go_type`) 
+    VALUES (  '200', '1', 'http://image.ykd365.cn/act/202009/zq/tc.png', 'http://deve.ykd365.com/medstore/actUserpage/moon_2010?pageSize=1000&dirId=1002764884', 'everyday', '健康好礼嗨购季', '1002764884', '1', now(), now(), '', '2010-09-25 00:00:00', '2020-10-11 23:59:59', '', '0');
+        
+2020-09-24 14:37:47,386 - DEBUG - insert语句受影响的行数：1  1183
+2020-09-24 14:37:47,386 - INFO - 创建sm_image_link_window  的健康好礼嗨购季 活动 , dirId= 1002764884 ,url=http://deve.ykd365.com/medstore/actUserpage/moon_2010?pageSize=1000&dirId=1002764884,药店:200 
+2020-09-24 14:37:47,568 - DEBUG - 
+     UPDATE sm_image_link set image_url = 'http://image.ykd365.cn/act/202009/zq/lb.jpg' 
+        WHERE drugstore_id = 200
+        and link_status=1
+        and link_view = 'all_essence'
+        ORDER BY link_id desc   
+2020-09-24 14:37:47,583 - DEBUG - insert语句受影响的行数：0  0
+2020-09-24 14:37:47,583 - INFO - 修改sm_image_link类型为all_essence  的九宫格大图 药店:200，图片http://image.ykd365.cn/act/202009/zq/lb.jpg 
+2020-09-24 14:37:47,658 - DEBUG - UPDATE lm_tem_instance a LEFT JOIN lm_tem_item_ins b on a.tem_ins_id = b.tem_ins_id 
+        LEFT JOIN sm_image_link c on b.relation_id = c.link_id 
+        LEFT JOIN sm_image_link c2 on c.drugstore_id = c2.drugstore_id
+        set c.link_remark = c.link_url, c.link_url =  c2.link_url,c.link_name=c2.link_name ,c.link_start_time='2010-09-25 00:00:00',c.link_end_time='2020-10-11 23:59:59',c.link_status = 1
+        WHERE pharmacy_id = 200 and tem_id = 7 and c2.link_name = '健康好礼嗨购季' and c2.link_view = ''
+        and ins_desc = 5;
+2020-09-24 14:37:48,128 - DEBUG - insert语句受影响的行数：1  0
+2020-09-24 14:37:48,128 - INFO - 修改sm_image_link类型为 essence 的九宫格 第 5格链接, 药店:200，开始2010-09-25 00:00:00-结束2020-10-11 23:59:59 
+2020-09-24 14:37:48,140 - INFO -  over --------
+2020-09-24 14:42:35,802 - INFO - deve准生产数据库连接--------rm-2ze5nu148mg523l6emo.mysql.rds.aliyuncs.com
+2020-09-24 14:42:36,326 - INFO -  测试 药快到专用工具--------
+2020-09-24 14:42:36,327 - DEBUG - 
+        INSERT INTO `medstore`.`sm_image_link` (  `drugstore_id`, `seq_num`, `image_url`, `link_url`, `link_type`, `link_name`, `link_param`, `link_status`, `link_update_time`, `link_create_time`, `link_remark`, `link_start_time`, `link_end_time`, `link_view`, `link_version`)
+        VALUES (  '200', '1', 'http://image.ykd365.cn/act/202009/zq/lb.jpg', 'http://deve.ykd365.com/medstore/actUserpage/moon_2010?pageSize=1000&dirId=1002764884', 'url', '健康好礼嗨购季', '1002764884', '1', now(), now(), '', '2010-09-25 00:00:00', '2020-10-11 23:59:59', '', '1');
+        
+2020-09-24 14:42:36,337 - DEBUG - insert语句受影响的行数：1  7290
+2020-09-24 14:42:36,337 - INFO - 创建sm_image_link类型为  的健康好礼嗨购季 活动 , dirId= 1002764884 ,url=http://deve.ykd365.com/medstore/actUserpage/moon_2010?pageSize=1000&dirId=1002764884,药店:200 
+2020-09-24 14:42:36,484 - DEBUG - 
+    INSERT INTO `medstore`.`sm_image_link_window` (  `drugstore_id`, `seq_num`, `image_url`, `window_url`, `window_type`
+    , `window_name`, `window_param`, `window_status`, `window_update_time`, `window_create_time`
+    , `window_remark`, `window_start_time`, `window_end_time`, `window_view`, `window_go_type`) 
+    VALUES (  '200', '1', 'http://image.ykd365.cn/act/202009/zq/tc.png', 'http://deve.ykd365.com/medstore/actUserpage/moon_2010?pageSize=1000&dirId=1002764884', 'everyday', '健康好礼嗨购季', '1002764884', '1', now(), now(), '', '2010-09-25 00:00:00', '2020-10-11 23:59:59', '', '0');
+        
+2020-09-24 14:42:36,495 - DEBUG - insert语句受影响的行数：1  1196
+2020-09-24 14:42:36,495 - INFO - 创建sm_image_link_window  的健康好礼嗨购季 活动 , dirId= 1002764884 ,url=http://deve.ykd365.com/medstore/actUserpage/moon_2010?pageSize=1000&dirId=1002764884,药店:200 
+2020-09-24 14:42:36,695 - DEBUG - 
+     UPDATE sm_image_link set image_url = 'http://image.ykd365.cn/act/202009/zq/ty_9gg.jpg' 
+        WHERE drugstore_id = 200
+        and link_status=1
+        and link_view = 'all_essence'
+        ORDER BY link_id desc   
+2020-09-24 14:42:36,816 - DEBUG - insert语句受影响的行数：1  0
+2020-09-24 14:42:36,816 - INFO - 修改sm_image_link类型为all_essence  的九宫格大图 药店:200，图片http://image.ykd365.cn/act/202009/zq/ty_9gg.jpg 
+2020-09-24 14:42:36,946 - DEBUG - UPDATE lm_tem_instance a LEFT JOIN lm_tem_item_ins b on a.tem_ins_id = b.tem_ins_id 
+        LEFT JOIN sm_image_link c on b.relation_id = c.link_id 
+        LEFT JOIN sm_image_link c2 on c.drugstore_id = c2.drugstore_id
+        set c.link_remark = c.link_url, c.link_url =  c2.link_url,c.link_name=c2.link_name ,c.link_start_time='2010-09-25 00:00:00',c.link_end_time='2020-10-11 23:59:59',c.link_status = 1
+        WHERE pharmacy_id = 200 and tem_id = 7 and c2.link_name = '健康好礼嗨购季' and c2.link_view = ''
+        and ins_desc = 5;
+2020-09-24 14:42:38,662 - DEBUG - insert语句受影响的行数：1  0
+2020-09-24 14:42:38,662 - INFO - 修改sm_image_link类型为 essence 的九宫格 第 5格链接, 药店:200，开始2010-09-25 00:00:00-结束2020-10-11 23:59:59 
+2020-09-24 14:42:38,673 - INFO -  over --------

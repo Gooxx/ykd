@@ -437,16 +437,17 @@ if __name__ == "__main__":
 # （“当月新增用户”是指无历史成功下单的用户，不仅仅是当月新注册的）；
 # 2、天一、铜川9月与第3季度（7月-9月）留存数据；
 # 3、天一、铜川9月运营数据表，表1标黄部分。
-    ydId = '1600,1601,1602,1603'
-    # ydId = '200'
-    start = '2020-10-01'
-    end = '2020-11-01'
+    # ydId = '1600,1601,1602,1603'
+    ydId = '200'
+    start = '2020-11-01'
+    end = '2020-12-01'
     selectNewRegister(ydId,start,end)
     selectOrderUsers(ydId,start,end)
     selectRepeatOrderUsersMoreThan2(ydId,start,end)
     selectRepeatOrderUsersMoreThan3(ydId,start,end)
     selectNewOrderUsers(ydId,start,end)
     db.commit()
+
 
     
 # select count(o.user_id),

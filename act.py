@@ -807,7 +807,7 @@ def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,im
                 limit_group = itemInfo.quota_group
                 quotaId = addAmQuotaInfo( itemId,limit,itemDesc,limit_group)
                 logging.info(f'创建 限购规则 quota  {itemName}{itemDesc}')
-        if itemType=='discount':
+        if itemType=='discount' or itemType=='cut':
             details_values =itemInfo.details_value
             rule_values =itemInfo.rule_value
             logging.info(f'创建 活动规则 details  {itemName}- {itemDesc} -{details_values}- {rule_values}')
