@@ -387,7 +387,7 @@ def addPmActSale(tableName,drugstoreId,startTime,endTime):
         '''.format(startTime,endTime,tableName,drugstoreId)
     res = insertSQL(sql1)
     return res['code']
-def addAmStatInfo(skuId,actId,itemId,itemName,itemDesc,itemType,startTime,endTime,quotaId='',itemPriority='100',itemAttr='multi',otherStr1='',flag=''):
+def addAmStatInfo(skuId,actId,itemId,itemName,itemDesc,itemType,startTime,endTime,quotaId='',itemPriority='100',itemAttr='single',otherStr1='',flag=''):
     configSql = '''SELECT config_value from sm_config WHERE config_key = 'act_batch';'''
     configDic = selectOneBy(configSql)
     configValue =configDic.get('config_value')
@@ -450,7 +450,7 @@ def addAmActItem(itemName,itemDesc,itemType,actId,drugstoreId,img='',imgR='',fla
             , `sales_goto_type`, `sales_goto_title`, `sales_goto_url`, `item_num`, `item_title`
             , `activity_img`, `activity_img_ratio`)
             VALUES ('single', '{itemName}', '{actId}', '1', '90', '{itemType}','{itemDesc}', NOW(), NOW()
-            ,'{imgR}', '{img}', '{drugstoreId}', '{flag}', '', '', '', '0', '', '', '')
+            ,'{imgR}', '{img}', '{drugstoreId}', '{flag}', '', '', '', '1000', '', '', '')
             ;
         '''
         res = insertSQL(sql)
@@ -471,7 +471,7 @@ def addAmItemDetails( itemId,details_value,details_remark,details_content,detail
             INSERT INTO `medstore`.`am_item_details` (  `details_level`, `item_id`, `details_type`
             , `details_val_type`, `details_value`, `details_update_time`, `details_create_time`
             , `details_remark`, `details_content`) 
-            VALUES ( '{details_level}', '{itemId}', '{details_type}', 'rate', '{details_value}', now(), now(), '{details_remark}', '{details_content}');
+            VALUES ( '{details_level}', '{itemId}', '{details_type}', 'rate', '{details_value}', now(), now(), '{details_content}', '{details_content}');
         '''
         res = insertSQL(sql)
         return res['lastId']
@@ -613,20 +613,20 @@ def addAmskuImage(huohao,drugstoreId,img='http://image.ykd365.cn/icon/home/drsd.
     return res['lastId']
 
 # 添加list列表页左侧图片的角标 label_type 1左上 2 右下 0居中
-def addPmLabelImage(name,image,type,drugstoreId,skuId='',skuIdList=[]):
+def addPmLabelImage(name,image,type,drugstoreId,skuId='',skuIdList=[],start='',end=''):
     if skuId=='' and len(skuIdList) ==0:
         return ''
     sql = '''
-        INSERT INTO `medstore`.`pm_label_image` (  `label_name`, `label_url`, `label_url_double`, `label_type`, `label_status`, `label_create_time`, `label_update_time`, `pharmacy_id`, `label_flag`, `sku_id`)
+        INSERT INTO `medstore`.`pm_label_image` (  `label_name`, `label_url`, `label_url_double`, `label_type`, `label_status`, `label_create_time`, `label_update_time`, `pharmacy_id`, `label_flag`, `sku_id`, `label_start_time`, `label_end_time`)
         VALUES 
     '''
     if len(skuIdList) >0:
         for tskuId in skuIdList:
             # sql = sql+" (  '"+name+"', '"+image+"', '"+image+"', '"+type+"', '1', now(),now(), '"+drugstoreId+"', '0', '"+tskuId+"'),"
-            sql = " {} (  '{}', '{}', '{}', '{}', '1', now(),now(), '{}', '0', '{}'),".format(sql,name,image,image,type,drugstoreId,tskuId)
+            sql = " {} (  '{}', '{}', '{}', '{}', '1', now(),now(), '{}', '0', '{}', '{}', '{}'),".format(sql,name,image,image,type,drugstoreId,tskuId,start,end)
         sql = sql[:-1]   
     elif  skuId!='':
-        sql = " {} (  '{}', '{}', '{}', '{}', '1', now(),now(), '{}', '0', '{}');".format(sql,name,image,image,type,drugstoreId,skuId)
+        sql = " {} (  '{}', '{}', '{}', '{}', '1', now(),now(), '{}', '0', '{}', '{}', '{}');".format(sql,name,image,image,type,drugstoreId,skuId,start,end)
     res = insertSQL(sql)
     return res['lastId']
 
@@ -723,7 +723,7 @@ def updateActTable(tableName,set='1=1',where='1=1'):
     sql = f'''update {tableName} set {set} WHERE {where}'''
     res = updateSQL(sql)
 
-def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,img='',color='',linkurl='',linkimg='',linkView = '',windowimg='',link_remark='',link_type='url'):
+def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,img='',color='',linkurl='',linkimg='',linkView = '',windowimg='',link_remark='',link_type='url',detailJump=False):
     """ 创建基础表的时候，如果有会场，保证有dir_code,dir_name,pharmacy_id 可选 dir_img,dir_num
         如果有活动 保证有 item_code(在dirinfo中使用),item_name,item_desc,item_type()
         **** 都有code为准，名称重复率太高
@@ -782,71 +782,98 @@ def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,im
                     # copyAmStatInfoBySkuId( 78,sku_id)
 
         itemInfo = ActInfo(item)
-        itemName = itemInfo.item_name
-        itemDesc = itemInfo.item_desc
+        itemNames = itemInfo.item_name
+        itemDescs = itemInfo.item_desc
         itemType = itemInfo.item_type
-        itemCode = itemInfo.item_code
-
-
+        itemCodes = itemInfo.item_code
+        detailsValues =itemInfo.details_value
+        ruleValues =itemInfo.rule_value
 
         itemImg = itemInfo.item_img
         itemImgR = itemInfo.item_img_r
-        otherImg = f'{{"itemImageR":"{itemImgR}","itemImage":"{itemImg}"}}' if itemImg!='' and itemImgR!='' else ''
+        if detailJump:
+            otherImg = f'{{"itemImageR":"{itemImgR}","itemImage":"{itemImg}","itemUrl":"{linkurl}{parentDirId}", "itemTitle":"{actName}"}}' if itemImg!='' and itemImgR!='' else ''
+        else:
+            otherImg = f'{{"itemImageR":"{itemImgR}","itemImage":"{itemImg}"}}' if itemImg!='' and itemImgR!='' else ''
 
-        dirDic = addPmDirInfo(f'act{actId}{itemCode}',itemName,drugstoreId,level='3')
-        idicInfo = ActInfo(dirDic)
-        rangeId =addAmActRange( idicInfo.dir_id,itemName,itemDesc)
-        itemId = addAmActItem(itemName,itemDesc,itemType,actId,drugstoreId,img=itemImg,imgR=itemImgR,flag=itemFlag)
-        addAmItemRange(itemId,rangeId)
-        logging.info(f'创建 活动 item range dir    {itemId}  {rangeId}  {idicInfo.dir_id} {itemName}')
-        quotaId= ''
-        # logging.info(f'itemType-- -{itemType};details_value--{itemInfo.details_value}')
-        if itemType=='quota':
-            limit = itemInfo.quota_rule
-            if limit!='':
-                limit_group = itemInfo.quota_group
-                quotaId = addAmQuotaInfo( itemId,limit,itemDesc,limit_group)
-                logging.info(f'创建 限购规则 quota  {itemName}{itemDesc}')
-        if itemType=='discount' or itemType=='cut':
-            details_values =itemInfo.details_value
-            rule_values =itemInfo.rule_value
-            logging.info(f'创建 活动规则 details  {itemName}- {itemDesc} -{details_values}- {rule_values}')
-            # logging.info(f'details_value-- -{details_value};rule_value--{rule_value}')
-            if details_values!='':
-                details_remark = itemName
-                details_content =itemDesc
-                details_value_list = details_values.split(',')
-                for details_value in details_value_list:
-                # logging.info(f'detailsId------------------------{itemId,details_value,details_remark,details_content}')
-                    details_level = details_value_list.index(details_value)+1
-                    detailsId = addAmItemDetails( itemId,details_value,details_remark,details_content,details_type='discount',details_level=details_level)
-                    
-                    # logging.info(f'detailsId------------------------{detailsId}')
-                    if detailsId!='' and rule_values !='':
-                        rule_value_list = rule_values.split(',')
-                        # for details_value in details_value_list:
-                        rule_value = rule_value_list[details_value_list.index(details_value)]
+        # 允许一套 itemname desc code 对应多套 detail rule 比如 2件92折 3件88折 
+        # 允许 item nanme  desc code 和 detail rule 一一对应，实现多个标签活动
+        itemNameList = itemNames.split(',')
+        itemDescList = itemDescs.split(',')
+        itemCodeList = itemCodes.split(',')
+
+        detailsValueList = detailsValues.split(',')
+        ruleValueList = ruleValues.split(',')
+
+        logging.info(f'--------活动信息分割or单体 {itemNameList}')
+        for index,itemName in enumerate(itemNameList):
+            logging.info(f'--------活动信息分割or单体 {index}=={itemName}')
+            itemDesc = itemDescList[index]
+            itemCode = itemCodeList[index]
+
+            dirDic = addPmDirInfo(f'act{actId}{itemCode}',itemName,drugstoreId,level='3')
+            idicInfo = ActInfo(dirDic)
+            rangeId =addAmActRange( idicInfo.dir_id,itemName,itemDesc)
+
+            # 如果单商品存在多个活动 比如阶梯满减，只需要给第一个活动配置横图，防止显示多个
+            _itemImg = itemImg if index==0 else ''
+            _itemImgR = itemImgR if index==0 else ''
+            _otherImg = otherImg if index==0 else '' 
+
+
+            itemId = addAmActItem(itemName,itemDesc,itemType,actId,drugstoreId,img=_itemImg,imgR=_itemImgR,flag=itemFlag)
+            addAmItemRange(itemId,rangeId)
+            logging.info(f'创建 活动 item range dir    {itemId}  {rangeId}  {idicInfo.dir_id} {itemName}')
+            # 如果是一一对应的关系，则只需要取出相同index下的值即可
+            if len(itemNameList) == len(detailsValueList):
+                tempDetailList = detailsValueList[index:index+1]
+                tempRuleList = ruleValueList[index:index+1]
+            # 如果是一对多，就需要循环detail和rule了
+            else:
+                tempDetailList = detailsValueList
+                tempRuleList = ruleValueList
+# # 如果是一一对应的关系，则只需要取出相同index下的值即可，如果是一对多，就需要循环detail和rule了
+#                     details_value =  detailsValueList[index] if len(detailsValueList)>index else ''
+#                     rule_value = ruleValueList[index] if len(ruleValueList)>index else '' # ruleValueList[index]
+            for indexd,detail in enumerate(tempDetailList):
+                details_value =  detail
+                rule_value = tempRuleList[indexd]
+                quotaId= ''
+                if itemType=='discount' or itemType=='cut':
+                    if details_value!="":
+                        logging.info(f'创建 活动规则 details  {itemName}- {itemDesc} -{details_value}- {rule_value}')
+                        details_remark = itemName
+                        details_content =itemDesc
+                        details_level = index+1
+                        detailsId = addAmItemDetails( itemId,details_value,details_remark,details_content,details_type='discount',details_level=details_level)
                         addAmDetailsRule(detailsId,rule_value)
-            # quotaId = addAmQuotaInfo( itemId,itemInfo.limit,itemDesc,itemInfo.limit_group)
-            
-        dicId = dirDic['dir_id']
-        dicCode = dirDic['dir_code']
-        sufdicCode = item['item_code']
-        for sku in skuList:
-            skuDicCodeId=sku['item_code']
-            if skuDicCodeId==sufdicCode:
-                skuId=sku['sku_id']
-                addPmSkuDir(skuId,dicId,dicCode)
-                if hasattr(item,'kc_day') and item.get('kc_day')!='':
-                    skuTotal = item.get('kc_day',0)
-                    days = item.get('days',0)
-                    maxTotal = int(days)*int(skuTotal)
-                    addAmStockLimit(skuId,itemId,quotaId,skuTotal,maxTotal,remark='')
-                    addAmStockPday(skuId,actId,itemId,quotaId,drugstoreId,skuTotal,maxTotal,remark='')
-                addAmStatInfo(skuId,actId,itemId,itemName,itemDesc,itemType,startTime,endTime,quotaId =quotaId,otherStr1=otherImg,flag=itemFlag)
-            # copyAmStatInfoByHuohao( '78',huohao,drugstoreId)
-                # logging.info(f'创建 addAmStatInfo')
-    # db.commit()
+                dicId = dirDic['dir_id']
+                dicCode = dirDic['dir_code']
+                sufdicCode = item['item_code']
+            # 关于限购的配置 ，跟item走，只可能一一对应
+            if itemType=='quota':
+                    limit = itemInfo.quota_rule
+                    if limit!='':
+                        limit_group = itemInfo.quota_group
+                        quotaId = addAmQuotaInfo( itemId,limit,itemDesc,limit_group)
+                        logging.info(f'创建 限购规则 quota  {itemName}{itemDesc}')
+            # 活动item数据都配完以后，根据item rang detail rule quota 生成amstatinfo
+            for sku in skuList:
+                skuDicCodeId=sku['item_code']
+                order = sku['xh']
+                if skuDicCodeId==sufdicCode:
+                    skuId=sku['sku_id']
+                    addPmSkuDir(skuId,dicId,dicCode,order)
+                    if hasattr(item,'kc_day') and item.get('kc_day')!='':
+                        skuTotal = item.get('kc_day',0)
+                        days = item.get('days',0)
+                        maxTotal = int(days)*int(skuTotal)
+                        addAmStockLimit(skuId,itemId,quotaId,skuTotal,maxTotal,remark='')
+                        addAmStockPday(skuId,actId,itemId,quotaId,drugstoreId,skuTotal,maxTotal,remark='')
+                    addAmStatInfo(skuId,actId,itemId,itemName,itemDesc,itemType,startTime,endTime,quotaId =quotaId,otherStr1=_otherImg,flag=itemFlag)
+                    # copyAmStatInfoByHuohao( '78',huohao,drugstoreId)
+                        # logging.info(f'创建 addAmStatInfo')
+        # db.commit()
     logging.info('创建成功')
     # except Exception as err:
     #     logging.error(err)

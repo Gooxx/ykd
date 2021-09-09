@@ -300,6 +300,54 @@ if __name__ == "__main__":
 
 
     logging.info('开始延期秒杀活动啦--------------------------------------------------')
+
+    # day = '2021-06-28'
+    # addDays = 186 # 到 年底
+    # for ydId in [200]:
+    #     delayMsDateFrom(day,addDays,ydId)
+    #     logging.info(f'延期秒杀活动完成， 根据{day}的秒杀数据，在{ydId}店---延期了{addDays}天')
+
+    day = '2021-06-29'
+    addDays = 185 # 到 年底
+    for ydId in [1600,1601,1603]:
+        delayMsDateFrom(day,addDays,ydId)
+        logging.info(f'延期秒杀活动完成， 根据{day}的秒杀数据，在{ydId}店---延期了{addDays}天')
+
+
+    # day = '2021-02-28'
+    # addDays = 120 # 到  6月 28 基本和欣臣一致
+    # for ydId in [200]:
+    #     delayMsDateFrom(day,addDays,ydId)
+    #     # copyMsSale(day,addDays,ydId)
+    #     # copyMsStat(day,addDays,ydId)
+    #     # logging.info('----------------------------------over---------------------------')
+    #     # db.commit()
+    #     logging.info(f'延期秒杀活动完成， 根据{day}的秒杀数据，在{ydId}店---延期了{addDays}天')
+
+    # day = '2020-12-31'
+    # addDays = 180
+    # for ydId in [1600,1601,1603]:
+    #     delayMsDateFrom(day,addDays,ydId)
+    #     logging.info(f'延期秒杀活动完成， 根据{day}的秒杀数据，在{ydId}店---延期了{addDays}天')
+    # day2 = '2020-08-09'
+    # addDays2 = 143
+    # ydId2 = '1601'
+    # delayMsDateFrom(day2,addDays2,ydId2)
+
+    # day3 = '2020-08-09'
+    # addDays3 = 143
+    # ydId3 = '1603'
+    # delayMsDateFrom(day3,addDays3,ydId3)
+    # db.commit()
+ 
+    # db.commit()
+#  秒杀延期
+    # logging.info(f'延期秒杀活动完成， 根据{day}的秒杀数据，在{ydId}店---延期了{addDays}天--------------------------------------------------')
+ 
+
+
+
+
     # day1 = '2020-08-12'
     # addDays1 = 141
     # ydId1 = '1600'

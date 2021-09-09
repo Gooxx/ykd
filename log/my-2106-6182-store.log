@@ -1,0 +1,1486 @@
+2021-06-15 18:11:50,100 - INFO - store生产数据库连接--------rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com
+2021-06-15 18:11:50,528 - INFO -  测试 药快到专用工具--------
+2021-06-15 18:11:50,529 - DEBUG - 开始配置活动----------
+2021-06-15 18:11:50,529 - DEBUG - select act_id from am_act_info   order by act_id desc  limit 1
+2021-06-15 18:11:50,538 - DEBUG - querySQL语句受影响的行数：：1  {'act_id': 311}
+2021-06-15 18:11:50,539 - DEBUG - 
+            INSERT INTO `medstore`.`pm_sku_sale` ( `sku_id`, `sale_fee`, `sale_price`, `sale_start_time`, `sale_end_time`, `sale_status`, `sale_create_time`, `sale_update_time`, `sale_remark`) 
+            SELECT s.`sku_id`,a.fee*100 `sale_fee`,a.price*100 `sale_price`
+            ,'2021-06-15 18:00:00' `sale_start_time`,'2021-06-18 23:59:59' `sale_end_time`
+            ,0 `sale_status`,NOW() `sale_create_time`,NOW() `sale_update_time`,'' `sale_remark` 
+            from as_test.202106_ty_618p2 a,pm_prod_sku s
+            WHERE a.huohao = s.pharmacy_huohao
+            and s.drugstore_id = 200 and a.price is not null  and a.price !=0
+        
+2021-06-15 18:11:51,035 - DEBUG - insert语句受影响的行数：20  3239526
+2021-06-15 18:11:51,035 - INFO - 创建价格------------
+2021-06-15 18:11:51,035 - DEBUG -  select * 
+            from as_test.202106_ty_618p2 a,pm_prod_sku s
+            WHERE    a.huohao = s.pharmacy_huohao
+            and s.drugstore_id = 200  
+            and 1=1
+    
+2021-06-15 18:11:54,884 - DEBUG - querySQL语句受影响的行数：：138  None
+2021-06-15 18:11:54,885 - DEBUG -                                                                                                                                           
+        INSERT INTO `medstore`.`pm_label_image` (  `label_name`, `label_url`, `label_url_double`, `label_type`, `label_status`, `label_create_time`, `label_update_time`, `pharmacy_id`, `label_flag`, `sku_id`, `label_start_time`, `label_end_time`)
+        VALUES 
+     (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100227', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100223', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101795', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '102305', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '11425580', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '102152', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100261', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '103485', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100201', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101833', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '140050', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100208', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101812', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '103480', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '102359', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507514', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '102219', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25570222', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100959', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '102221', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25570374', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25569792', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507488', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100126', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507535', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101776', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25554776', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25561207', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '790006', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100572', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101926', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100012', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25480712', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '102574', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100416', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '20119011', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '11424318', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '590223', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '102686', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100535', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '140464', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '790106', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '495274', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25555103', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100299', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '11424282', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25554589', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101976', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101854', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101807', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '102297', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100384', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '790022', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101553', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '740165', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100326', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '740062', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100953', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100340', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '590070', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100388', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101584', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '140577', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100832', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101445', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '100801', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25570024', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '20114046', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '102411', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '740220', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101390', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '590078', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '140072', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507694', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507807', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '20118987', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '20114047', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '140120', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '20002222', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25554769', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101657', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507830', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101543', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '590259', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25570023', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101700', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '590354', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25570021', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25570231', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101238', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '740276', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101457', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101437', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '740248', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '140043', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '740274', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '740239', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '11424278', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '102135', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507727', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101650', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '140605', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '740285', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507739', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101585', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507808', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '590042', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507723', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '20119083', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '11424193', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507831', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '20002326', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '20119090', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '590180', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25570227', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507803', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101334', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101417', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25555054', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101240', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101416', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507815', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101342', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '140202', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25535174', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507782', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25496737', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '102295', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '740233', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25570233', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507804', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '20119196', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '103359', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101356', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101997', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '495178', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '101421', '2021-06-15 18:00:00', '2021-06-18 23:59:59'), (  '618嗨购', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', 'http://image.ykd365.cn/act/2021/6/618/2/list.png', '1', '1', now(),now(), '200', '0', '25507810', '2021-06-15 18:00:00', '2021-06-18 23:59:59')
+2021-06-15 18:11:54,910 - DEBUG - insert语句受影响的行数：138  502499
+2021-06-15 18:11:54,910 - INFO - 创建list logo------------
+2021-06-15 18:11:54,910 - DEBUG -  UPDATE as_test.202106_ty_618p2 a ,pm_packet_sku b,pm_prod_sku c  ,pm_prod_sku cd
+            set cd.sku_status = 0
+            WHERE  a.huohao = c.pharmacy_huohao
+            and c.drugstore_id = 200
+            and b.sku_id = c.sku_id and b.packet_sku_id = cd.sku_id
+            and stop_lcz=1 ;
+            
+2021-06-15 18:11:54,920 - DEBUG - insert语句受影响的行数：0  0
+2021-06-15 18:11:54,920 - DEBUG -  UPDATE as_test.202106_ty_618p2 a ,pm_packet_sku b,pm_prod_sku c  ,pm_prod_sku cd
+            set cd.sku_status = 1
+            WHERE  a.huohao = c.pharmacy_huohao
+            and c.drugstore_id = 200
+            and b.sku_id = c.sku_id and b.packet_sku_id = cd.sku_id
+            and list_logo="疗程装" ;
+            
+2021-06-15 18:11:54,929 - DEBUG - insert语句受影响的行数：0  0
+2021-06-15 18:11:54,930 - DEBUG -  UPDATE as_test.202106_ty_618p2 a ,pm_packet_sku b,pm_prod_sku c  ,pm_prod_sku cd
+            set cd.sku_status = 1
+            WHERE  a.huohao = c.pharmacy_huohao
+            and c.drugstore_id = 200
+            and b.sku_id = c.sku_id and b.packet_sku_id = cd.sku_id
+            and stop_lcz=2 ;
+            
+2021-06-15 18:11:57,330 - DEBUG - insert语句受影响的行数：36  0
+2021-06-15 18:11:57,330 - INFO - 暂停疗程购------------
+2021-06-15 18:11:57,331 - INFO - 创建活动主体，包括活动名，开始结束时间
+2021-06-15 18:11:57,331 - DEBUG - select * from am_act_info  where   act_id="312"  
+2021-06-15 18:11:57,340 - DEBUG - querySQL语句受影响的行数：：0  None
+2021-06-15 18:11:57,341 - DEBUG - 
+        INSERT INTO `medstore`.`am_act_info` (`act_id`, `act_name`, `act_type`, `act_status`, `act_content`
+        , `act_update_time`, `act_create_time`, `act_start_time`, `act_end_time`, `act_level`, `act_remark`
+        , `act_img`, `act_url`, `pharmacy_id`)
+        VALUES ('312', '618年中大促', 'date', '1', '活动', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59', '1', '', '', '', '200');
+    
+2021-06-15 18:11:57,350 - DEBUG - insert语句受影响的行数：1  312
+2021-06-15 18:11:57,350 - INFO - 创建活动成功
+2021-06-15 18:11:57,350 - DEBUG -  select * 
+            from as_test.202106_ty_618p2 a,pm_prod_sku s
+            WHERE    a.huohao = s.pharmacy_huohao
+            and s.drugstore_id = 200  
+            and 1=1
+    
+2021-06-15 18:12:01,306 - DEBUG - querySQL语句受影响的行数：：138  None
+2021-06-15 18:12:01,306 - DEBUG - select * from as_test.202106_ty_618p2  where  dir_code !="" group by dir_code  
+2021-06-15 18:12:01,326 - DEBUG - querySQL语句受影响的行数：：5  None
+2021-06-15 18:12:01,326 - DEBUG - select * from as_test.202106_ty_618p2  where   item_code !="" group by item_code  
+2021-06-15 18:12:01,354 - DEBUG - querySQL语句受影响的行数：：4  None
+2021-06-15 18:12:01,354 - INFO - 开始创建活动目录 200
+2021-06-15 18:12:01,355 - DEBUG - 根据提供的盘货信息，创建展示目录 dir 
+2021-06-15 18:12:01,355 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:01,687 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:01,688 - DEBUG - 
+            INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('1000act312','618年中大促','dir','1',NULL,100,'1',2,'http://image.ykd365.cn/act/2021/6/618/2/head.jpg','',NOW(),NOW(),'#f91549','',NULL,'200',NULL,NULL) ;
+        
+2021-06-15 18:12:01,758 - DEBUG - insert语句受影响的行数：1  1002765134
+2021-06-15 18:12:01,759 - INFO - 创建zhu活动目录 {'dir_id': 1002765134, 'dir_code': '1000act312', 'dir_name': '618年中大促', 'dir_level': '2', 'pharmacy_id': 200}
+2021-06-15 18:12:01,759 - DEBUG - 
+        INSERT INTO `medstore`.`sm_image_link` (  `drugstore_id`, `seq_num`, `image_url`, `link_url`, `link_type`, `link_name`, `link_param`, `link_status`, `link_update_time`, `link_create_time`, `link_remark`, `link_start_time`, `link_end_time`, `link_view`, `link_version`)
+        VALUES (  '200', '1', 'http://image.ykd365.cn/act/2021/6/618/2/lb.jpg', 'http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134', 'url', '618年中大促', '1002765134', '1', now(), now(), '', '2021-06-15 18:00:00', '2021-06-18 23:59:59', '', '1');
+        
+2021-06-15 18:12:01,769 - DEBUG - insert语句受影响的行数：1  7361
+2021-06-15 18:12:01,769 - INFO - 创建sm_image_link类型为  的618年中大促 活动 , dirId= 1002765134 ,url=http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134,药店:200 
+2021-06-15 18:12:01,770 - DEBUG - 
+    INSERT INTO `medstore`.`sm_image_link_window` (  `drugstore_id`, `seq_num`, `image_url`, `window_url`, `window_type`
+    , `window_name`, `window_param`, `window_status`, `window_update_time`, `window_create_time`
+    , `window_remark`, `window_start_time`, `window_end_time`, `window_view`, `window_go_type`) 
+    VALUES (  '200', '1', 'http://image.ykd365.cn/act/2021/6/618/2/tc.png', 'http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134', 'everyday', '618年中大促', '1002765134', '1', now(), now(), '', '2021-06-15 18:00:00', '2021-06-18 23:59:59', '', '0');
+        
+2021-06-15 18:12:01,787 - DEBUG - insert语句受影响的行数：1  1216
+2021-06-15 18:12:01,788 - INFO - 创建sm_image_link_window  的618年中大促 活动 , dirId= 1002765134 ,url=http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134,药店:200 
+2021-06-15 18:12:01,788 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:01,975 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:01,975 - DEBUG - select * from pm_dir_info  where dir_code = '1000act312bpxlqbpxlq'  order by dir_id desc  limit 1
+2021-06-15 18:12:01,990 - DEBUG - querySQL语句受影响的行数：：0  None
+2021-06-15 18:12:01,990 - DEBUG - 根据提供的盘货信息，创建展示目录 dir 
+2021-06-15 18:12:01,991 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:02,175 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:02,175 - DEBUG - 
+            INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('1000act312bpxlq','爆品开抢','dir','1',NULL,100,'0',3,'http://image.ykd365.cn/act/2021/6/618/2/0.jpg','1002765134',NOW(),NOW(),'','',NULL,'200',NULL,NULL) ;
+        
+2021-06-15 18:12:02,208 - DEBUG - insert语句受影响的行数：1  1002765135
+2021-06-15 18:12:02,208 - INFO - 创建子会场目录 {'dir_id': 1002765135, 'dir_code': '1000act312bpxlq', 'dir_name': '爆品开抢', 'dir_level': '3', 'pharmacy_id': 200}
+2021-06-15 18:12:02,208 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '100227', '1000act312bpxlq', '1', now());
+2021-06-15 18:12:02,224 - DEBUG - insert语句受影响的行数：1  9544007
+2021-06-15 18:12:02,224 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '100223', '1000act312bpxlq', '2', now());
+2021-06-15 18:12:02,239 - DEBUG - insert语句受影响的行数：1  9544008
+2021-06-15 18:12:02,239 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '101795', '1000act312bpxlq', '3', now());
+2021-06-15 18:12:02,255 - DEBUG - insert语句受影响的行数：1  9544009
+2021-06-15 18:12:02,255 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '102305', '1000act312bpxlq', '4', now());
+2021-06-15 18:12:02,273 - DEBUG - insert语句受影响的行数：1  9544010
+2021-06-15 18:12:02,273 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '11425580', '1000act312bpxlq', '5', now());
+2021-06-15 18:12:02,290 - DEBUG - insert语句受影响的行数：1  9544011
+2021-06-15 18:12:02,290 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '102152', '1000act312bpxlq', '6', now());
+2021-06-15 18:12:02,314 - DEBUG - insert语句受影响的行数：1  9544012
+2021-06-15 18:12:02,314 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '100261', '1000act312bpxlq', '7', now());
+2021-06-15 18:12:02,328 - DEBUG - insert语句受影响的行数：1  9544013
+2021-06-15 18:12:02,328 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '103485', '1000act312bpxlq', '8', now());
+2021-06-15 18:12:02,341 - DEBUG - insert语句受影响的行数：1  9544014
+2021-06-15 18:12:02,341 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '100201', '1000act312bpxlq', '9', now());
+2021-06-15 18:12:02,354 - DEBUG - insert语句受影响的行数：1  9544015
+2021-06-15 18:12:02,354 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '101833', '1000act312bpxlq', '10', now());
+2021-06-15 18:12:02,369 - DEBUG - insert语句受影响的行数：1  9544016
+2021-06-15 18:12:02,369 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '140050', '1000act312bpxlq', '11', now());
+2021-06-15 18:12:02,402 - DEBUG - insert语句受影响的行数：1  9544017
+2021-06-15 18:12:02,402 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '100208', '1000act312bpxlq', '12', now());
+2021-06-15 18:12:02,432 - DEBUG - insert语句受影响的行数：1  9544018
+2021-06-15 18:12:02,433 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '101812', '1000act312bpxlq', '13', now());
+2021-06-15 18:12:02,466 - DEBUG - insert语句受影响的行数：1  9544019
+2021-06-15 18:12:02,466 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '103480', '1000act312bpxlq', '14', now());
+2021-06-15 18:12:02,487 - DEBUG - insert语句受影响的行数：1  9544020
+2021-06-15 18:12:02,487 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '102359', '1000act312bpxlq', '15', now());
+2021-06-15 18:12:02,503 - DEBUG - insert语句受影响的行数：1  9544021
+2021-06-15 18:12:02,503 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '25507514', '1000act312bpxlq', '16', now());
+2021-06-15 18:12:02,527 - DEBUG - insert语句受影响的行数：1  9544022
+2021-06-15 18:12:02,527 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '102219', '1000act312bpxlq', '17', now());
+2021-06-15 18:12:02,546 - DEBUG - insert语句受影响的行数：1  9544023
+2021-06-15 18:12:02,547 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '25570222', '1000act312bpxlq', '18', now());
+2021-06-15 18:12:02,565 - DEBUG - insert语句受影响的行数：1  9544024
+2021-06-15 18:12:02,566 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '100959', '1000act312bpxlq', '19', now());
+2021-06-15 18:12:02,593 - DEBUG - insert语句受影响的行数：1  9544025
+2021-06-15 18:12:02,593 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765135', '102221', '1000act312bpxlq', '20', now());
+2021-06-15 18:12:02,607 - DEBUG - insert语句受影响的行数：1  9544026
+2021-06-15 18:12:02,607 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:02,788 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:02,789 - DEBUG - select * from pm_dir_info  where dir_code = '1000act312etjketjk'  order by dir_id desc  limit 1
+2021-06-15 18:12:02,807 - DEBUG - querySQL语句受影响的行数：：0  None
+2021-06-15 18:12:02,807 - DEBUG - 根据提供的盘货信息，创建展示目录 dir 
+2021-06-15 18:12:02,807 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:03,002 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:03,002 - DEBUG - 
+            INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('1000act312etjk','儿童健康','dir','1',NULL,100,'5',3,'http://image.ykd365.cn/act/2021/6/618/2/5.jpg','1002765134',NOW(),NOW(),'','',NULL,'200',NULL,NULL) ;
+        
+2021-06-15 18:12:03,020 - DEBUG - insert语句受影响的行数：1  1002765136
+2021-06-15 18:12:03,020 - INFO - 创建子会场目录 {'dir_id': 1002765136, 'dir_code': '1000act312etjk', 'dir_name': '儿童健康', 'dir_level': '3', 'pharmacy_id': 200}
+2021-06-15 18:12:03,020 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '25570227', '1000act312etjk', '115', now());
+2021-06-15 18:12:03,032 - DEBUG - insert语句受影响的行数：1  9544027
+2021-06-15 18:12:03,032 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '25507803', '1000act312etjk', '116', now());
+2021-06-15 18:12:03,047 - DEBUG - insert语句受影响的行数：1  9544028
+2021-06-15 18:12:03,048 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '101334', '1000act312etjk', '117', now());
+2021-06-15 18:12:03,072 - DEBUG - insert语句受影响的行数：1  9544029
+2021-06-15 18:12:03,073 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '101417', '1000act312etjk', '118', now());
+2021-06-15 18:12:03,120 - DEBUG - insert语句受影响的行数：1  9544030
+2021-06-15 18:12:03,121 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '25555054', '1000act312etjk', '119', now());
+2021-06-15 18:12:03,150 - DEBUG - insert语句受影响的行数：1  9544031
+2021-06-15 18:12:03,150 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '101240', '1000act312etjk', '120', now());
+2021-06-15 18:12:03,166 - DEBUG - insert语句受影响的行数：1  9544032
+2021-06-15 18:12:03,166 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '101416', '1000act312etjk', '121', now());
+2021-06-15 18:12:03,176 - DEBUG - insert语句受影响的行数：1  9544033
+2021-06-15 18:12:03,176 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '25507815', '1000act312etjk', '122', now());
+2021-06-15 18:12:03,215 - DEBUG - insert语句受影响的行数：1  9544034
+2021-06-15 18:12:03,215 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '101342', '1000act312etjk', '123', now());
+2021-06-15 18:12:03,256 - DEBUG - insert语句受影响的行数：1  9544035
+2021-06-15 18:12:03,257 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '140202', '1000act312etjk', '124', now());
+2021-06-15 18:12:03,288 - DEBUG - insert语句受影响的行数：1  9544036
+2021-06-15 18:12:03,288 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '25535174', '1000act312etjk', '125', now());
+2021-06-15 18:12:03,314 - DEBUG - insert语句受影响的行数：1  9544037
+2021-06-15 18:12:03,314 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '25507782', '1000act312etjk', '126', now());
+2021-06-15 18:12:03,335 - DEBUG - insert语句受影响的行数：1  9544038
+2021-06-15 18:12:03,336 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '25496737', '1000act312etjk', '127', now());
+2021-06-15 18:12:03,359 - DEBUG - insert语句受影响的行数：1  9544039
+2021-06-15 18:12:03,359 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '102295', '1000act312etjk', '128', now());
+2021-06-15 18:12:03,385 - DEBUG - insert语句受影响的行数：1  9544040
+2021-06-15 18:12:03,385 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '740233', '1000act312etjk', '129', now());
+2021-06-15 18:12:03,405 - DEBUG - insert语句受影响的行数：1  9544041
+2021-06-15 18:12:03,406 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '25570233', '1000act312etjk', '130', now());
+2021-06-15 18:12:03,427 - DEBUG - insert语句受影响的行数：1  9544042
+2021-06-15 18:12:03,428 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '25507804', '1000act312etjk', '131', now());
+2021-06-15 18:12:03,447 - DEBUG - insert语句受影响的行数：1  9544043
+2021-06-15 18:12:03,447 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '20119196', '1000act312etjk', '132', now());
+2021-06-15 18:12:03,469 - DEBUG - insert语句受影响的行数：1  9544044
+2021-06-15 18:12:03,470 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '103359', '1000act312etjk', '133', now());
+2021-06-15 18:12:03,495 - DEBUG - insert语句受影响的行数：1  9544045
+2021-06-15 18:12:03,495 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '101356', '1000act312etjk', '134', now());
+2021-06-15 18:12:03,510 - DEBUG - insert语句受影响的行数：1  9544046
+2021-06-15 18:12:03,510 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '101997', '1000act312etjk', '135', now());
+2021-06-15 18:12:03,525 - DEBUG - insert语句受影响的行数：1  9544047
+2021-06-15 18:12:03,525 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '495178', '1000act312etjk', '136', now());
+2021-06-15 18:12:03,555 - DEBUG - insert语句受影响的行数：1  9544048
+2021-06-15 18:12:03,556 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '101421', '1000act312etjk', '137', now());
+2021-06-15 18:12:03,577 - DEBUG - insert语句受影响的行数：1  9544049
+2021-06-15 18:12:03,577 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765136', '25507810', '1000act312etjk', '138', now());
+2021-06-15 18:12:03,619 - DEBUG - insert语句受影响的行数：1  9544050
+2021-06-15 18:12:03,619 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:03,817 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:03,817 - DEBUG - select * from pm_dir_info  where dir_code = '1000act312jtbbxyxjtbbxyx'  order by dir_id desc  limit 1
+2021-06-15 18:12:03,830 - DEBUG - querySQL语句受影响的行数：：0  None
+2021-06-15 18:12:03,830 - DEBUG - 根据提供的盘货信息，创建展示目录 dir 
+2021-06-15 18:12:03,830 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:04,017 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:04,017 - DEBUG - 
+            INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('1000act312jtbbxyx','家庭必备','dir','1',NULL,100,'1',3,'http://image.ykd365.cn/act/2021/6/618/2/1.jpg','1002765134',NOW(),NOW(),'','',NULL,'200',NULL,NULL) ;
+        
+2021-06-15 18:12:04,041 - DEBUG - insert语句受影响的行数：1  1002765137
+2021-06-15 18:12:04,041 - INFO - 创建子会场目录 {'dir_id': 1002765137, 'dir_code': '1000act312jtbbxyx', 'dir_name': '家庭必备', 'dir_level': '3', 'pharmacy_id': 200}
+2021-06-15 18:12:04,041 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '25570374', '1000act312jtbbxyx', '21', now());
+2021-06-15 18:12:04,067 - DEBUG - insert语句受影响的行数：1  9544051
+2021-06-15 18:12:04,067 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '25569792', '1000act312jtbbxyx', '22', now());
+2021-06-15 18:12:04,086 - DEBUG - insert语句受影响的行数：1  9544052
+2021-06-15 18:12:04,086 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '25507488', '1000act312jtbbxyx', '23', now());
+2021-06-15 18:12:04,108 - DEBUG - insert语句受影响的行数：1  9544053
+2021-06-15 18:12:04,108 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '100126', '1000act312jtbbxyx', '24', now());
+2021-06-15 18:12:04,127 - DEBUG - insert语句受影响的行数：1  9544054
+2021-06-15 18:12:04,127 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '25507535', '1000act312jtbbxyx', '25', now());
+2021-06-15 18:12:04,138 - DEBUG - insert语句受影响的行数：1  9544055
+2021-06-15 18:12:04,138 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '101776', '1000act312jtbbxyx', '26', now());
+2021-06-15 18:12:04,164 - DEBUG - insert语句受影响的行数：1  9544056
+2021-06-15 18:12:04,164 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '25554776', '1000act312jtbbxyx', '27', now());
+2021-06-15 18:12:04,182 - DEBUG - insert语句受影响的行数：1  9544057
+2021-06-15 18:12:04,182 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '25561207', '1000act312jtbbxyx', '28', now());
+2021-06-15 18:12:04,204 - DEBUG - insert语句受影响的行数：1  9544058
+2021-06-15 18:12:04,204 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '790006', '1000act312jtbbxyx', '29', now());
+2021-06-15 18:12:04,216 - DEBUG - insert语句受影响的行数：1  9544059
+2021-06-15 18:12:04,216 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '100572', '1000act312jtbbxyx', '30', now());
+2021-06-15 18:12:04,240 - DEBUG - insert语句受影响的行数：1  9544060
+2021-06-15 18:12:04,240 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '101926', '1000act312jtbbxyx', '31', now());
+2021-06-15 18:12:04,251 - DEBUG - insert语句受影响的行数：1  9544061
+2021-06-15 18:12:04,251 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '100012', '1000act312jtbbxyx', '32', now());
+2021-06-15 18:12:04,273 - DEBUG - insert语句受影响的行数：1  9544062
+2021-06-15 18:12:04,273 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '25480712', '1000act312jtbbxyx', '33', now());
+2021-06-15 18:12:04,297 - DEBUG - insert语句受影响的行数：1  9544063
+2021-06-15 18:12:04,297 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '102574', '1000act312jtbbxyx', '34', now());
+2021-06-15 18:12:04,312 - DEBUG - insert语句受影响的行数：1  9544064
+2021-06-15 18:12:04,312 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '100416', '1000act312jtbbxyx', '35', now());
+2021-06-15 18:12:04,332 - DEBUG - insert语句受影响的行数：1  9544065
+2021-06-15 18:12:04,333 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '20119011', '1000act312jtbbxyx', '36', now());
+2021-06-15 18:12:04,355 - DEBUG - insert语句受影响的行数：1  9544066
+2021-06-15 18:12:04,355 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '11424318', '1000act312jtbbxyx', '37', now());
+2021-06-15 18:12:04,370 - DEBUG - insert语句受影响的行数：1  9544067
+2021-06-15 18:12:04,370 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '590223', '1000act312jtbbxyx', '38', now());
+2021-06-15 18:12:04,398 - DEBUG - insert语句受影响的行数：1  9544068
+2021-06-15 18:12:04,398 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '102686', '1000act312jtbbxyx', '39', now());
+2021-06-15 18:12:04,412 - DEBUG - insert语句受影响的行数：1  9544069
+2021-06-15 18:12:04,413 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '100535', '1000act312jtbbxyx', '40', now());
+2021-06-15 18:12:04,434 - DEBUG - insert语句受影响的行数：1  9544070
+2021-06-15 18:12:04,434 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '140464', '1000act312jtbbxyx', '41', now());
+2021-06-15 18:12:04,449 - DEBUG - insert语句受影响的行数：1  9544071
+2021-06-15 18:12:04,450 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '790106', '1000act312jtbbxyx', '42', now());
+2021-06-15 18:12:04,472 - DEBUG - insert语句受影响的行数：1  9544072
+2021-06-15 18:12:04,472 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '495274', '1000act312jtbbxyx', '43', now());
+2021-06-15 18:12:04,491 - DEBUG - insert语句受影响的行数：1  9544073
+2021-06-15 18:12:04,492 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765137', '25555103', '1000act312jtbbxyx', '44', now());
+2021-06-15 18:12:04,509 - DEBUG - insert语句受影响的行数：1  9544074
+2021-06-15 18:12:04,509 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:04,692 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:04,693 - DEBUG - select * from pm_dir_info  where dir_code = '1000act312mbjkmbjk'  order by dir_id desc  limit 1
+2021-06-15 18:12:04,711 - DEBUG - querySQL语句受影响的行数：：0  None
+2021-06-15 18:12:04,711 - DEBUG - 根据提供的盘货信息，创建展示目录 dir 
+2021-06-15 18:12:04,712 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:04,890 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:04,890 - DEBUG - 
+            INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('1000act312mbjk','慢病健康','dir','1',NULL,100,'2',3,'http://image.ykd365.cn/act/2021/6/618/2/2.jpg','1002765134',NOW(),NOW(),'','',NULL,'200',NULL,NULL) ;
+        
+2021-06-15 18:12:04,908 - DEBUG - insert语句受影响的行数：1  1002765138
+2021-06-15 18:12:04,908 - INFO - 创建子会场目录 {'dir_id': 1002765138, 'dir_code': '1000act312mbjk', 'dir_name': '慢病健康', 'dir_level': '3', 'pharmacy_id': 200}
+2021-06-15 18:12:04,909 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '100299', '1000act312mbjk', '45', now());
+2021-06-15 18:12:04,923 - DEBUG - insert语句受影响的行数：1  9544075
+2021-06-15 18:12:04,923 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '11424282', '1000act312mbjk', '46', now());
+2021-06-15 18:12:04,941 - DEBUG - insert语句受影响的行数：1  9544076
+2021-06-15 18:12:04,942 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '25554589', '1000act312mbjk', '47', now());
+2021-06-15 18:12:04,958 - DEBUG - insert语句受影响的行数：1  9544077
+2021-06-15 18:12:04,958 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '101976', '1000act312mbjk', '48', now());
+2021-06-15 18:12:04,970 - DEBUG - insert语句受影响的行数：1  9544078
+2021-06-15 18:12:04,970 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '101854', '1000act312mbjk', '49', now());
+2021-06-15 18:12:04,992 - DEBUG - insert语句受影响的行数：1  9544079
+2021-06-15 18:12:04,992 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '101807', '1000act312mbjk', '50', now());
+2021-06-15 18:12:05,013 - DEBUG - insert语句受影响的行数：1  9544080
+2021-06-15 18:12:05,013 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '102297', '1000act312mbjk', '51', now());
+2021-06-15 18:12:05,042 - DEBUG - insert语句受影响的行数：1  9544081
+2021-06-15 18:12:05,042 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '100384', '1000act312mbjk', '52', now());
+2021-06-15 18:12:05,059 - DEBUG - insert语句受影响的行数：1  9544082
+2021-06-15 18:12:05,059 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '790022', '1000act312mbjk', '53', now());
+2021-06-15 18:12:05,074 - DEBUG - insert语句受影响的行数：1  9544083
+2021-06-15 18:12:05,074 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '101553', '1000act312mbjk', '54', now());
+2021-06-15 18:12:05,085 - DEBUG - insert语句受影响的行数：1  9544084
+2021-06-15 18:12:05,085 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '740165', '1000act312mbjk', '55', now());
+2021-06-15 18:12:05,100 - DEBUG - insert语句受影响的行数：1  9544085
+2021-06-15 18:12:05,100 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '100326', '1000act312mbjk', '56', now());
+2021-06-15 18:12:05,126 - DEBUG - insert语句受影响的行数：1  9544086
+2021-06-15 18:12:05,126 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '740062', '1000act312mbjk', '57', now());
+2021-06-15 18:12:05,143 - DEBUG - insert语句受影响的行数：1  9544087
+2021-06-15 18:12:05,143 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '100953', '1000act312mbjk', '58', now());
+2021-06-15 18:12:05,153 - DEBUG - insert语句受影响的行数：1  9544088
+2021-06-15 18:12:05,153 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '100340', '1000act312mbjk', '59', now());
+2021-06-15 18:12:05,172 - DEBUG - insert语句受影响的行数：1  9544089
+2021-06-15 18:12:05,172 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '590070', '1000act312mbjk', '60', now());
+2021-06-15 18:12:05,187 - DEBUG - insert语句受影响的行数：1  9544090
+2021-06-15 18:12:05,187 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '100388', '1000act312mbjk', '61', now());
+2021-06-15 18:12:05,205 - DEBUG - insert语句受影响的行数：1  9544091
+2021-06-15 18:12:05,205 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '101584', '1000act312mbjk', '62', now());
+2021-06-15 18:12:05,216 - DEBUG - insert语句受影响的行数：1  9544092
+2021-06-15 18:12:05,216 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '140577', '1000act312mbjk', '63', now());
+2021-06-15 18:12:05,250 - DEBUG - insert语句受影响的行数：1  9544093
+2021-06-15 18:12:05,250 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '100832', '1000act312mbjk', '64', now());
+2021-06-15 18:12:05,266 - DEBUG - insert语句受影响的行数：1  9544094
+2021-06-15 18:12:05,266 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '101445', '1000act312mbjk', '65', now());
+2021-06-15 18:12:05,286 - DEBUG - insert语句受影响的行数：1  9544095
+2021-06-15 18:12:05,286 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765138', '100801', '1000act312mbjk', '66', now());
+2021-06-15 18:12:05,299 - DEBUG - insert语句受影响的行数：1  9544096
+2021-06-15 18:12:05,299 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:05,489 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:05,489 - DEBUG - select * from pm_dir_info  where dir_code = '1000act312nxjknxjk'  order by dir_id desc  limit 1
+2021-06-15 18:12:05,502 - DEBUG - querySQL语句受影响的行数：：0  None
+2021-06-15 18:12:05,502 - DEBUG - 根据提供的盘货信息，创建展示目录 dir 
+2021-06-15 18:12:05,502 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:05,682 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:05,682 - DEBUG - 
+            INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('1000act312nxjk','女性健康','dir','1',NULL,100,'3',3,'http://image.ykd365.cn/act/2021/6/618/2/3.jpg','1002765134',NOW(),NOW(),'','',NULL,'200',NULL,NULL) ;
+        
+2021-06-15 18:12:05,699 - DEBUG - insert语句受影响的行数：1  1002765139
+2021-06-15 18:12:05,699 - INFO - 创建子会场目录 {'dir_id': 1002765139, 'dir_code': '1000act312nxjk', 'dir_name': '女性健康', 'dir_level': '3', 'pharmacy_id': 200}
+2021-06-15 18:12:05,700 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '25570024', '1000act312nxjk', '67', now());
+2021-06-15 18:12:05,710 - DEBUG - insert语句受影响的行数：1  9544097
+2021-06-15 18:12:05,710 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '20114046', '1000act312nxjk', '68', now());
+2021-06-15 18:12:05,727 - DEBUG - insert语句受影响的行数：1  9544098
+2021-06-15 18:12:05,727 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '102411', '1000act312nxjk', '69', now());
+2021-06-15 18:12:05,741 - DEBUG - insert语句受影响的行数：1  9544099
+2021-06-15 18:12:05,741 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '740220', '1000act312nxjk', '70', now());
+2021-06-15 18:12:05,760 - DEBUG - insert语句受影响的行数：1  9544100
+2021-06-15 18:12:05,760 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '101390', '1000act312nxjk', '71', now());
+2021-06-15 18:12:05,785 - DEBUG - insert语句受影响的行数：1  9544101
+2021-06-15 18:12:05,785 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '590078', '1000act312nxjk', '72', now());
+2021-06-15 18:12:05,799 - DEBUG - insert语句受影响的行数：1  9544102
+2021-06-15 18:12:05,799 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '140072', '1000act312nxjk', '73', now());
+2021-06-15 18:12:05,815 - DEBUG - insert语句受影响的行数：1  9544103
+2021-06-15 18:12:05,815 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '25507694', '1000act312nxjk', '74', now());
+2021-06-15 18:12:05,842 - DEBUG - insert语句受影响的行数：1  9544104
+2021-06-15 18:12:05,842 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '25507807', '1000act312nxjk', '75', now());
+2021-06-15 18:12:05,851 - DEBUG - insert语句受影响的行数：1  9544105
+2021-06-15 18:12:05,851 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '20118987', '1000act312nxjk', '76', now());
+2021-06-15 18:12:05,868 - DEBUG - insert语句受影响的行数：1  9544106
+2021-06-15 18:12:05,868 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '20114047', '1000act312nxjk', '77', now());
+2021-06-15 18:12:05,888 - DEBUG - insert语句受影响的行数：1  9544107
+2021-06-15 18:12:05,888 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '140120', '1000act312nxjk', '78', now());
+2021-06-15 18:12:05,903 - DEBUG - insert语句受影响的行数：1  9544108
+2021-06-15 18:12:05,904 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '20002222', '1000act312nxjk', '79', now());
+2021-06-15 18:12:05,916 - DEBUG - insert语句受影响的行数：1  9544109
+2021-06-15 18:12:05,916 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '25554769', '1000act312nxjk', '80', now());
+2021-06-15 18:12:05,927 - DEBUG - insert语句受影响的行数：1  9544110
+2021-06-15 18:12:05,927 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '101657', '1000act312nxjk', '81', now());
+2021-06-15 18:12:05,939 - DEBUG - insert语句受影响的行数：1  9544111
+2021-06-15 18:12:05,939 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '25507830', '1000act312nxjk', '82', now());
+2021-06-15 18:12:05,953 - DEBUG - insert语句受影响的行数：1  9544112
+2021-06-15 18:12:05,953 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '101543', '1000act312nxjk', '83', now());
+2021-06-15 18:12:05,970 - DEBUG - insert语句受影响的行数：1  9544113
+2021-06-15 18:12:05,970 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '590259', '1000act312nxjk', '84', now());
+2021-06-15 18:12:05,980 - DEBUG - insert语句受影响的行数：1  9544114
+2021-06-15 18:12:05,980 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '25570023', '1000act312nxjk', '85', now());
+2021-06-15 18:12:06,009 - DEBUG - insert语句受影响的行数：1  9544115
+2021-06-15 18:12:06,009 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '101700', '1000act312nxjk', '86', now());
+2021-06-15 18:12:06,027 - DEBUG - insert语句受影响的行数：1  9544116
+2021-06-15 18:12:06,028 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '590354', '1000act312nxjk', '87', now());
+2021-06-15 18:12:06,042 - DEBUG - insert语句受影响的行数：1  9544117
+2021-06-15 18:12:06,042 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '25570021', '1000act312nxjk', '88', now());
+2021-06-15 18:12:06,052 - DEBUG - insert语句受影响的行数：1  9544118
+2021-06-15 18:12:06,053 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '25570231', '1000act312nxjk', '89', now());
+2021-06-15 18:12:06,074 - DEBUG - insert语句受影响的行数：1  9544119
+2021-06-15 18:12:06,074 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '101238', '1000act312nxjk', '90', now());
+2021-06-15 18:12:06,092 - DEBUG - insert语句受影响的行数：1  9544120
+2021-06-15 18:12:06,092 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '740276', '1000act312nxjk', '91', now());
+2021-06-15 18:12:06,103 - DEBUG - insert语句受影响的行数：1  9544121
+2021-06-15 18:12:06,103 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '101457', '1000act312nxjk', '92', now());
+2021-06-15 18:12:06,119 - DEBUG - insert语句受影响的行数：1  9544122
+2021-06-15 18:12:06,119 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '101437', '1000act312nxjk', '93', now());
+2021-06-15 18:12:06,143 - DEBUG - insert语句受影响的行数：1  9544123
+2021-06-15 18:12:06,143 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '740248', '1000act312nxjk', '94', now());
+2021-06-15 18:12:06,160 - DEBUG - insert语句受影响的行数：1  9544124
+2021-06-15 18:12:06,160 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '140043', '1000act312nxjk', '95', now());
+2021-06-15 18:12:06,180 - DEBUG - insert语句受影响的行数：1  9544125
+2021-06-15 18:12:06,180 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '740274', '1000act312nxjk', '96', now());
+2021-06-15 18:12:06,191 - DEBUG - insert语句受影响的行数：1  9544126
+2021-06-15 18:12:06,191 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '740239', '1000act312nxjk', '97', now());
+2021-06-15 18:12:06,204 - DEBUG - insert语句受影响的行数：1  9544127
+2021-06-15 18:12:06,204 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '11424278', '1000act312nxjk', '98', now());
+2021-06-15 18:12:06,222 - DEBUG - insert语句受影响的行数：1  9544128
+2021-06-15 18:12:06,222 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '102135', '1000act312nxjk', '99', now());
+2021-06-15 18:12:06,237 - DEBUG - insert语句受影响的行数：1  9544129
+2021-06-15 18:12:06,237 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '25507727', '1000act312nxjk', '100', now());
+2021-06-15 18:12:06,257 - DEBUG - insert语句受影响的行数：1  9544130
+2021-06-15 18:12:06,257 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '101650', '1000act312nxjk', '101', now());
+2021-06-15 18:12:06,268 - DEBUG - insert语句受影响的行数：1  9544131
+2021-06-15 18:12:06,269 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '140605', '1000act312nxjk', '102', now());
+2021-06-15 18:12:06,283 - DEBUG - insert语句受影响的行数：1  9544132
+2021-06-15 18:12:06,283 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '740285', '1000act312nxjk', '103', now());
+2021-06-15 18:12:06,307 - DEBUG - insert语句受影响的行数：1  9544133
+2021-06-15 18:12:06,307 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '25507739', '1000act312nxjk', '104', now());
+2021-06-15 18:12:06,330 - DEBUG - insert语句受影响的行数：1  9544134
+2021-06-15 18:12:06,331 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '101585', '1000act312nxjk', '105', now());
+2021-06-15 18:12:06,344 - DEBUG - insert语句受影响的行数：1  9544135
+2021-06-15 18:12:06,344 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '25507808', '1000act312nxjk', '106', now());
+2021-06-15 18:12:06,359 - DEBUG - insert语句受影响的行数：1  9544136
+2021-06-15 18:12:06,359 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '590042', '1000act312nxjk', '107', now());
+2021-06-15 18:12:06,380 - DEBUG - insert语句受影响的行数：1  9544137
+2021-06-15 18:12:06,380 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '25507723', '1000act312nxjk', '108', now());
+2021-06-15 18:12:06,396 - DEBUG - insert语句受影响的行数：1  9544138
+2021-06-15 18:12:06,396 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '20119083', '1000act312nxjk', '109', now());
+2021-06-15 18:12:06,414 - DEBUG - insert语句受影响的行数：1  9544139
+2021-06-15 18:12:06,414 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '11424193', '1000act312nxjk', '110', now());
+2021-06-15 18:12:06,432 - DEBUG - insert语句受影响的行数：1  9544140
+2021-06-15 18:12:06,432 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '25507831', '1000act312nxjk', '111', now());
+2021-06-15 18:12:06,453 - DEBUG - insert语句受影响的行数：1  9544141
+2021-06-15 18:12:06,453 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '20002326', '1000act312nxjk', '112', now());
+2021-06-15 18:12:06,466 - DEBUG - insert语句受影响的行数：1  9544142
+2021-06-15 18:12:06,466 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '20119090', '1000act312nxjk', '113', now());
+2021-06-15 18:12:06,477 - DEBUG - insert语句受影响的行数：1  9544143
+2021-06-15 18:12:06,477 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765139', '590180', '1000act312nxjk', '114', now());
+2021-06-15 18:12:06,491 - DEBUG - insert语句受影响的行数：1  9544144
+2021-06-15 18:12:06,491 - INFO - --------活动信息分割or单体 ['2件5折']
+2021-06-15 18:12:06,492 - INFO - --------活动信息分割or单体 0==2件5折
+2021-06-15 18:12:06,492 - DEBUG - 根据提供的盘货信息，创建展示目录 dir 
+2021-06-15 18:12:06,492 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:06,672 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:06,672 - DEBUG - 
+            INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('1000act3122j5z','2件5折','dir','1',NULL,100,'1',3,'','',NOW(),NOW(),'','',NULL,'200',NULL,NULL) ;
+        
+2021-06-15 18:12:06,703 - DEBUG - insert语句受影响的行数：1  1002765140
+2021-06-15 18:12:06,703 - DEBUG - 
+            INSERT INTO `medstore`.`am_act_range` (  `range_type`, `range_value`, `range_status`
+            , `range_name`, `range_remark`, `range_update_time`, `range_create_time`)
+            values('category', 1002765140, '1', '2件5折', '同品2件5折', NOW(), NOW()) 
+        
+2021-06-15 18:12:06,723 - DEBUG - insert语句受影响的行数：1  3747
+2021-06-15 18:12:06,723 - DEBUG - 
+            INSERT INTO `medstore`.`am_act_item` ( `item_attr`, `item_name`, `act_id`
+            , `item_status`, `item_priority`, `item_type`, `item_desc`, `item_update_time`
+            , `item_create_time`, `item_remark`, `item_img`, `pharmacy_id`, `item_flag`
+            , `sales_goto_type`, `sales_goto_title`, `sales_goto_url`, `item_num`, `item_title`
+            , `activity_img`, `activity_img_ratio`)
+            VALUES ('single', '2件5折', '312', '1', '90', 'discount','同品2件5折', NOW(), NOW()
+            ,'{"itemImageR":"373"}', 'http://image.ykd365.cn/act/2021/6/618/2/detail.png', '200', '', '', '', '', '1000', '', '', '')
+            ;
+        
+2021-06-15 18:12:06,745 - DEBUG - insert语句受影响的行数：1  1904
+2021-06-15 18:12:06,745 - DEBUG - 
+            INSERT INTO `medstore`.`am_item_range` ( `range_id`, `item_id`) VALUES ( '3747', '1904');
+        
+2021-06-15 18:12:06,774 - DEBUG - insert语句受影响的行数：1  4298
+2021-06-15 18:12:06,774 - INFO - 创建 活动 item range dir    1904  3747  1002765140 2件5折
+2021-06-15 18:12:06,775 - INFO - 创建 活动规则 details  2件5折- 同品2件5折 -50- 2
+2021-06-15 18:12:06,775 - DEBUG - 
+            INSERT INTO `medstore`.`am_item_details` (  `details_level`, `item_id`, `details_type`
+            , `details_val_type`, `details_value`, `details_update_time`, `details_create_time`
+            , `details_remark`, `details_content`) 
+            VALUES ( '1', '1904', 'discount', 'rate', '50', now(), now(), '同品2件5折', '同品2件5折');
+        
+2021-06-15 18:12:06,784 - DEBUG - insert语句受影响的行数：1  1166
+2021-06-15 18:12:06,784 - DEBUG - 
+           SELECT * from am_act_rule where rule_value = '>=2';
+        
+2021-06-15 18:12:06,799 - DEBUG - querySQL语句受影响的行数：：1  {'rule_id': 22, 'rule_type': 'prod_count', 'rule_name': 'prod_count', 'rule_value_type': 'string', 'rule_value': '>=2', 'rule_remark': 'prod_count', 'rule_update_time': datetime.datetime(2016, 12, 20, 11, 35, 7), 'rule_create_time': datetime.datetime(2016, 12, 19, 0, 0)}
+2021-06-15 18:12:06,799 - DEBUG - 
+            INSERT INTO `medstore`.`am_details_rule` (  `details_id`, `rule_id`) 
+            VALUES (  '1166', '22');
+        
+2021-06-15 18:12:06,816 - DEBUG - insert语句受影响的行数：1  1104
+2021-06-15 18:12:06,816 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765140', '25570021', '1000act3122j5z', '88', now());
+2021-06-15 18:12:06,830 - DEBUG - insert语句受影响的行数：1  9544145
+2021-06-15 18:12:06,831 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:06,856 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:06,856 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25570021', '312', '1904', '同品2件5折', '2件5折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:06,894 - DEBUG - insert语句受影响的行数：1  38567542
+2021-06-15 18:12:06,894 - INFO - --------活动信息分割or单体 ['2件8折']
+2021-06-15 18:12:06,895 - INFO - --------活动信息分割or单体 0==2件8折
+2021-06-15 18:12:06,895 - DEBUG - 根据提供的盘货信息，创建展示目录 dir 
+2021-06-15 18:12:06,895 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:07,085 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:07,086 - DEBUG - 
+            INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('1000act3122j8z','2件8折','dir','1',NULL,100,'1',3,'','',NOW(),NOW(),'','',NULL,'200',NULL,NULL) ;
+        
+2021-06-15 18:12:07,105 - DEBUG - insert语句受影响的行数：1  1002765141
+2021-06-15 18:12:07,106 - DEBUG - 
+            INSERT INTO `medstore`.`am_act_range` (  `range_type`, `range_value`, `range_status`
+            , `range_name`, `range_remark`, `range_update_time`, `range_create_time`)
+            values('category', 1002765141, '1', '2件8折', '同品2件8折', NOW(), NOW()) 
+        
+2021-06-15 18:12:07,131 - DEBUG - insert语句受影响的行数：1  3748
+2021-06-15 18:12:07,131 - DEBUG - 
+            INSERT INTO `medstore`.`am_act_item` ( `item_attr`, `item_name`, `act_id`
+            , `item_status`, `item_priority`, `item_type`, `item_desc`, `item_update_time`
+            , `item_create_time`, `item_remark`, `item_img`, `pharmacy_id`, `item_flag`
+            , `sales_goto_type`, `sales_goto_title`, `sales_goto_url`, `item_num`, `item_title`
+            , `activity_img`, `activity_img_ratio`)
+            VALUES ('single', '2件8折', '312', '1', '90', 'discount','同品2件8折', NOW(), NOW()
+            ,'{"itemImageR":"373"}', 'http://image.ykd365.cn/act/2021/6/618/2/detail.png', '200', '', '', '', '', '1000', '', '', '')
+            ;
+        
+2021-06-15 18:12:07,148 - DEBUG - insert语句受影响的行数：1  1905
+2021-06-15 18:12:07,148 - DEBUG - 
+            INSERT INTO `medstore`.`am_item_range` ( `range_id`, `item_id`) VALUES ( '3748', '1905');
+        
+2021-06-15 18:12:07,161 - DEBUG - insert语句受影响的行数：1  4299
+2021-06-15 18:12:07,161 - INFO - 创建 活动 item range dir    1905  3748  1002765141 2件8折
+2021-06-15 18:12:07,162 - INFO - 创建 活动规则 details  2件8折- 同品2件8折 -80- 2
+2021-06-15 18:12:07,162 - DEBUG - 
+            INSERT INTO `medstore`.`am_item_details` (  `details_level`, `item_id`, `details_type`
+            , `details_val_type`, `details_value`, `details_update_time`, `details_create_time`
+            , `details_remark`, `details_content`) 
+            VALUES ( '1', '1905', 'discount', 'rate', '80', now(), now(), '同品2件8折', '同品2件8折');
+        
+2021-06-15 18:12:07,175 - DEBUG - insert语句受影响的行数：1  1167
+2021-06-15 18:12:07,175 - DEBUG - 
+           SELECT * from am_act_rule where rule_value = '>=2';
+        
+2021-06-15 18:12:07,191 - DEBUG - querySQL语句受影响的行数：：1  {'rule_id': 22, 'rule_type': 'prod_count', 'rule_name': 'prod_count', 'rule_value_type': 'string', 'rule_value': '>=2', 'rule_remark': 'prod_count', 'rule_update_time': datetime.datetime(2016, 12, 20, 11, 35, 7), 'rule_create_time': datetime.datetime(2016, 12, 19, 0, 0)}
+2021-06-15 18:12:07,192 - DEBUG - 
+            INSERT INTO `medstore`.`am_details_rule` (  `details_id`, `rule_id`) 
+            VALUES (  '1167', '22');
+        
+2021-06-15 18:12:07,208 - DEBUG - insert语句受影响的行数：1  1105
+2021-06-15 18:12:07,209 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765141', '25570024', '1000act3122j8z', '67', now());
+2021-06-15 18:12:07,223 - DEBUG - insert语句受影响的行数：1  9544146
+2021-06-15 18:12:07,223 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:07,242 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:07,242 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25570024', '312', '1905', '同品2件8折', '2件8折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:07,285 - DEBUG - insert语句受影响的行数：1  38567543
+2021-06-15 18:12:07,285 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765141', '25507807', '1000act3122j8z', '75', now());
+2021-06-15 18:12:07,298 - DEBUG - insert语句受影响的行数：1  9544147
+2021-06-15 18:12:07,298 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:07,319 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:07,319 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25507807', '312', '1905', '同品2件8折', '2件8折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:07,363 - DEBUG - insert语句受影响的行数：1  38567544
+2021-06-15 18:12:07,363 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765141', '25507830', '1000act3122j8z', '82', now());
+2021-06-15 18:12:07,382 - DEBUG - insert语句受影响的行数：1  9544148
+2021-06-15 18:12:07,382 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:07,401 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:07,401 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25507830', '312', '1905', '同品2件8折', '2件8折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:07,434 - DEBUG - insert语句受影响的行数：1  38567545
+2021-06-15 18:12:07,434 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765141', '25570023', '1000act3122j8z', '85', now());
+2021-06-15 18:12:07,455 - DEBUG - insert语句受影响的行数：1  9544149
+2021-06-15 18:12:07,455 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:07,469 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:07,469 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25570023', '312', '1905', '同品2件8折', '2件8折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:07,508 - DEBUG - insert语句受影响的行数：1  38567546
+2021-06-15 18:12:07,508 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765141', '25507810', '1000act3122j8z', '138', now());
+2021-06-15 18:12:07,525 - DEBUG - insert语句受影响的行数：1  9544150
+2021-06-15 18:12:07,525 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:07,539 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:07,539 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25507810', '312', '1905', '同品2件8折', '2件8折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:07,582 - DEBUG - insert语句受影响的行数：1  38567547
+2021-06-15 18:12:07,582 - INFO - --------活动信息分割or单体 ['2件9折']
+2021-06-15 18:12:07,583 - INFO - --------活动信息分割or单体 0==2件9折
+2021-06-15 18:12:07,583 - DEBUG - 根据提供的盘货信息，创建展示目录 dir 
+2021-06-15 18:12:07,583 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:07,763 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:07,763 - DEBUG - 
+            INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('1000act3122j9z','2件9折','dir','1',NULL,100,'1',3,'','',NOW(),NOW(),'','',NULL,'200',NULL,NULL) ;
+        
+2021-06-15 18:12:07,816 - DEBUG - insert语句受影响的行数：1  1002765142
+2021-06-15 18:12:07,816 - DEBUG - 
+            INSERT INTO `medstore`.`am_act_range` (  `range_type`, `range_value`, `range_status`
+            , `range_name`, `range_remark`, `range_update_time`, `range_create_time`)
+            values('category', 1002765142, '1', '2件9折', '同品2件9折', NOW(), NOW()) 
+        
+2021-06-15 18:12:07,838 - DEBUG - insert语句受影响的行数：1  3749
+2021-06-15 18:12:07,839 - DEBUG - 
+            INSERT INTO `medstore`.`am_act_item` ( `item_attr`, `item_name`, `act_id`
+            , `item_status`, `item_priority`, `item_type`, `item_desc`, `item_update_time`
+            , `item_create_time`, `item_remark`, `item_img`, `pharmacy_id`, `item_flag`
+            , `sales_goto_type`, `sales_goto_title`, `sales_goto_url`, `item_num`, `item_title`
+            , `activity_img`, `activity_img_ratio`)
+            VALUES ('single', '2件9折', '312', '1', '90', 'discount','同品2件9折', NOW(), NOW()
+            ,'{"itemImageR":"373"}', 'http://image.ykd365.cn/act/2021/6/618/2/detail.png', '200', '', '', '', '', '1000', '', '', '')
+            ;
+        
+2021-06-15 18:12:07,850 - DEBUG - insert语句受影响的行数：1  1906
+2021-06-15 18:12:07,850 - DEBUG - 
+            INSERT INTO `medstore`.`am_item_range` ( `range_id`, `item_id`) VALUES ( '3749', '1906');
+        
+2021-06-15 18:12:07,877 - DEBUG - insert语句受影响的行数：1  4300
+2021-06-15 18:12:07,877 - INFO - 创建 活动 item range dir    1906  3749  1002765142 2件9折
+2021-06-15 18:12:07,877 - INFO - 创建 活动规则 details  2件9折- 同品2件9折 -90- 2
+2021-06-15 18:12:07,878 - DEBUG - 
+            INSERT INTO `medstore`.`am_item_details` (  `details_level`, `item_id`, `details_type`
+            , `details_val_type`, `details_value`, `details_update_time`, `details_create_time`
+            , `details_remark`, `details_content`) 
+            VALUES ( '1', '1906', 'discount', 'rate', '90', now(), now(), '同品2件9折', '同品2件9折');
+        
+2021-06-15 18:12:07,899 - DEBUG - insert语句受影响的行数：1  1168
+2021-06-15 18:12:07,899 - DEBUG - 
+           SELECT * from am_act_rule where rule_value = '>=2';
+        
+2021-06-15 18:12:07,913 - DEBUG - querySQL语句受影响的行数：：1  {'rule_id': 22, 'rule_type': 'prod_count', 'rule_name': 'prod_count', 'rule_value_type': 'string', 'rule_value': '>=2', 'rule_remark': 'prod_count', 'rule_update_time': datetime.datetime(2016, 12, 20, 11, 35, 7), 'rule_create_time': datetime.datetime(2016, 12, 19, 0, 0)}
+2021-06-15 18:12:07,914 - DEBUG - 
+            INSERT INTO `medstore`.`am_details_rule` (  `details_id`, `rule_id`) 
+            VALUES (  '1168', '22');
+        
+2021-06-15 18:12:07,933 - DEBUG - insert语句受影响的行数：1  1106
+2021-06-15 18:12:07,934 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '25570374', '1000act3122j9z', '21', now());
+2021-06-15 18:12:07,944 - DEBUG - insert语句受影响的行数：1  9544151
+2021-06-15 18:12:07,944 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:07,955 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:07,955 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25570374', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:07,991 - DEBUG - insert语句受影响的行数：1  38567548
+2021-06-15 18:12:07,992 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '25569792', '1000act3122j9z', '22', now());
+2021-06-15 18:12:08,002 - DEBUG - insert语句受影响的行数：1  9544152
+2021-06-15 18:12:08,002 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,016 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,016 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25569792', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:08,062 - DEBUG - insert语句受影响的行数：1  38567549
+2021-06-15 18:12:08,062 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '25507488', '1000act3122j9z', '23', now());
+2021-06-15 18:12:08,081 - DEBUG - insert语句受影响的行数：1  9544153
+2021-06-15 18:12:08,081 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,094 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,094 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25507488', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:08,133 - DEBUG - insert语句受影响的行数：1  38567550
+2021-06-15 18:12:08,134 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '100126', '1000act3122j9z', '24', now());
+2021-06-15 18:12:08,152 - DEBUG - insert语句受影响的行数：1  9544154
+2021-06-15 18:12:08,152 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,167 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,167 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '100126', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:08,198 - DEBUG - insert语句受影响的行数：1  38567551
+2021-06-15 18:12:08,198 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '25554776', '1000act3122j9z', '27', now());
+2021-06-15 18:12:08,213 - DEBUG - insert语句受影响的行数：1  9544155
+2021-06-15 18:12:08,213 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,231 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,231 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25554776', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:08,285 - DEBUG - insert语句受影响的行数：1  38567552
+2021-06-15 18:12:08,285 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '25561207', '1000act3122j9z', '28', now());
+2021-06-15 18:12:08,306 - DEBUG - insert语句受影响的行数：1  9544156
+2021-06-15 18:12:08,307 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,317 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,317 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25561207', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:08,352 - DEBUG - insert语句受影响的行数：1  38567553
+2021-06-15 18:12:08,352 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '790006', '1000act3122j9z', '29', now());
+2021-06-15 18:12:08,373 - DEBUG - insert语句受影响的行数：1  9544157
+2021-06-15 18:12:08,373 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,394 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,394 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '790006', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:08,435 - DEBUG - insert语句受影响的行数：1  38567554
+2021-06-15 18:12:08,435 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '100012', '1000act3122j9z', '32', now());
+2021-06-15 18:12:08,457 - DEBUG - insert语句受影响的行数：1  9544158
+2021-06-15 18:12:08,458 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,481 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,481 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '100012', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:08,519 - DEBUG - insert语句受影响的行数：1  38567555
+2021-06-15 18:12:08,519 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '25480712', '1000act3122j9z', '33', now());
+2021-06-15 18:12:08,528 - DEBUG - insert语句受影响的行数：1  9544159
+2021-06-15 18:12:08,528 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,543 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,543 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25480712', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:08,573 - DEBUG - insert语句受影响的行数：1  38567556
+2021-06-15 18:12:08,574 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '100416', '1000act3122j9z', '35', now());
+2021-06-15 18:12:08,595 - DEBUG - insert语句受影响的行数：1  9544160
+2021-06-15 18:12:08,595 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,612 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,612 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '100416', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:08,655 - DEBUG - insert语句受影响的行数：1  38567557
+2021-06-15 18:12:08,655 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '102686', '1000act3122j9z', '39', now());
+2021-06-15 18:12:08,668 - DEBUG - insert语句受影响的行数：1  9544161
+2021-06-15 18:12:08,668 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,688 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,689 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '102686', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:08,720 - DEBUG - insert语句受影响的行数：1  38567558
+2021-06-15 18:12:08,720 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '495274', '1000act3122j9z', '43', now());
+2021-06-15 18:12:08,737 - DEBUG - insert语句受影响的行数：1  9544162
+2021-06-15 18:12:08,737 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,753 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,753 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '495274', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:08,796 - DEBUG - insert语句受影响的行数：1  38567559
+2021-06-15 18:12:08,796 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '25554589', '1000act3122j9z', '47', now());
+2021-06-15 18:12:08,810 - DEBUG - insert语句受影响的行数：1  9544163
+2021-06-15 18:12:08,810 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,825 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,825 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25554589', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:08,877 - DEBUG - insert语句受影响的行数：1  38567560
+2021-06-15 18:12:08,877 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '590070', '1000act3122j9z', '60', now());
+2021-06-15 18:12:08,896 - DEBUG - insert语句受影响的行数：1  9544164
+2021-06-15 18:12:08,896 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,907 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,908 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '590070', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:08,943 - DEBUG - insert语句受影响的行数：1  38567561
+2021-06-15 18:12:08,943 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '25554769', '1000act3122j9z', '80', now());
+2021-06-15 18:12:08,961 - DEBUG - insert语句受影响的行数：1  9544165
+2021-06-15 18:12:08,962 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:08,984 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:08,984 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25554769', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:09,009 - DEBUG - insert语句受影响的行数：1  38567562
+2021-06-15 18:12:09,009 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '101657', '1000act3122j9z', '81', now());
+2021-06-15 18:12:09,031 - DEBUG - insert语句受影响的行数：1  9544166
+2021-06-15 18:12:09,032 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:09,055 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:09,055 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '101657', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:09,087 - DEBUG - insert语句受影响的行数：1  38567563
+2021-06-15 18:12:09,087 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '25570231', '1000act3122j9z', '89', now());
+2021-06-15 18:12:09,102 - DEBUG - insert语句受影响的行数：1  9544167
+2021-06-15 18:12:09,102 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:09,124 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:09,125 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25570231', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:09,161 - DEBUG - insert语句受影响的行数：1  38567564
+2021-06-15 18:12:09,161 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '25507727', '1000act3122j9z', '100', now());
+2021-06-15 18:12:09,179 - DEBUG - insert语句受影响的行数：1  9544168
+2021-06-15 18:12:09,179 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:09,194 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:09,195 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25507727', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:09,216 - DEBUG - insert语句受影响的行数：1  38567565
+2021-06-15 18:12:09,216 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '140605', '1000act3122j9z', '102', now());
+2021-06-15 18:12:09,232 - DEBUG - insert语句受影响的行数：1  9544169
+2021-06-15 18:12:09,232 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:09,249 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:09,249 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '140605', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:09,283 - DEBUG - insert语句受影响的行数：1  38567566
+2021-06-15 18:12:09,283 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '25507723', '1000act3122j9z', '108', now());
+2021-06-15 18:12:09,297 - DEBUG - insert语句受影响的行数：1  9544170
+2021-06-15 18:12:09,297 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:09,318 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:09,318 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25507723', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:09,349 - DEBUG - insert语句受影响的行数：1  38567567
+2021-06-15 18:12:09,349 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '25570227', '1000act3122j9z', '115', now());
+2021-06-15 18:12:09,373 - DEBUG - insert语句受影响的行数：1  9544171
+2021-06-15 18:12:09,373 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:09,386 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:09,386 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25570227', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:09,423 - DEBUG - insert语句受影响的行数：1  38567568
+2021-06-15 18:12:09,423 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '25570233', '1000act3122j9z', '130', now());
+2021-06-15 18:12:09,438 - DEBUG - insert语句受影响的行数：1  9544172
+2021-06-15 18:12:09,439 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:09,453 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:09,453 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25570233', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:09,499 - DEBUG - insert语句受影响的行数：1  38567569
+2021-06-15 18:12:09,499 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765142', '101421', '1000act3122j9z', '137', now());
+2021-06-15 18:12:09,514 - DEBUG - insert语句受影响的行数：1  9544173
+2021-06-15 18:12:09,514 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:09,529 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:09,529 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '101421', '312', '1906', '同品2件9折', '2件9折'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'discount', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '', '', '100');
+        
+2021-06-15 18:12:09,556 - DEBUG - insert语句受影响的行数：1  38567570
+2021-06-15 18:12:09,556 - INFO - --------活动信息分割or单体 ['特价']
+2021-06-15 18:12:09,557 - INFO - --------活动信息分割or单体 0==特价
+2021-06-15 18:12:09,557 - DEBUG - 根据提供的盘货信息，创建展示目录 dir 
+2021-06-15 18:12:09,557 - DEBUG - 
+            SELECT * from pm_dir_info WHERE 
+            dir_name = '功能主目录' 
+            and pharmacy_id =200;
+        
+2021-06-15 18:12:09,748 - DEBUG - querySQL语句受影响的行数：：1  {'dir_id': 200000, 'dir_code': '1000', 'dir_name': '功能主目录', 'dir_type': 'dir', 'dir_status': 0, 'dir_revalue': '', 'prod_sum': 548, 'dir_num': 1, 'dir_level': 1, 'dir_img': '', 'parent_dir_id': None, 'dir_update_time': datetime.datetime(2017, 9, 1, 10, 1), 'dir_create_time': datetime.datetime(2015, 3, 4, 11, 13), 'dir_remark': '', 'dir_all_name': '', 'category_id': 200000, 'pharmacy_id': 200, 'dir_gotocata': '', 'dir_main_show': None}
+2021-06-15 18:12:09,748 - DEBUG - 
+            INSERT INTO `medstore`.`pm_dir_info` (  `dir_code`, `dir_name`, `dir_type`, `dir_status`
+            , `dir_revalue`, `prod_sum`, `dir_num`, `dir_level`, `dir_img`, `parent_dir_id`, `dir_update_time`
+            , `dir_create_time`, `dir_remark`, `dir_all_name`, `category_id`, `pharmacy_id`, `dir_gotocata`, `dir_main_show`)
+            value ('1000act312tj','特价','dir','1',NULL,100,'1',3,'','',NOW(),NOW(),'','',NULL,'200',NULL,NULL) ;
+        
+2021-06-15 18:12:09,787 - DEBUG - insert语句受影响的行数：1  1002765143
+2021-06-15 18:12:09,788 - DEBUG - 
+            INSERT INTO `medstore`.`am_act_range` (  `range_type`, `range_value`, `range_status`
+            , `range_name`, `range_remark`, `range_update_time`, `range_create_time`)
+            values('category', 1002765143, '1', '特价', '618嗨购，爆品特价限量抢', NOW(), NOW()) 
+        
+2021-06-15 18:12:09,806 - DEBUG - insert语句受影响的行数：1  3750
+2021-06-15 18:12:09,807 - DEBUG - 
+            INSERT INTO `medstore`.`am_act_item` ( `item_attr`, `item_name`, `act_id`
+            , `item_status`, `item_priority`, `item_type`, `item_desc`, `item_update_time`
+            , `item_create_time`, `item_remark`, `item_img`, `pharmacy_id`, `item_flag`
+            , `sales_goto_type`, `sales_goto_title`, `sales_goto_url`, `item_num`, `item_title`
+            , `activity_img`, `activity_img_ratio`)
+            VALUES ('single', '特价', '312', '1', '90', 'quota','618嗨购，爆品特价限量抢', NOW(), NOW()
+            ,'{"itemImageR":"373"}', 'http://image.ykd365.cn/act/2021/6/618/2/detail.png', '200', '', '', '', '', '1000', '', '', '')
+            ;
+        
+2021-06-15 18:12:09,820 - DEBUG - insert语句受影响的行数：1  1907
+2021-06-15 18:12:09,820 - DEBUG - 
+            INSERT INTO `medstore`.`am_item_range` ( `range_id`, `item_id`) VALUES ( '3750', '1907');
+        
+2021-06-15 18:12:09,832 - DEBUG - insert语句受影响的行数：1  4301
+2021-06-15 18:12:09,832 - INFO - 创建 活动 item range dir    1907  3750  1002765143 特价
+2021-06-15 18:12:09,833 - DEBUG - 
+            INSERT INTO `medstore`.`am_quota_info` ( `item_id`, `quota_rule`, `quota_kind`
+            , `quota_type`, `quota_status`, `quota_total`, `quota_update_time`, `quota_create_time`
+            , `quota_remark`, `quota_content`, `qutoa_group`) 
+            VALUES ( '1907', '1:2:6', 'main', 'force', '1', '0', now(), now(), '618嗨购，爆品特价限量抢', '活动商品618嗨购，爆品特价限量抢', '');
+        
+2021-06-15 18:12:09,887 - DEBUG - insert语句受影响的行数：1  971
+2021-06-15 18:12:09,888 - INFO - 创建 限购规则 quota  特价618嗨购，爆品特价限量抢
+2021-06-15 18:12:09,888 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '100227', '1000act312tj', '1', now());
+2021-06-15 18:12:09,901 - DEBUG - insert语句受影响的行数：1  9544174
+2021-06-15 18:12:09,901 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:09,928 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:09,928 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '100227', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:09,950 - DEBUG - insert语句受影响的行数：1  38567571
+2021-06-15 18:12:09,950 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '100223', '1000act312tj', '2', now());
+2021-06-15 18:12:09,967 - DEBUG - insert语句受影响的行数：1  9544175
+2021-06-15 18:12:09,967 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:09,978 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:09,979 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '100223', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:09,998 - DEBUG - insert语句受影响的行数：1  38567572
+2021-06-15 18:12:09,998 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '101795', '1000act312tj', '3', now());
+2021-06-15 18:12:10,020 - DEBUG - insert语句受影响的行数：1  9544176
+2021-06-15 18:12:10,020 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,033 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,034 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '101795', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,051 - DEBUG - insert语句受影响的行数：1  38567573
+2021-06-15 18:12:10,051 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '102305', '1000act312tj', '4', now());
+2021-06-15 18:12:10,080 - DEBUG - insert语句受影响的行数：1  9544177
+2021-06-15 18:12:10,080 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,099 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,099 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '102305', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,113 - DEBUG - insert语句受影响的行数：1  38567574
+2021-06-15 18:12:10,114 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '11425580', '1000act312tj', '5', now());
+2021-06-15 18:12:10,131 - DEBUG - insert语句受影响的行数：1  9544178
+2021-06-15 18:12:10,131 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,154 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,154 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '11425580', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,174 - DEBUG - insert语句受影响的行数：1  38567575
+2021-06-15 18:12:10,174 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '102152', '1000act312tj', '6', now());
+2021-06-15 18:12:10,193 - DEBUG - insert语句受影响的行数：1  9544179
+2021-06-15 18:12:10,193 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,212 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,212 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '102152', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,231 - DEBUG - insert语句受影响的行数：1  38567576
+2021-06-15 18:12:10,231 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '100261', '1000act312tj', '7', now());
+2021-06-15 18:12:10,254 - DEBUG - insert语句受影响的行数：1  9544180
+2021-06-15 18:12:10,254 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,265 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,265 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '100261', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,282 - DEBUG - insert语句受影响的行数：1  38567577
+2021-06-15 18:12:10,282 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '103485', '1000act312tj', '8', now());
+2021-06-15 18:12:10,300 - DEBUG - insert语句受影响的行数：1  9544181
+2021-06-15 18:12:10,300 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,313 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,313 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '103485', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,333 - DEBUG - insert语句受影响的行数：1  38567578
+2021-06-15 18:12:10,333 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '100201', '1000act312tj', '9', now());
+2021-06-15 18:12:10,352 - DEBUG - insert语句受影响的行数：1  9544182
+2021-06-15 18:12:10,353 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,363 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,363 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '100201', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,374 - DEBUG - insert语句受影响的行数：1  38567579
+2021-06-15 18:12:10,374 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '101833', '1000act312tj', '10', now());
+2021-06-15 18:12:10,393 - DEBUG - insert语句受影响的行数：1  9544183
+2021-06-15 18:12:10,393 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,404 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,404 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '101833', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,427 - DEBUG - insert语句受影响的行数：1  38567580
+2021-06-15 18:12:10,427 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '140050', '1000act312tj', '11', now());
+2021-06-15 18:12:10,441 - DEBUG - insert语句受影响的行数：1  9544184
+2021-06-15 18:12:10,441 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,458 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,458 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '140050', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,470 - DEBUG - insert语句受影响的行数：1  38567581
+2021-06-15 18:12:10,470 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '100208', '1000act312tj', '12', now());
+2021-06-15 18:12:10,492 - DEBUG - insert语句受影响的行数：1  9544185
+2021-06-15 18:12:10,492 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,507 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,507 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '100208', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,524 - DEBUG - insert语句受影响的行数：1  38567582
+2021-06-15 18:12:10,524 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '101812', '1000act312tj', '13', now());
+2021-06-15 18:12:10,544 - DEBUG - insert语句受影响的行数：1  9544186
+2021-06-15 18:12:10,544 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,557 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,558 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '101812', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,587 - DEBUG - insert语句受影响的行数：1  38567583
+2021-06-15 18:12:10,588 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '103480', '1000act312tj', '14', now());
+2021-06-15 18:12:10,598 - DEBUG - insert语句受影响的行数：1  9544187
+2021-06-15 18:12:10,598 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,630 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,630 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '103480', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,643 - DEBUG - insert语句受影响的行数：1  38567584
+2021-06-15 18:12:10,643 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '102359', '1000act312tj', '15', now());
+2021-06-15 18:12:10,656 - DEBUG - insert语句受影响的行数：1  9544188
+2021-06-15 18:12:10,656 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,682 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,683 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '102359', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,700 - DEBUG - insert语句受影响的行数：1  38567585
+2021-06-15 18:12:10,700 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '25507514', '1000act312tj', '16', now());
+2021-06-15 18:12:10,713 - DEBUG - insert语句受影响的行数：1  9544189
+2021-06-15 18:12:10,713 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,730 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,730 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25507514', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,764 - DEBUG - insert语句受影响的行数：1  38567586
+2021-06-15 18:12:10,764 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '102219', '1000act312tj', '17', now());
+2021-06-15 18:12:10,785 - DEBUG - insert语句受影响的行数：1  9544190
+2021-06-15 18:12:10,785 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,806 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,806 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '102219', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,822 - DEBUG - insert语句受影响的行数：1  38567587
+2021-06-15 18:12:10,822 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '25570222', '1000act312tj', '18', now());
+2021-06-15 18:12:10,839 - DEBUG - insert语句受影响的行数：1  9544191
+2021-06-15 18:12:10,840 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,855 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,855 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '25570222', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,869 - DEBUG - insert语句受影响的行数：1  38567588
+2021-06-15 18:12:10,869 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '100959', '1000act312tj', '19', now());
+2021-06-15 18:12:10,879 - DEBUG - insert语句受影响的行数：1  9544192
+2021-06-15 18:12:10,879 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,895 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,896 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '100959', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,914 - DEBUG - insert语句受影响的行数：1  38567589
+2021-06-15 18:12:10,914 - DEBUG - INSERT INTO `medstore`.`pm_sku_dir` (  `dir_id`, `sku_id`, `dir_code`, `sku_order`, `update_time`) 
+            VALUES ( '1002765143', '102221', '1000act312tj', '20', now());
+2021-06-15 18:12:10,930 - DEBUG - insert语句受影响的行数：1  9544193
+2021-06-15 18:12:10,930 - DEBUG - SELECT config_value from sm_config WHERE config_key = 'act_batch';
+2021-06-15 18:12:10,947 - DEBUG - querySQL语句受影响的行数：：1  {'config_value': '20200305224320'}
+2021-06-15 18:12:10,947 - DEBUG - INSERT INTO am_stat_info (  `batch_num`, `sku_id`, `act_id`, `item_id`, `item_remark` , `item_name`
+    , `item_attr`, `stat_update_time`, `stat_create_time`, `item_effect_time`, `item_expire_time`
+        , `item_type`, `other_str1`, `quota_id`, `item_flag`, `item_priority`) 
+        VALUES ( '20200305224320', '102221', '312', '1907', '618嗨购，爆品特价限量抢', '特价'
+        , 'single', now(), now(), '2021-06-15 18:00:00', '2021-06-18 23:59:59'
+        , 'quota', '{"itemImageR":"373","itemImage":"http://image.ykd365.cn/act/2021/6/618/2/detail.png","itemUrl":"http://store.ykd365.com/html-activity/page/618/index_c.html?type=15&actId=876&dirId=1002765134", "itemTitle":"618年中大促"}', '971', '', '100');
+        
+2021-06-15 18:12:10,959 - DEBUG - insert语句受影响的行数：1  38567590
+2021-06-15 18:12:10,959 - INFO - 创建成功
+2021-06-15 18:12:10,979 - INFO - 上完活动 记得执行下面的sql------------
+2021-06-15 18:12:10,979 - INFO -  over --------

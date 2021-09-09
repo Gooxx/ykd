@@ -6,7 +6,8 @@ import logging
 
 logger = logging.getLogger()
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
-logging.basicConfig(filename='./log/my-1212-store.log', level=logging.DEBUG, format=LOG_FORMAT)
+logging.basicConfig(filename='./log/my-2106-xyx-store.log', level=logging.DEBUG, format=LOG_FORMAT)
+# logging.basicConfig(filename='./log/my-210301-38-deve.log', level=logging.DEBUG, format=LOG_FORMAT)
 #  创建一个handler，用于将日志输出到控制台
 # log = logging.StreamHandler()
 # log.setLevel(logging.DEBUG)
@@ -15,21 +16,22 @@ ch.setLevel(logging.INFO)
 logger.addHandler(ch)
 
 # 基于pymysql 
- 
-isDeve = False #  生产
-# isDeve = True # 准生产
+
+# isDeve = False #  生产
+isDeve = True # 准生产
 if isDeve: # 准生产
    # host = 'rm-2ze7fnv9ydw78u07a7o.mysql.rds.aliyuncs.com'
-   host = 'rm-2ze5nu148mg523l6emo.mysql.rds.aliyuncs.com'
+   # host = 'rm-2ze5nu148mg523l6emo.mysql.rds.aliyuncs.com'
+   host = 'rm-2ze55261t7w3917sr1o.mysql.rds.aliyuncs.com'
    logging.info('deve准生产数据库连接--------'+host)
 else:# 生产
    host = 'rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com'
    logging.info('store生产数据库连接--------'+host)
-db = pymysql.connect(host,user = "camore",passwd = "camore",db = "medstore")
+db = pymysql.connect(host=host,user = "camore",password = "camore",database = "medstore",cursorclass=pymysql.cursors.DictCursor)
  
 # db = pymysql.connect('rdsb7rqeyb7rqey434.mysql.rds.aliyuncs.com',user = "camore",passwd = "camore",db = "medstore") # 生产
-cursor=db.cursor(cursor=pymysql.cursors.DictCursor)
-
+# cursor=db.cursor(cursor=pymysql.cursors.DictCursor)
+cursor=db.cursor()
 # 基于 SQLAlchemy
 # conn = create_engine('mysql://camore:camore:rm-2zeu8n6l02168zxwe4o.mysql.rds.aliyuncs.com/medstore', echo=True)
 # cursor = engine.connect()
