@@ -650,18 +650,18 @@ if __name__ == "__main__":
     tableName = 'as_test.202109_ty_101'
     actId = 0
     actName = '中秋&国庆 团圆健康礼'
-    start = '2020-09-10 00:00:00'  #s 生产要改
+    start = '2021-09-10 00:00:00'  #s 生产要改
     end = '2021-10-10 23:59:59' 
 
-    linkurl = 'http://deve.ykd365.com/html-activity/page/summerMed/index.html?type=15&actId=878&dirId='  # 生产要改
+    linkurl = 'http://store.ykd365.com/html-activity/page/midFestival/index.html?type=15&actId=881&dirId='  # 生产要改
 
     color = '#f91549'
     imagePre = 'http://image.ykd365.cn/act/2021/9/101/'
     headimg = f"{imagePre}head.jpg"
     linkimg = f'{imagePre}lb.jpg'
-    windowimg = f'{imagePre}tc.png'
-
-    allimg = f'{imagePre}9gg.jpg' 
+    windowimg = f'{imagePre}tc.png' 
+# http://image.ykd365.cn/act/2021/9/101/9gg.png
+    allimg = f'{imagePre}9gg.png' 
 
     listimg = f'{imagePre}list.png'
     # 自动补充目录信息(tableName,[{'name':'健康礼首选'},{'name':'初秋滋补'},{'name':'儿童营养'},{'name':'调节三高'},{'name':'维生素钙'}],imagePre,suf_img='.jpg')
@@ -676,7 +676,8 @@ if __name__ == "__main__":
     update9GG( toDirName =actName,ydIds = [200],allImags=[allimg],images=[linkimg],startTime=start,endTime=end)
 
 
-
+# 1.配置通栏
+# 2.把满99减50 的优先级顺序改为 201, 慢199减100改为200 item_priority
 
 
 
