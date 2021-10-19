@@ -6,7 +6,7 @@ import logging
 
 logger = logging.getLogger()
 LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
-logging.basicConfig(filename='./log/my-2106-xyx-store.log', level=logging.DEBUG, format=LOG_FORMAT)
+logging.basicConfig(filename='./log/my-2110-kd-deve2.log', level=logging.DEBUG, format=LOG_FORMAT)
 # logging.basicConfig(filename='./log/my-210301-38-deve.log', level=logging.DEBUG, format=LOG_FORMAT)
 #  创建一个handler，用于将日志输出到控制台
 # log = logging.StreamHandler()
@@ -22,7 +22,8 @@ isDeve = True # 准生产
 if isDeve: # 准生产
    # host = 'rm-2ze7fnv9ydw78u07a7o.mysql.rds.aliyuncs.com'
    # host = 'rm-2ze5nu148mg523l6emo.mysql.rds.aliyuncs.com'
-   host = 'rm-2ze55261t7w3917sr1o.mysql.rds.aliyuncs.com'
+   # host = 'rm-2ze55261t7w3917sr1o.mysql.rds.aliyuncs.com'
+   host = 'rm-2ze0130i051x4s39rwo.mysql.rds.aliyuncs.com'
    logging.info('deve准生产数据库连接--------'+host)
 else:# 生产
    host = 'rdsb7rqeyb7rqeyyo.mysql.rds.aliyuncs.com'

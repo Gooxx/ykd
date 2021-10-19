@@ -2,7 +2,7 @@ from db2 import db,cursor,querySQL,updateSQL,insertSQL,selectBy,selectOneBy
 import time
 import datetime
 import logging
-from actclass import ActManager
+# from actclass import ActManager
 # test
 class ActInfo:
     sku_id=''
@@ -1046,7 +1046,7 @@ def copyLmTem(drugstoreId,iSmId,baseDrugstoreId):
     insertSQL(temiteminsSQL)   
 
 def copySmShareInfo(drugstoreId,baseDrugstoreId):
-    '''# 九宫格 的布局'''
+    '''# 分享出的也界面'''
     shareSQL = f""" INSERT INTO `medstore`.`sm_shared_info` ( `pharmacy_id`, `shared_type`, `shared_url`, `shared_title`, `shared_content`, `shared_img_url`, `shared_status`, `shared_create_time`, `shared_update_time`, `shared_remark`, `share_go_type`, `share_go_data`, `share_go_title`, `share_go_can`)
                 SELECT {drugstoreId} `pharmacy_id`, `shared_type`,replace(`shared_url`,'pharmacyId={baseDrugstoreId}','pharmacyId={drugstoreId}'), `shared_title`, `shared_content`, `shared_img_url`, `shared_status`, `shared_create_time`, `shared_update_time`, `shared_remark`, `share_go_type`, `share_go_data`, `share_go_title`, `share_go_can`
                 from sm_shared_info 
@@ -1054,7 +1054,7 @@ def copySmShareInfo(drugstoreId,baseDrugstoreId):
     insertSQL(shareSQL)   
     
 def copySmUserBanner(drugstoreId,baseDrugstoreId):
-    '''# 九宫格 的布局'''
+    '''# 几个banner'''
     shareSQL = f""" INSERT INTO `medstore`.`sm_user_banner` (  `banner_name`, `banner_image`, `banner_url`, `banner_type`, `pharmacy_id`, `banner_remark`, `banner_create_time`, `banner_update_time`, `banner_flag`, `banner_ratio`, `banner_attr`, `banner_priority`, `banner_param`) 
                 SELECT  `banner_name`, `banner_image`, `banner_url`, `banner_type`,{drugstoreId} `pharmacy_id`, `banner_remark`, `banner_create_time`, `banner_update_time`, `banner_flag`, `banner_ratio`, `banner_attr`, `banner_priority`, `banner_param`
                 from sm_user_banner WHERE pharmacy_id = {baseDrugstoreId};"""
@@ -1311,7 +1311,40 @@ def createLmTem(drugstoreId,iSmId,baseDrugstoreId):
                 LEFT JOIN as_test.kd_sm_image_link si on ii.relation_id = si.old_link_id
                 WHERE i.pharmacy_id ={baseDrugstoreId};"""
     insertSQL(temiteminsSQL)  
-    
+
+# 初始化开店所需的目录 tableName是excel ，toTableName是要写入的表
+def kdCategory(tableName,level=4,toTableName='tm_pm_category_info'):
+    codeList = []
+    dirList = []
+    for i in range(1,level+1):
+        # code = f"{i}级编码n"
+        # preCode = f"{i-1}级编码n" if i>1 else '""'
+
+        # dir = f"{i}级目录"
+        code = f"`{i}级编码-新`"
+        preCode = f"`{i-1}级编码-新`" if i>1 else '""'
+
+        dir = f"{i}级目录"
+        codeList.append(code)
+        dirList.append(dir)
+        categoryAllName = ",'-',".join(dirList)
+        groupByCode = ",".join(codeList)
+        insertCategory = f"""
+            INSERT INTO {toTableName}( `category_code`, `category_name`, `category_type`, `category_status`,  `prod_sum`, `category_num`, `category_level`,  `parent_category_id`,  `category_remark`, `category_all_name`,category_create_time) 
+            SELECT {code},{dir},'dir',1, 0,@i:=@i+1,{i},a.category_id,null,CONCAT({categoryAllName}),NOW()
+            from 
+            (SELECT *
+            from {tableName}  a LEFT JOIN {toTableName} tpc on {preCode}  = tpc.category_code
+            GROUP BY {groupByCode}
+            HAVING {code} is NOT NULL
+            ) a,(SELECT @i:=0) i
+            ORDER BY xh;
+        """
+        logging.info(insertCategory)
+        insertSQL(insertCategory)  
+    db.commit()
+
+
     # return res['lastId']
 # 创建多盒商品 createCombByHuohao('1007150',1601,331474,490,490,count=5)
 # 添加商品到amstatinfo 和 pmskudir中 ，根据货号和itemid addSkuDirByItemId(huohao,1600,1590)
@@ -1319,31 +1352,194 @@ def createLmTem(drugstoreId,iSmId,baseDrugstoreId):
 # 根据表 创建全套的活动 buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,img='',color='')
 # 根据表 创建sku createNewSkuByTable(tableName)
 if __name__ == "__main__":
-    
-    baseDrugstoreId=1601
-    baseDirCode='ykd21041002'
+    # 上线需要做的事情
+    # 0 迁移 pm_category_info 和 pm_prod_category表到生产,无论天一还是新店都要用
 
-    drugstoreId =1602
-    dirCode='ykd21041003'
+# -- 改造天一的数据 符合新版本
+# -- 1  修改pm_prod_info (改变说明书信息,目前只给了一部分)
+# -- 2 改变pm_dir_info中的dir_code. 改变pm_sku_dir中的dir_code
+# -- 
 
-    # drugstoreId =1603
-    # dirCode='ykd21041004'
 
-    iDirId = queryTableLastOne('pm_dir_info',field='dir_id',where =' dir_id<10000000')
-    iSkuId = queryTableLastOne('pm_prod_sku',field='sku_id',where ='')
-    iSmId = queryTableLastOne('sm_image_link',field='link_id',where ='')
-    iPacketId = queryTableLastOne('pm_packet_info',field='packet_id',where ='')
+# -- 1 改变pm_prod_info中的信息,
+#  UPDATE as_test.tm_prod a LEFT JOIN pm_prod_info p on a.prod_id = p.prod_id 
+#  set
+# p.prod_name = a.商品名称, p.prod_brand = a.品牌名,p.prod_gen_name = a.通用名称,p.prod_code = a.商品条码,p.prod_sn = a.批准文号,p.prod_price = a.参考价格*100,p.prod_firm = a.生产厂家,p.prod_spec = a.规格,p.prod_unit=a.单位,p.prod_indication = a.备注;
 
-    iActId = queryTableLastOne('am_act_info',field='act_id',where ='')
-    iItemId = queryTableLastOne('am_act_item',field='item_id',where ='')
-    iRangeId = queryTableLastOne('am_act_range',field='range_id',where ='')
-    iDetailId = queryTableLastOne('am_item_details',field='details_id',where ='')
-    iQuotaId = queryTableLastOne('am_quota_info',field='quota_id',where ='')
-    iSgId = queryTableLastOne('am_stages_sale',field='sg_id',where ='')
+#  UPDATE as_test.tm_prod a LEFT JOIN pm_prod_info p on a.prod_id = p.prod_id 
+#  set p.prod_type_code = a.type;
 
-    # logging.debug(iDirId,iSkuId)
-    kd(drugstoreId,dirCode,iDirId,iSkuId,iActId,iItemId,iRangeId,iQuotaId,iDetailId,baseDrugstoreId,baseDirCode)
+
+
+# SELECT * FROM pm_prod_info WHERE prod_type_code IS NOT NULL
+
+
+
+
+#  --   2 更新天一原有dirinfo 中的code
+# UPDATE as_test.tm_flzy  a   JOIN pm_dir_info d on a.`1级编码-旧` = d.dir_code
+# set d.dir_code = a.`1级编码-新`;
+
+# UPDATE as_test.tm_flzy  a   JOIN pm_dir_info d on a.`2级编码-旧` = d.dir_code
+# set d.dir_code = a.`2级编码-新`;
+
+# UPDATE as_test.tm_flzy  a   JOIN pm_dir_info d on a.`3级编码-旧` = d.dir_code
+# set d.dir_code = a.`3级编码-新`;
+
+# UPDATE as_test.tm_flzy  a   JOIN pm_dir_info d on a.`4级编码-旧` = d.dir_code
+# set d.dir_code = a.`4级编码-新`;
+
+# -- 2 更新 sku_dir中的code
+# UPDATE as_test.tm_flzy  a   JOIN pm_sku_dir d on a.`1级编码-旧` = d.dir_code
+# set d.dir_code = a.`1级编码-新`;
+
+# UPDATE as_test.tm_flzy  a   JOIN pm_sku_dir d on a.`2级编码-旧` = d.dir_code
+# set d.dir_code = a.`2级编码-新`;
+
+# UPDATE as_test.tm_flzy  a   JOIN pm_sku_dir d on a.`3级编码-旧` = d.dir_code
+# set d.dir_code = a.`3级编码-新`;
+
+# UPDATE as_test.tm_flzy  a   JOIN pm_sku_dir d on a.`4级编码-旧` = d.dir_code
+# set d.dir_code = a.`4级编码-新`;
+
+
+
+# 新店需要
+# 迁移tm_开头的表, 作为模板,新建店铺使用
+#
+
+
+
+
+
+
+
+
+
+
+
+
+# 准生产准备数据的过程 --------------------------------------------------------------
+
+    #  创建category 目录,用作开店
+    # kdCategory('as_test.tm_flzy')
+    # kdCategory('as_test.tm_kszy')
+    # kdCategory('as_test.tm_zzzy',3)
+    # kdCategory('as_test.tm_ppzy',2)
+    # kdCategory('as_test.tm_dbzy',2)
+
+    # sql = f"""
+    #     INSERT INTO `medstore`.`tm_pm_prod_category`( `category_id`, `prod_id`, `category_code`, `prod_order`)
+    #     SELECT pc.category_id,tp.prod_id,pc.category_code,tp.xh
+    #     from
+    #     (SELECT case when 4级编码 is not null then  4级编码
+    #     when 3级编码 is not null then  3级编码
+    #     when 2级编码 is not null then  2级编码
+    #         ELSE 1级编码 end as category_code,tp.prod_id,tp.xh
+    #     from as_test.tm_flzy_prod tp) tp
+    #     join pm_category_info pc on tp.category_code = pc.category_code
+    #     """
+    # insertSQL(sql) 
     # db.commit()
+
+    # 2更新原有天一prodinfo信息, 开店专门修正天一数据
+# UPDATE as_test.tm_prod a LEFT JOIN tm_pm_prod_info p on a.prod_id = p.prod_id 
+# set
+# p.prod_name = a.商品名称, p.prod_brand = a.品牌名,p.prod_gen_name = a.通用名称,p.prod_code = a.商品条码,p.prod_sn = a.批准文号,p.prod_price = a.参考价格*100,p.prod_firm = a.生产厂家,p.prod_spec = a.规格,p.prod_unit=a.单位,p.prod_indication = a.备注;
+
+# UPDATE as_test.tm_prod a LEFT JOIN tm_pm_prod_info p on a.prod_id = p.prod_id 
+# set p.prod_type_code = a.type
+
+    # 3 更新天一原有dirinfo 中的code
+# UPDATE as_test.tm_flzy  a   JOIN tm_pm_dir_info d on a.`1级编码-旧` = d.dir_code
+# set d.dir_code = a.`1级编码-新`;
+
+# UPDATE as_test.tm_flzy  a   JOIN tm_pm_dir_info d on a.`2级编码-旧` = d.dir_code
+# set d.dir_code = a.`2级编码-新`;
+
+# UPDATE as_test.tm_flzy  a   JOIN tm_pm_dir_info d on a.`3级编码-旧` = d.dir_code
+# set d.dir_code = a.`3级编码-新`;
+
+# UPDATE as_test.tm_flzy  a   JOIN tm_pm_dir_info d on a.`4级编码-旧` = d.dir_code
+# set d.dir_code = a.`4级编码-新`;
+
+    # 4 更新 sku_dir中的code
+# UPDATE as_test.tm_flzy  a   JOIN tm_pm_sku_dir d on a.`1级编码-旧` = d.dir_code
+# set d.dir_code = a.`1级编码-新`;
+
+# UPDATE as_test.tm_flzy  a   JOIN tm_pm_sku_dir d on a.`2级编码-旧` = d.dir_code
+# set d.dir_code = a.`2级编码-新`;
+
+# UPDATE as_test.tm_flzy  a   JOIN tm_pm_sku_dir d on a.`3级编码-旧` = d.dir_code
+# set d.dir_code = a.`3级编码-新`;
+
+# UPDATE as_test.tm_flzy  a   JOIN tm_pm_sku_dir d on a.`4级编码-旧` = d.dir_code
+# set d.dir_code = a.`4级编码-新`;
+
+
+# 5 更新 天一基础prod的 新code ,对应类型化
+# UPDATE as_test.tm_prod a  JOIN pm_type_info t on a.新版一级属性 = t.type_desc  and a.新版二级属性 is null
+# 	set a.type = t.type_code;
+	
+	
+# UPDATE as_test.tm_prod a  JOIN pm_type_info t on a.新版二级属性 = t.type_desc 
+# set a.type = t.type_code;
+
+
+
+
+
+
+
+    # codeList = []
+    # dirList = []
+    # for i in range(1,5):
+    #     code = f"{i}级编码n"
+    #     preCode = f"{i-1}级编码n" if i>1 else '""'
+
+    #     dir = f"{i}级目录"
+    #     codeList.append(code)
+    #     dirList.append(dir)
+    #     categoryAllName = ",'-',".join(dirList)
+    #     groupByCode = ",".join(codeList)
+    #     insertCategory = f"""
+    #         INSERT INTO `medstore`.`tm_pm_category_info`( `category_code`, `category_name`, `category_type`, `category_status`,  `prod_sum`, `category_num`, `category_level`,  `parent_category_id`,  `category_remark`, `category_all_name`,category_create_time) 
+    #         SELECT {code},{dir},'dir',1, 0,@i:=@i+1,{i},a.category_id,null,CONCAT({categoryAllName}),NOW()
+    #         from 
+    #         (SELECT *
+    #         from as_test.tm_flzy  a LEFT JOIN tm_pm_category_info tpc on {preCode}  = tpc.category_code
+    #         GROUP BY {groupByCode}
+    #         HAVING {code} is NOT NULL
+    #         ) a,(SELECT @i:=0) i
+    #         ORDER BY xh;
+    #     """
+    #     logging.info(insertCategory)
+    #     insertSQL(insertCategory)  
+    # db.commit()
+    # baseDrugstoreId=1601
+    # baseDirCode='ykd21041002'
+
+    # drugstoreId =1602
+    # dirCode='ykd21041003'
+
+    # # drugstoreId =1603
+    # # dirCode='ykd21041004'
+
+    # iDirId = queryTableLastOne('pm_dir_info',field='dir_id',where =' dir_id<10000000')
+    # iSkuId = queryTableLastOne('pm_prod_sku',field='sku_id',where ='')
+    # iSmId = queryTableLastOne('sm_image_link',field='link_id',where ='')
+    # iPacketId = queryTableLastOne('pm_packet_info',field='packet_id',where ='')
+
+    # iActId = queryTableLastOne('am_act_info',field='act_id',where ='')
+    # iItemId = queryTableLastOne('am_act_item',field='item_id',where ='')
+    # iRangeId = queryTableLastOne('am_act_range',field='range_id',where ='')
+    # iDetailId = queryTableLastOne('am_item_details',field='details_id',where ='')
+    # iQuotaId = queryTableLastOne('am_quota_info',field='quota_id',where ='')
+    # iSgId = queryTableLastOne('am_stages_sale',field='sg_id',where ='')
+
+    # # logging.debug(iDirId,iSkuId)
+    # kd(drugstoreId,dirCode,iDirId,iSkuId,iActId,iItemId,iRangeId,iQuotaId,iDetailId,baseDrugstoreId,baseDirCode)
+    # # db.commit()
 
 
     # iDirId = 4681000

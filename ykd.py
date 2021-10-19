@@ -646,27 +646,27 @@ def 标准单会场活动(actId=0,actName = '',tableName ='',ydList = [],startTi
 
 if __name__ == "__main__":
     logging.info(' 测试 药快到专用工具--------')
-    # 2021.9.10-2021.10.10
-    tableName = 'as_test.202109_ty_101'
+    # 2021.10.10-2021.11.15
+    tableName = 'as_test.202110_ty_qdhj'
     actId = 0
-    actName = '中秋&国庆 团圆健康礼'
-    start = '2021-09-10 00:00:00'  #s 生产要改
-    end = '2021-10-10 23:59:59' 
+    actName = '秋冬换季 家庭常用药清单'
+    start = '2021-10-09 00:00:00'  #s 生产要改
+    end = '2021-11-15 23:59:59' 
 
-    linkurl = 'http://store.ykd365.com/html-activity/page/midFestival/index.html?type=15&actId=881&dirId='  # 生产要改
+    linkurl = 'http://store.ykd365.com/html-activity/page/familyCommonly/index.html?type=15&actId=881&dirId='  # 生产要改
 
     color = '#f91549'
-    imagePre = 'http://image.ykd365.cn/act/2021/9/101/'
+    imagePre = 'http://image.ykd365.cn/act/2021/10/qiudong/'
     headimg = f"{imagePre}head.jpg"
     linkimg = f'{imagePre}lb.jpg'
     windowimg = f'{imagePre}tc.png' 
 # http://image.ykd365.cn/act/2021/9/101/9gg.png
-    allimg = f'{imagePre}9gg.png' 
+    allimg = f'{imagePre}9gg.jpg' 
 
     listimg = f'{imagePre}list.png'
-    # 自动补充目录信息(tableName,[{'name':'健康礼首选'},{'name':'初秋滋补'},{'name':'儿童营养'},{'name':'调节三高'},{'name':'维生素钙'}],imagePre,suf_img='.jpg')
+    # 自动补充目录信息(tableName,[{'name':'感冒咳嗽'},{'name':'慢性支气管炎'},{'name':'哮喘'},{'name':'心脑血管'},{'name':'消化系统'},{'name':'小儿秋季腹泻'},{'name':'鼻炎'}],imagePre,suf_img='.jpg')
 
-    # 自动补充活动信息(tableName,[{'item_name':'满99减50,满199减100','item_desc':'团圆健康礼 满99减50,团圆健康礼 满199减100','item_type': 'discount','item_img':'detail','item_img_r': '444', 'details_value': '', 'rule_value': '', 'quota_rule': None, 'quota_group': None},{'item_name':'团圆健康礼','item_desc':'团圆健康礼','item_type': 'drugtag','item_img':'detail','item_img_r': '444', 'details_value': '', 'rule_value': '', 'quota_rule': None, 'quota_group': None}],imagePre,suf_img='.png')
+    # 自动补充活动信息(tableName,[{'item_name':'2件92折、3件88折','item_desc':'任意2件92折、3件88折','item_type': 'discount','item_img':'detail','item_img_r': '391', 'details_value': '92,88', 'rule_value': '2,3', 'quota_rule': None, 'quota_group': None}],imagePre,suf_img='.png')
     
     标准单会场活动(actId=actId,actName = actName,tableName =tableName,ydList = [200]
         ,startTime=start,endTime=end,img = headimg,color = color,linkimg =linkimg
@@ -674,6 +674,57 @@ if __name__ == "__main__":
         ,linkView = '',windowimg= windowimg
         ,listimg=listimg,detailJump=True)
     update9GG( toDirName =actName,ydIds = [200],allImags=[allimg],images=[linkimg],startTime=start,endTime=end)
+
+    logging.info(' over --------')
+# // 有老的2件xx折, 把开始时间放到 11-15 这样本次活动结束的时候,正常活动继续
+"""
+UPDATE  as_test.202110_ty_qdhj a LEFT JOIN pm_prod_sku s on a.huohao = s.pharmacy_huohao
+LEFT JOIN am_stat_info stat on s.sku_id = stat.sku_id 
+SET stat.item_effect_time = '2021-11-15 23:59:59'
+WHERE s.drugstore_id = 200
+and stat.item_remark like '2件92折、3件88折'
+and stat.item_expire_time > now()
+;
+
+INSERT INTO `medstore`.`sm_image_link`(  `drugstore_id`, `seq_num`, `image_url`, `link_url`, `link_type`, `link_name`, `link_param`, `link_status`, `link_update_time`, `link_create_time`, `link_remark`, `link_start_time`, `link_end_time`, `link_view`, `link_version`, `link_button_type`) VALUES (  200, 1, 'http://image.ykd365.cn/act/2021/10/qiudong/tl.jpg', 'http://deve.ykd365.com/html-activity/page/familyCommonly/index.html?type=15&actId=881&dirId=1002765294', 'web2', '秋冬换季 家庭常用药清单', 1002765294, 1, '2021-10-09 10:32:47', '2021-10-09 10:29:12', '{\"aspect_ratio\":431,\"having_line\":0,\"image_seat\":1}', '2020-10-10 00:00:00', '2021-11-15 23:59:59', 'activity', 1, NULL);
+
+"""
+
+
+
+
+
+
+
+
+    # 2021.9.10-2021.10.10
+#     tableName = 'as_test.202109_ty_101'
+#     actId = 0
+#     actName = '中秋&国庆 团圆健康礼'
+#     start = '2021-09-10 21:00:00'  #s 生产要改
+#     end = '2021-10-10 23:59:59' 
+
+#     linkurl = 'http://store.ykd365.com/html-activity/page/midFestival/index.html?type=15&actId=881&dirId='  # 生产要改
+
+#     color = '#f91549'
+#     imagePre = 'http://image.ykd365.cn/act/2021/9/101/'
+#     headimg = f"{imagePre}head.jpg"
+#     linkimg = f'{imagePre}lb.jpg'
+#     windowimg = f'{imagePre}tc.png' 
+# # http://image.ykd365.cn/act/2021/9/101/9gg.png
+#     allimg = f'{imagePre}9gg.png' 
+
+#     listimg = f'{imagePre}list.png'
+#     # 自动补充目录信息(tableName,[{'name':'健康礼首选'},{'name':'初秋滋补'},{'name':'儿童营养'},{'name':'调节三高'},{'name':'维生素钙'}],imagePre,suf_img='.jpg')
+
+#     # 自动补充活动信息(tableName,[{'item_name':'满99减50,满199减100','item_desc':'团圆健康礼 满99减50,团圆健康礼 满199减100','item_type': 'discount','item_img':'detail','item_img_r': '444', 'details_value': '', 'rule_value': '', 'quota_rule': None, 'quota_group': None},{'item_name':'团圆健康礼','item_desc':'团圆健康礼','item_type': 'drugtag','item_img':'detail','item_img_r': '444', 'details_value': '', 'rule_value': '', 'quota_rule': None, 'quota_group': None}],imagePre,suf_img='.png')
+    
+#     # 标准单会场活动(actId=actId,actName = actName,tableName =tableName,ydList = [200]
+#     #     ,startTime=start,endTime=end,img = headimg,color = color,linkimg =linkimg
+#     #     ,linkurl = linkurl
+#     #     ,linkView = '',windowimg= windowimg
+#     #     ,listimg=listimg,detailJump=True)
+#     update9GG( toDirName =actName,ydIds = [200],allImags=[allimg],images=[linkimg],startTime=start,endTime=end)
 
 
 # 1.配置通栏
@@ -1391,7 +1442,7 @@ if __name__ == "__main__":
 # and a1.item_name like '%3件85%'
 # and a2.item_name like '%3件88%'
 # ; 
-    logging.info(' over --------')
+    # logging.info(' over --------')
 
 # http://image.ykd365.cn/act/202005/lcg_list.png
 # http://image.ykd365.cn/act/1906/1906_list3.png

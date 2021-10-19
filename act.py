@@ -844,7 +844,7 @@ def buildActInfoByTable(tableName,actId,actName,drugstoreId,startTime,endTime,im
                         logging.info(f'创建 活动规则 details  {itemName}- {itemDesc} -{details_value}- {rule_value}')
                         details_remark = itemName
                         details_content =itemDesc
-                        details_level = index+1
+                        details_level = indexd+1
                         detailsId = addAmItemDetails( itemId,details_value,details_remark,details_content,details_type='discount',details_level=details_level)
                         addAmDetailsRule(detailsId,rule_value)
                 dicId = dirDic['dir_id']
